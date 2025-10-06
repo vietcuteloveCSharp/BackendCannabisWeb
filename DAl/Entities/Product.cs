@@ -1,0 +1,29 @@
+﻿namespace DAL.Entities
+{
+    [Table("Products", Schema = "Products")]
+    public class Product :BaseEntity
+    {
+        [Key]
+        public int ProductId { get; set; }
+        [Required(ErrorMessage ="Product name is required.")]
+        [StringLength(255, ErrorMessage = "Product name no more than 255 characters.")]
+        public string ProductName { get; set; } = string.Empty;
+
+		[Required(ErrorMessage ="Id category is required.")]
+        public int CategoryId { get; set; } 
+        public bool IsActive { get; set; } =true;
+        //naviagtion
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public virtual ICollection<CartDetails> CartsDetails { get; set; } = new List<CartDetails>();
+        public virtual ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
+        public virtual ICollection<OrderItem> OderItems { get; set; } = new List<OrderItem>();
+		public virtual Category? Category { get; set; }
+        public virtual Seed? Seed { get; set; }
+        public virtual Nutrient? Nutrient { get; set; }
+        public virtual Dehumidifier? Dehumidifier { get; set; }
+        public virtual GrowTent? GrowTent{ get;set; }
+        public virtual GrowLight? GrowLight { get; set; }
+        public virtual CarbonFilter? CarbonFilter { get; set; }
+        public virtual ICollection<PromotionProduct> PromotionProducts { get; set; } = new List<PromotionProduct>();
+    }
+}

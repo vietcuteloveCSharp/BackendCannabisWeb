@@ -1,0 +1,13 @@
+﻿global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Text;
+global using System.Threading.Tasks;
+global using static Enum.EnumableClass.EnumableClass;
+global using DAL.Inherited;
+global using DAL.Entities;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Design;
+global using Microsoft.Extensions.Configuration;
