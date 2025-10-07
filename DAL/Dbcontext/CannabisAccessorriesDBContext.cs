@@ -567,7 +567,7 @@
 
 				// nếu muốn join sang Users
 				entity.HasOne(e => e.User)
-					  .WithMany()
+					  .WithMany(e=>e.AuditLogs)
 					  .HasForeignKey(e => e.UserId)
 					  .OnDelete(DeleteBehavior.SetNull);
 
@@ -1058,6 +1058,7 @@
 					.WithMany(c => c.RefreshTokens)
 					.HasForeignKey(r => r.UserId)
 					.OnDelete(DeleteBehavior.Cascade);
+				entity.Property(r => r.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
 			});
 			#endregion
 			#region Table Users
