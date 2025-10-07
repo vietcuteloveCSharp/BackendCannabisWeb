@@ -33,6 +33,7 @@
 		public virtual ICollection<RefreshToken>? RefreshTokens { get; set; }
         public virtual ICollection<Address> ? Addresses { get; set; }
         public virtual ICollection<Review>? Reviews { get; set; }
+        public virtual ICollection<AuditLog>? AuditLogs { get; set; }
 
 
 	}
