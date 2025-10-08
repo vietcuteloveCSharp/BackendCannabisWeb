@@ -12,9 +12,6 @@ namespace DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "Users");
-
-            migrationBuilder.EnsureSchema(
                 name: "Logs");
 
             migrationBuilder.EnsureSchema(
@@ -31,6 +28,9 @@ namespace DAL.Migrations
 
             migrationBuilder.EnsureSchema(
                 name: "Promotions");
+
+            migrationBuilder.EnsureSchema(
+                name: "Users");
 
             migrationBuilder.EnsureSchema(
                 name: "Reviews");
@@ -126,8 +126,7 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Classifications",
-                schema: "Products",
+                name: "Classifies",
                 columns: table => new
                 {
                     ClassificationId = table.Column<int>(type: "int", nullable: false)
@@ -143,7 +142,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classifications", x => x.ClassificationId);
+                    table.PrimaryKey("PK_Classifies", x => x.ClassificationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -512,7 +511,7 @@ namespace DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "GrowTents",
-                schema: "Products",
+                schema: "Inventory",
                 columns: table => new
                 {
                     GrowtentId = table.Column<int>(type: "int", nullable: false)
@@ -687,8 +686,7 @@ namespace DAL.Migrations
                     table.ForeignKey(
                         name: "FK_SEED_CLASSIFICATION_CLASSIFYID",
                         column: x => x.ClassifyId,
-                        principalSchema: "Products",
-                        principalTable: "Classifications",
+                        principalTable: "Classifies",
                         principalColumn: "ClassificationId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -709,7 +707,6 @@ namespace DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Addresses",
-                schema: "Users",
                 columns: table => new
                 {
                     AddressId = table.Column<int>(type: "int", nullable: false)
@@ -855,7 +852,8 @@ namespace DAL.Migrations
                     RefreshTokenValue = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsRevoked = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
                 },
                 constraints: table =>
                 {
@@ -1041,7 +1039,6 @@ namespace DAL.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_UserId",
-                schema: "Users",
                 table: "Addresses",
                 column: "UserId");
 
@@ -1145,8 +1142,7 @@ namespace DAL.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "UX_Classifications_ClassificationName",
-                schema: "Products",
-                table: "Classifications",
+                table: "Classifies",
                 column: "ClassificationName",
                 unique: true);
 
@@ -1202,14 +1198,14 @@ namespace DAL.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Growtent_ProductId",
-                schema: "Products",
+                schema: "Inventory",
                 table: "GrowTents",
                 column: "ProductId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_GrowTents_BrandId",
-                schema: "Products",
+                schema: "Inventory",
                 table: "GrowTents",
                 column: "BrandId");
 
@@ -1380,8 +1376,7 @@ namespace DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Addresses",
-                schema: "Users");
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "AuditLogs",
@@ -1405,7 +1400,7 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "GrowTents",
-                schema: "Products");
+                schema: "Inventory");
 
             migrationBuilder.DropTable(
                 name: "Nutrients",
@@ -1480,8 +1475,7 @@ namespace DAL.Migrations
                 schema: "Promotions");
 
             migrationBuilder.DropTable(
-                name: "Classifications",
-                schema: "Products");
+                name: "Classifies");
 
             migrationBuilder.DropTable(
                 name: "Products",

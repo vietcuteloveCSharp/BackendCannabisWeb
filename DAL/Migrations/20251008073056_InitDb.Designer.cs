@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(CannabisAccessorriesDBContext))]
-    [Migration("20251006171338_InitDb")]
+    [Migration("20251008073056_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -96,7 +96,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresses", "Users");
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("DAL.Entities.AuditLog", b =>
@@ -136,7 +136,7 @@ namespace DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("RoleName")
@@ -150,10 +150,6 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<int?>("UserId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId1")
                         .HasColumnType("int");
 
                     b.HasKey("AuditLogId");
@@ -167,8 +163,6 @@ namespace DAL.Migrations
                     b.HasIndex("TableName");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("AuditLogs", "Logs");
                 });
@@ -626,7 +620,7 @@ namespace DAL.Migrations
                         .IsUnique()
                         .HasDatabaseName("UX_Classifications_ClassificationName");
 
-                    b.ToTable("Classifications", "Products");
+                    b.ToTable("Classifies");
                 });
 
             modelBuilder.Entity("DAL.Entities.CoolingSystem", b =>
@@ -894,7 +888,7 @@ namespace DAL.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_Growtent_ProductId");
 
-                    b.ToTable("GrowTents", "Products");
+                    b.ToTable("GrowTents", "Inventory");
                 });
 
             modelBuilder.Entity("DAL.Entities.Nutrient", b =>
@@ -948,7 +942,7 @@ namespace DAL.Migrations
 
                     b.Property<decimal>("Price")
                         .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -1415,6 +1409,11 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("datetime2");
 
@@ -1801,18 +1800,12 @@ namespace DAL.Migrations
                         .WithMany("AuditLogs")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired()
                         .HasConstraintName("FK_AuditLog_Role_RoleId");
 
                     b.HasOne("DAL.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("AuditLogs")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.User", null)
-                        .WithMany("Logs")
-                        .HasForeignKey("UserId1");
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Role");
 
@@ -2329,9 +2322,9 @@ namespace DAL.Migrations
                 {
                     b.Navigation("Addresses");
 
-                    b.Navigation("Cart");
+                    b.Navigation("AuditLogs");
 
-                    b.Navigation("Logs");
+                    b.Navigation("Cart");
 
                     b.Navigation("OrdersAsBuyer");
 

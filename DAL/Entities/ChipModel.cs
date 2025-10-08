@@ -11,7 +11,7 @@
         public string ModelChip { get; set; } = string.Empty; // Tên model chip (ví dụ: "301H", "301L")
         [StringLength(50, ErrorMessage = "Generation no more than 50 characters.")]
         public string? Generation { get; set; } // Thế hệ (nếu có, ví dụ: "Gen 2", "Gen 3")
-        [Column(TypeName ="decimal(5,2")]
+        [Column(TypeName ="decimal(5,2)")]
         public decimal Efficiency { get; set; } // Hiệu suất (lumen trên watt, tùy chọn)
         public string Description { get; set; } = string.Empty;
 		// Điều hướng quan hệ (Navigation Property)

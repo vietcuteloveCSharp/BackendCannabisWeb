@@ -24,7 +24,6 @@
         public int RoleId { get; set; }
         public virtual Role? Role { get; set; }
         public virtual Cart? Cart { get; set; } 
-		public virtual ICollection<AuditLog>? Logs { get; set; }
 		// 1. Đơn hàng người dùng mua
 		public ICollection<Order> OrdersAsBuyer { get; set; } = new List<Order>();
 

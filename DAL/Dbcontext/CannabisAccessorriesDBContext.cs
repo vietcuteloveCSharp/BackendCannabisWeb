@@ -63,7 +63,6 @@
 			#region Table Addresses
 			modelBuilder.Entity<Address>(entity =>
 			{
-				entity.ToTable("Addresses", "Users");
 
 				entity.HasKey(a => a.AddressId);
 				entity.Property(a => a.AddressId)
@@ -89,7 +88,6 @@
 			#region Table Brands
 			modelBuilder.Entity<Brand>(entity =>
 			{
-				entity.ToTable("Brands", "Products");
 				entity.HasKey(b => b.BrandId);
 
 				entity.Property(b => b.BrandName)
@@ -118,7 +116,6 @@
 			#region Table Breeder
 			modelBuilder.Entity<Breeder>(entity =>
 			{
-				entity.ToTable("Breeders", "Products");
 				entity.HasKey(b => b.BreederId);
 
 				entity.Property(b => b.BreederName)
@@ -152,7 +149,6 @@
 			#region Table ChipModels
 			modelBuilder.Entity<ChipModel>(entity =>
 			{
-				entity.ToTable("ChipModels", "Inventory");
 				entity.HasKey(c => c.ChipModelId);
 
 				entity.Property(c => c.Manufacturer)
@@ -183,7 +179,6 @@
 			#region Table CarbonFilters
 			modelBuilder.Entity<CarbonFilter>(entity =>
 			{
-				entity.ToTable("CarbonFilters", "Inventory");
 				entity.HasKey(cf => cf.CarbonFilterId);
 				entity.Property(cf => cf.AirflowRate).HasMaxLength(150);
 				entity.Property(cf => cf.Price).HasColumnType("decimal(10,2)");
@@ -215,7 +210,6 @@
 			#region Table Carts
 			modelBuilder.Entity<Cart>(entity =>
 			{
-				entity.ToTable("Carts", "Orders");
 				entity.HasKey(c => c.CartId);
 
 				entity.Property(c => c.UserId)
@@ -256,7 +250,6 @@
 			#region  Table CartDetails
 			modelBuilder.Entity<CartDetails>(entity =>
 			{
-				entity.ToTable("CartDetails", "Orders");
 				entity.HasKey(cd => cd.CartDetailsId);
 
 				entity.Property(cd => cd.Price).HasColumnType("decimal(10,2)");
@@ -286,7 +279,6 @@
 			#region Table Categories
 			modelBuilder.Entity<Category>(entity =>
 			{
-				entity.ToTable("Categories", "Products");
 				entity.HasKey(c => c.CategoryId);
 
 				entity.Property(c => c.CategoryName).HasMaxLength(100).IsRequired();
@@ -311,7 +303,6 @@
 			#region Table Classification
 			modelBuilder.Entity<Classification>(entity =>
 			{
-				entity.ToTable("Classifications", "Products");
 				entity.HasKey(c => c.ClassificationId);
 
 				entity.Property(c => c.ClassificationName)
@@ -336,7 +327,6 @@
 			#region Table CoolingSystems
 			modelBuilder.Entity<CoolingSystem>(entity =>
 			{
-				entity.ToTable("CoolingSystems", "Inventory");
 				entity.HasKey(c => c.CoolingSystemId);
 
 				entity.Property(c => c.Type)
@@ -350,7 +340,6 @@
 			#region Table Dehumidifiers
 			modelBuilder.Entity<Dehumidifier>(entity =>
 			{
-				entity.ToTable("Dehumidifiers", "Inventory");
 				entity.HasKey(d => d.DehumidifierId);
 				entity.Property(d => d.DehumidificationCapacity).HasColumnType("decimal(3,2)");
 				entity.Property(d => d.CoverageArea).HasColumnType("decimal(10,2)");
@@ -377,7 +366,6 @@
 			#region Table GrowTent
 			modelBuilder.Entity<GrowTent>(entity =>
 			{
-				entity.ToTable("GrowTents", "Products");
 				entity.HasKey(gt => gt.GrowtentId);
 
 				entity.Property(gt => gt.BrandId)
@@ -431,7 +419,6 @@
 			#region Table GrowLights
 			modelBuilder.Entity<GrowLight>(entity =>
 			{
-				entity.ToTable("GrowLights", "Inventory");
 				entity.HasKey(gl => gl.GrowLightId);
 
 				entity.Property(gl => gl.BrandId)
@@ -534,7 +521,6 @@
 			#region Table AuditLogs
 			modelBuilder.Entity<AuditLog>(entity =>
 			{
-				entity.ToTable("AuditLogs", "Logs");
 
 				entity.HasKey(e => e.AuditLogId);
 
@@ -1064,7 +1050,6 @@
 			#region Table Users
 			modelBuilder.Entity<User>(entity =>
 			{
-				entity.ToTable("Users", "Users");
 				entity.HasKey(u => u.UserId);
 				entity.Property(u => u.Username)
 					  .IsRequired()
