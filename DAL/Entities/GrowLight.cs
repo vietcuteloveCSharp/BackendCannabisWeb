@@ -11,7 +11,7 @@
         public int BrandId { get; set; }
         public int Quantity { get; set; }
         public int Wattage {  get; set; }
-        [Column(TypeName = "decimal(10,2")]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal Price { get; set; }
         public int CoverageArea { get; set; } // Unit: m²
         public int WarrantyPeriod { get; set; } // Unit: months
