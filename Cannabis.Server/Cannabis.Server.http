@@ -1,0 +1,6 @@
+@Cannabis.Server_HostAddress = http://localhost:5042
+
+GET {{Cannabis.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
