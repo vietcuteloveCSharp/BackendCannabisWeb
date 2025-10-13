@@ -1,6 +1,8 @@
 ﻿using Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +10,17 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace Middleware
 {
 	public class GlobalExceptionMiddleware
-	{
+	{	private readonly ILogger<GlobalExceptionMiddleware> _logger;
 		private readonly RequestDelegate _next;
-		public GlobalExceptionMiddleware(RequestDelegate next)
+		public GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> _logger)
 		{
 			this._next = next;
+			this._logger = _logger;	
 		}
 		public async Task InvokeAsync(HttpContext context)
 		{
@@ -55,6 +59,8 @@ namespace Middleware
 					code = HttpStatusCode.InternalServerError;
 					break;
 			}
+			var logger = context.RequestServices.GetRequiredService<ILogger<GlobalExceptionMiddleware>>();
+			logger.LogError(ex, "Unhandled exception handled by middleware with status code {StatusCode}", (int)code);
 			var result = JsonSerializer.Serialize(new
 			{	
 				success=false,
