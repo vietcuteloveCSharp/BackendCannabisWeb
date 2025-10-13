@@ -16,6 +16,11 @@
 			services.AddScoped<IGrowLightRepository, GrowLightRepository>();
 			services.AddScoped<IGrowTentRepository, GrowTentRepository>();
 			services.AddScoped<INutrientRepository, NutrientRepository>();
+			services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+			services.AddScoped<IRoleRepository, RoleRepository>();
+			services.AddScoped<ISpectrumRepository, SpectrumRepository>();
+			services.AddScoped<IPowerSupplyRepository, PowerSupplyRepository>();
+			services.AddScoped<INutrientTypeRepository, NutrientTypeRepository>();
 			services.AddScoped<IProductRepository, ProductRepository>();
 			services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 			services.AddScoped<ISeedRepository, SeedRepository>();
