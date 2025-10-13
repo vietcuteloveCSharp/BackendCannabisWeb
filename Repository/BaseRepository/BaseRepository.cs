@@ -14,7 +14,7 @@ namespace Repository.BaseRepository
 			_dbSet = context.Set<T>();
 		}
 		//base add method for all repositories
-		public async Task<T> AddAsync(T entity)
+		public async Task<T?> AddAsync(T entity)
 		{
 			 await _dbSet.AddAsync(entity);
 			await _context.SaveChangesAsync();
@@ -41,7 +41,7 @@ namespace Repository.BaseRepository
 
 		}
 
-		public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
+		public async Task<IEnumerable<T?>> FindAllAsync(Expression<Func<T, bool>> predicate)
 		{
 			var query = _dbSet.AsQueryable();
 			var property = typeof(T).GetProperty("IsDeleted");
@@ -64,7 +64,7 @@ namespace Repository.BaseRepository
 		}
 
 		// base get all method for all repositories
-		public async Task<IEnumerable<T>> GetAllAsync()
+		public async Task<IEnumerable<T?>> GetAllAsync()
 		{
 			var property = typeof(T).GetProperty("IsDeleted");
 			if (property != null)
@@ -81,7 +81,7 @@ namespace Repository.BaseRepository
 			return await _dbSet.FindAsync(id);
 		}
 		// base update method for all repositories
-		public async Task<T> UpdateAsync(int id, T updatedEntity)
+		public async Task<T?> UpdateAsync(int id, T updatedEntity)
 		{
 			var existing = await _dbSet.FindAsync(id);
 
