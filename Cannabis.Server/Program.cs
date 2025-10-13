@@ -1,6 +1,4 @@
-using Cannabis.Server.DependencyInjection;
-using Microsoft.AspNetCore.Mvc.Versioning;
-
+﻿
 namespace Cannabis.Server
 {
 	public class Program
@@ -8,42 +6,47 @@ namespace Cannabis.Server
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
-			var jwtKey = builder.Configuration["Jwt:Key"]
-			?? throw new InvalidOperationException("JWT Key is not configured.");
-			// Add services to the container.
 
+			// ✅ Xác định môi trường
+			var env = builder.Environment.EnvironmentName;
+			
+			builder.Configuration
+				.SetBasePath(builder.Environment.ContentRootPath)
+				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+				.AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables();
+
+			// Add services to the container.
 			builder.Services.AddControllers()
 				.AddJsonOptions(otps =>
 				{
 					otps.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 				});
+
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 			builder.Services.AddDbContext<CannabisAccessorriesDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CannabisAccessorriesDB")));
 
-			builder.Services.Configure<JwtSettings>
-				(builder.Configuration.GetSection("Jwt"));
-
+			//đăng kí dịch vụ auto mapper, repository, service,mailkit,redis
 			builder.Services.AddAutoMapper(typeof(MapperDTO_Entity));
 			builder.Services.AddApplicationRepositories();
 			builder.Services.AddApplicationServices();
-			builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-				.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
-				options =>
+			builder.Services.AddInfrastructureServices(builder.Configuration);
+			//cấu hình cors
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy("AllowAll", policy =>
 				{
-					options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-					{
-						ValidateIssuer = true,
-						ValidateAudience = true,
-						ValidateLifetime = true,
-						ValidateIssuerSigningKey = true,
-						ValidIssuer = builder.Configuration["Jwt:Issuer"],
-						ValidAudience = builder.Configuration["Jwt:Audience"],
-
-						IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(jwtKey))
-					};
+					policy.AllowAnyOrigin()
+						  .AllowAnyMethod()
+						  .AllowAnyHeader();
 				});
+			});
+			Console.WriteLine($"JWT KEY = {builder.Configuration["Jwt:Key"]}");
+			// Cấu hình JWT
+			builder.Services.AddJwtAuth(builder.Configuration);
+			// cấu hình version
 			builder.Services.AddApiVersioning(opt =>
 			{
 				opt.ReportApiVersions = true;
@@ -61,6 +64,7 @@ namespace Cannabis.Server
 				app.UseSwaggerUI();
 			}
 			app.UseHttpsRedirection();
+			app.UseCors("AllowAll");
 			app.UseMiddleware<GlobalExceptionMiddleware>();
 			app.UseMiddleware<JwtMiddleware>();
 			app.UseAuthentication();
