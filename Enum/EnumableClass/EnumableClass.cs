@@ -71,10 +71,10 @@
         public enum ESpectrumType
         {
             FullSpectrum,
-            RedBlue,
-            WarmWhite,
-            CoolWhite,
-            Uv
+            Veg,
+            Bloom,
+            UV,
+            IR
         }
         public enum EProductType
         {

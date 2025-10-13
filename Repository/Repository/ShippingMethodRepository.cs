@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Repository.Repository
+{
+	public class ShippingMethodRepository : BaseRepository<ShippingMethod>
+	{
+		public ShippingMethodRepository(CannabisAccessorriesDBContext context) : base(context)
+		{
+		}
+	}
+}

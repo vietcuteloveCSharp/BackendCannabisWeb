@@ -35,3 +35,5 @@ global using Service.Services.ServicesRedis;
 global using  Microsoft.AspNetCore.Identity;
 global using DTO.Params;
 global using Microsoft.AspNetCore.Authorization;
+global using Cannabis.Server.DependencyInjection;
+global using Microsoft.AspNetCore.Mvc.Versioning;
