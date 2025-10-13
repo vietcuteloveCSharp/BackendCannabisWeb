@@ -20,10 +20,7 @@
 			services.AddScoped<ISpectrumService, SpectrumService>();
 			services.AddScoped<ITokenService, TokenService>();
 			services.AddScoped<IUserService, UserService>();
-			services.AddSingleton<IRedisService, RedisService>();
 			services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
-			services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-			services.AddScoped<IEmailService, EmailService>();
 			return services;
 		}
 	}
