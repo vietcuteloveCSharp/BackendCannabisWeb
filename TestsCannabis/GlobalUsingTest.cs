@@ -11,7 +11,7 @@ global	using System.Threading.Tasks;
 global using Enum.EnumableClass;
 global using DAL.Entities;
 global using DTO.DTOs.Roles;
-global using DTO.DTOs.Users;
+global using DTO.DTOs.User.Users;
 global	using DTO.DTOs.Nutrients;
 global using DTO.DTOs.NutrientTypes;
 global using Exceptions;

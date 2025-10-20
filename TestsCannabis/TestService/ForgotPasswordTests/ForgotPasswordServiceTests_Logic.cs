@@ -1,4 +1,7 @@
-﻿namespace TestsCannabis.TestService.ForgotPasswordServiceTests
+﻿using DTO.DTOs.User.Users;
+using Service.IServices.UserManagement;
+
+namespace TestsCannabis.TestService.ForgotPasswordServiceTests
 {
 	public class ForgotPasswordServiceTests_Logic
 	{

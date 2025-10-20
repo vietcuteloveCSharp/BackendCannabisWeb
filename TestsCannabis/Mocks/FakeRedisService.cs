@@ -1,7 +1,4 @@
-﻿
-
-using System.Collections.Concurrent;
-
+﻿using System.Collections.Concurrent;
 namespace TestsCannabis.Mocks
 {
 	public class FakeRedisService : IRedisService
@@ -23,6 +20,11 @@ namespace TestsCannabis.Mocks
 		{
 			_store[key] = value;              
 			return Task.CompletedTask;
+		}
+		// Helper cho test
+		public void SeedOtp(string email, string otp)
+		{
+			_store[$"otp:{email}"] = otp;
 		}
 	}
 }

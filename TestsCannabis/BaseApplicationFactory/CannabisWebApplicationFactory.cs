@@ -1,4 +1,5 @@
 ﻿using Cannabis.Server.DependencyInjection;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Hosting;
 using TestsCannabis.Mocks;
 
@@ -21,14 +22,23 @@ namespace TestsCannabis.BaseApplicationFactory
 		}
 		protected override void ConfigureWebHost(IWebHostBuilder builder)
 		{
+			base.ConfigureWebHost(builder);
 
 			builder.ConfigureServices(services =>
 			{
 				// Xoá DbContext cũ
 				var descriptor = services.SingleOrDefault(
 					d => d.ServiceType == typeof(DbContextOptions<CannabisAccessorriesDBContext>));
+				var redisDescriptor = services.SingleOrDefault(
+				d => d.ServiceType == typeof(IRedisService));
+				services.AddAuthentication("TestScheme").AddScheme<AuthenticationSchemeOptions, TestAuthHandler_NoPass>(
+							"TestScheme", options => { });
 				if (descriptor != null)
 					services.Remove(descriptor);
+				if (redisDescriptor != null)
+				{
+					services.Remove(redisDescriptor);
+				}
 
 				// Thêm DbContext với InMemoryDb
 				services.AddDbContext<CannabisAccessorriesDBContext>(options =>
@@ -36,8 +46,10 @@ namespace TestsCannabis.BaseApplicationFactory
 					options.UseInMemoryDatabase("TestAPI");
 					//options.UseInternalServiceProvider(provider);
 				});
-				
-				services.AddSingleton<IRedisService,FakeRedisService>();
+
+				services.AddSingleton<FakeRedisService>();
+				services.AddSingleton<IRedisService>(sp =>
+					sp.GetRequiredService<FakeRedisService>());
 				services.AddSingleton<IEmailService, FakeEmailService>();
 
 				// ✅ khởi tạo db và seed data 
@@ -51,6 +63,7 @@ namespace TestsCannabis.BaseApplicationFactory
 					DbSeeder.SeedAll(db).GetAwaiter().GetResult();
 				}
 			});
+			
 		}
 
 	}

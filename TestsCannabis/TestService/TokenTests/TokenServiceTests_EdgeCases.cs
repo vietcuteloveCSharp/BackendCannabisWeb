@@ -1,6 +1,5 @@
 ﻿namespace TestsCannabis.TestService.TokenServiceTests
 {
-
 	public class TokenServiceTests_EdgeCases
 	{
 		private TokenService CreateTokenService(JwtSettings jwtSettings)

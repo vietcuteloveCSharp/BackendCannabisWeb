@@ -1,6 +1,4 @@
-﻿
-
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace TestsCannabis.TestService.TokenServiceTests
@@ -36,19 +34,19 @@ namespace TestsCannabis.TestService.TokenServiceTests
 			// Act
 			var tokenString = svc.GenerateAccessToken(payload);
 
-			// Assert basic token / claims
+			// Assert
 			var handler = new JwtSecurityTokenHandler();
 			var jwt = handler.ReadJwtToken(tokenString);
 
-			Assert.Equal("42", jwt.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-			Assert.Equal("tester", jwt.Claims.First(c => c.Type == ClaimTypes.Name).Value);
+			Assert.Equal("42", jwt.Claims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value);
+			Assert.Equal("tester", jwt.Claims.First(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value);
 			Assert.Equal("Admin", jwt.Claims.First(c => c.Type == ClaimTypes.Role).Value);
+			Assert.Equal("test-issuer", jwt.Issuer);
+			Assert.Contains("test-audience", jwt.Audiences);
 
-			// Assert expiry is approx now + AccessTokenLifetimeMinutes
-			var expSeconds = jwt.Payload.Expiration ?? throw new Exception("exp claim is missing");
-			var expTime = DateTimeOffset.FromUnixTimeSeconds(expSeconds).UtcDateTime;
+			// Expiry
+			var expTime = jwt.ValidTo.ToUniversalTime();
 			var expected = DateTime.UtcNow.AddMinutes(jwtSettings.AccessTokenLifetimeMinutes);
-
 			var diffSeconds = Math.Abs((expTime - expected).TotalSeconds);
 			Assert.True(diffSeconds < 60, $"Expiry difference too big: {diffSeconds} seconds");
 		}
