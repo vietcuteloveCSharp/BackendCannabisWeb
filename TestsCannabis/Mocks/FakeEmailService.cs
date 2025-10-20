@@ -1,7 +1,4 @@
-﻿
-
-
-namespace TestsCannabis.Mocks
+﻿namespace TestsCannabis.Mocks
 {
 	public class FakeEmailService : IEmailService
 	{

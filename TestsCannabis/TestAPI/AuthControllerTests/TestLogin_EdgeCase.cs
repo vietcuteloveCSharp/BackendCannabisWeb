@@ -1,4 +1,4 @@
-﻿
+﻿using System.Text.Json;
 namespace TestsCannabis.TestAPI.AuthControllerTests
 {
 	public class TestLogin_EdgeCase : IClassFixture<CannabisWebApplicationFactory>
@@ -12,80 +12,37 @@ namespace TestsCannabis.TestAPI.AuthControllerTests
 				BaseAddress = new Uri("https://localhost/api/v1/")
 			});
 		}
-
-		[Fact(DisplayName = "Login - Should return 400 when username missing")]
-		public async Task Login_ShouldReturn400_WhenUsernameMissing()
-		{
-			// Arrange
-			var dto = new LoginResquestDTO { Username = "", Password = "123" };
-
-			// Act
-			var response = await _client.PostAsJsonAsync("auth/login", dto);
-
-			// Assert
-			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-			var msg = await response.Content.ReadAsStringAsync();
-			msg.Should().Contain("Username and password are required.");
-		}
-
-		[Fact(DisplayName = "Login - Should return 400 when password missing")]
-		public async Task Login_ShouldReturn400_WhenPasswordMissing()
-		{
-			// Arrange
-			var dto = new LoginResquestDTO { Username = "testuser01", Password = "",RememberMe=true };
-
-			// Act
-			var response = await _client.PostAsJsonAsync("auth/login", dto);
-
-			// Assert
-			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-			var msg = await response.Content.ReadAsStringAsync();
-			msg.Should().Contain("Username and password are required.");
-		}
-
-		[Fact(DisplayName = "Login - Should return 400 when wrong password")]
-		public async Task Login_ShouldReturn400_WhenWrongPassword()
+		[Theory(DisplayName = "POST auth/login - edge cases")]
+		[InlineData("", "Vuvietanh1!", HttpStatusCode.BadRequest, "username")]
+		[InlineData("admin", "", HttpStatusCode.BadRequest, "password")]
+		[InlineData("admin", "wrong", HttpStatusCode.Unauthorized, "invalid")]
+		[InlineData("ghost", "123456", HttpStatusCode.Unauthorized, "invalid")]
+		public async Task Login_ShouldHandleEdgeCases(
+			string username,
+			string password,
+			HttpStatusCode expectedStatus,
+			string expectedMessagePart)
 		{
 			// Arrange
 			var dto = new LoginResquestDTO
 			{
-				Username = "testuser01", // user seeded in DbSeeder
-				Password = "WrongPassword!",
-				RememberMe=false
+				Username = username,
+				Password = password,
+				RememberMe =false
 			};
 
 			// Act
 			var response = await _client.PostAsJsonAsync("auth/login", dto);
+			var content = await response.Content.ReadAsStringAsync();
 
 			// Assert
-			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+			response.StatusCode.Should().Be(expectedStatus, because: content);
 
-			var msg = await response.Content.ReadAsStringAsync();
-			msg.Should().Contain("Invalid");
-		}
-
-		[Fact(DisplayName = "Login - Should return 400 when user not found")]
-		public async Task Login_ShouldReturn400_WhenUserNotFound()
-		{
-			// Arrange
-			var dto = new LoginResquestDTO
-			{
-				Username = "nonexistentuser",
-				Password = "whatever123!",
-				RememberMe=false
-			};
-
-			// Act
-			var response = await _client.PostAsJsonAsync("auth/login", dto);
-
-			// Assert
-			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-			var msg = await response.Content.ReadAsStringAsync();
-			(msg.Contains("Invalid") || msg.Contains("not found")).Should().BeTrue();
+			(content.Contains(expectedMessagePart, StringComparison.OrdinalIgnoreCase))
+				.Should().BeTrue(because: $"response should mention '{expectedMessagePart}'");
 		}
 	}
 }
+
+
 

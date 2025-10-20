@@ -1,4 +1,6 @@
-﻿namespace DTO.TokenDTOs
+﻿using DTO.DTOs.User.Users;
+
+namespace DTO.TokenDTOs
 {
 	public class TokenDTO
 	{

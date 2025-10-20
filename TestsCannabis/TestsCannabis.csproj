@@ -32,4 +32,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestAPI\Share\" />
+    <Folder Include="TestAPI\User\" />
+  </ItemGroup>
+
 </Project>

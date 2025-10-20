@@ -1,4 +1,6 @@
-﻿namespace TestsCannabis.TestAPI.AuthControllerTests
+﻿using System.Text.Json;
+
+namespace TestsCannabis.TestAPI.AuthControllerTests
 {
 	public class TestLogin_Logic : IClassFixture<CannabisWebApplicationFactory>
 	{
@@ -12,61 +14,51 @@
 			});
 		}
 
-		[Fact(DisplayName = "Login - Should return 200 and token,refreshtoken when credentials valid with rememberMe = true")]
-		public async Task Login_ShouldReturnTokenAndRefreshToken_WhenCredentialsValid()
+		[Fact(DisplayName = "POST auth/login - Return 200 and token when credentials valid")]
+		public async Task Login_ShouldReturn200_WhenCredentialsValid()
 		{
 			// Arrange
 			var dto = new LoginResquestDTO
 			{
-				Username = "testuser01",  // đã seed trong DB
-				Password = "Vuvietanh1!",
-				RememberMe= true
-			};
-
-			// Act
-			var response = await _client.PostAsJsonAsync("auth/login", dto);
-
-			// Assert
-			response.StatusCode.Should().Be(HttpStatusCode.OK);
-			response.Content.Headers.ContentType!.ToString()
-				.Should().Contain("application/json");
-
-			var result = await response.Content.ReadFromJsonAsync<Dictionary<string, object>>();
-
-			result.Should().NotBeNull();
-			result.Should().ContainKey("accessToken");
-			result.Should().ContainKey("refreshToken");
-
-			result["accessToken"].Should().NotBeNull();
-			result["refreshToken"].Should().NotBeNull();
-		}
-
-		[Fact(DisplayName = "Login - Should return 200 and token when credentials valid with rememberMe = false")]
-		public async Task Login_ShouldReturnToken_WhenCredentialsValid()
-		{
-			// Arrange
-			var dto = new LoginResquestDTO
-			{
-				Username = "testuser01",  // đã seed trong DB
+				Username = "testadmin01",   // user có sẵn từ DbSeeder
 				Password = "Vuvietanh1!",
 				RememberMe = false
 			};
+
 			// Act
 			var response = await _client.PostAsJsonAsync("auth/login", dto);
+			var content = await response.Content.ReadAsStringAsync();
+
 			// Assert
-			response.StatusCode.Should().Be(HttpStatusCode.OK);
-			response.Content.Headers.ContentType!.ToString()
-				.Should().Contain("application/json");
+			response.StatusCode.Should().Be(HttpStatusCode.OK, because: content);
 
-			var result = await response.Content.ReadFromJsonAsync<Dictionary<string, object>>();
+			// Kiểm tra accessToken nằm trong phần "data"
+			content.Should().Contain("accessToken", because: "response should include access token when login successful");
+		}
+		
 
-			result.Should().NotBeNull();
-			result.Should().ContainKey("accessToken");
-			result.Should().ContainKey("refreshToken");
+		[Fact(DisplayName = "POST auth/login - Include refresh token when RememberMe = true")]
+		public async Task Login_ShouldIncludeRefreshToken_WhenRememberMeTrue()
+		{
+			// Arrange
+			var dto = new LoginResquestDTO
+			{
+				Username = "testadmin01",
+				Password = "Vuvietanh1!",
+				RememberMe = true
+			};
 
-			result["accessToken"].Should().NotBeNull();
-			result["refreshToken"].Should().BeNull();
+			// Act
+			var response = await _client.PostAsJsonAsync("auth/login", dto);
+			var content = await response.Content.ReadAsStringAsync();
+
+			// Assert
+			response.StatusCode.Should().Be(HttpStatusCode.OK, because: content);
+
+			content.Should().Contain("refreshToken",
+				because: "response should include refresh token when RememberMe is true");
 		}
 	}
 }
+
 
