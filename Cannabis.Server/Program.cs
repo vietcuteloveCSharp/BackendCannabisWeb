@@ -1,5 +1,4 @@
-﻿
-namespace Cannabis.Server
+﻿namespace Cannabis.Server
 {
 	public class Program
 	{
@@ -9,7 +8,7 @@ namespace Cannabis.Server
 
 			// ✅ Xác định môi trường
 			var env = builder.Environment.EnvironmentName;
-			
+
 			builder.Configuration
 				.SetBasePath(builder.Environment.ContentRootPath)
 				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -21,59 +20,75 @@ namespace Cannabis.Server
 				.AddJsonOptions(otps =>
 				{
 					otps.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+				})
+				.ConfigureApiBehaviorOptions(options =>
+				{
+					options.InvalidModelStateResponseFactory = context =>
+					{
+						var errors = context.ModelState
+							.Where(e => e.Value!.Errors.Count > 0)
+							.Select(e => $"{e.Key}: {string.Join(", ", e.Value!.Errors.Select(er => er.ErrorMessage))}")
+							.ToList();
+
+						// gói toàn bộ message lỗi thành ApiResponse
+						var apiResponse =ApiResponse<object>.Fail(string.Join("; ", errors));
+
+						return new BadRequestObjectResult(apiResponse);
+					};
 				});
 
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
-			builder.Services.AddDbContext<CannabisAccessorriesDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CannabisAccessorriesDB")));
+				 builder.Services.AddSwaggerGen();
+				 builder.Services.AddDbContext<CannabisAccessorriesDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CannabisAccessorriesDB")));
 
-			//đăng kí dịch vụ auto mapper, repository, service,mailkit,redis
-			builder.Services.AddAutoMapper(typeof(MapperDTO_Entity));
-			builder.Services.AddApplicationRepositories();
-			builder.Services.AddApplicationServices();
-			builder.Services.AddInfrastructureServices(builder.Configuration);
-			//cấu hình cors
-			builder.Services.AddCors(options =>
-			{
-				options.AddPolicy("AllowAll", policy =>
-				{
-					policy.AllowAnyOrigin()
-						  .AllowAnyMethod()
-						  .AllowAnyHeader();
-				});
-			});
-			Console.WriteLine($"JWT KEY = {builder.Configuration["Jwt:Key"]}");
-			// Cấu hình JWT
-			builder.Services.AddJwtAuth(builder.Configuration);
-			// cấu hình version
-			builder.Services.AddApiVersioning(opt =>
-			{
-				opt.ReportApiVersions = true;
-				opt.AssumeDefaultVersionWhenUnspecified = true;
-				opt.DefaultApiVersion = new ApiVersion(1, 0);
-				opt.ApiVersionReader = new UrlSegmentApiVersionReader();
+				 //đăng kí dịch vụ auto mapper, repository, service,mailkit,redis
+				 builder.Services.AddAutoMapper(typeof(MapperDTO_Entity));
+				 builder.Services.AddApplicationRepositories();
+				 builder.Services.AddApplicationServices();
+				 builder.Services.AddInfrastructureServices(builder.Configuration);
+				 //cấu hình cors
+				 builder.Services.AddCors(options =>
+				 {
+					 options.AddPolicy("AllowAll", policy =>
+					 {
+						 policy.AllowAnyOrigin()
+							   .AllowAnyMethod()
+							   .AllowAnyHeader();
+					 });
+				 });
+				 Console.WriteLine($"JWT KEY = {builder.Configuration["Jwt:Key"]}");
+				 // Cấu hình JWT
+				 builder.Services.AddJwtAuth(builder.Configuration);
+				 // cấu hình version
+				 builder.Services.AddApiVersioning(opt =>
+				 {
+					 opt.ReportApiVersions = true;
+					 opt.AssumeDefaultVersionWhenUnspecified = true;
+					 opt.DefaultApiVersion = new ApiVersion(1, 0);
+					 opt.ApiVersionReader = new UrlSegmentApiVersionReader();
 
-			});
-			var app = builder.Build();
+				 });
+				 var app = builder.Build();
 
-			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
-			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
-			}
-			app.UseHttpsRedirection();
-			app.UseCors("AllowAll");
-			app.UseMiddleware<GlobalExceptionMiddleware>();
-			app.UseMiddleware<JwtMiddleware>();
-			app.UseAuthentication();
-			app.UseAuthorization();
+				 // Configure the HTTP request pipeline.
+				 if (app.Environment.IsDevelopment())
+				 {
+					 app.UseSwagger();
+					 app.UseSwaggerUI();
+				 }
+				 app.UseHttpsRedirection();
+				 app.UseCors("AllowAll");
+				 app.UseMiddleware<GlobalExceptionMiddleware>();
+				 app.UseMiddleware<JwtMiddleware>();
+				 app.UseRouting();
+				 app.UseAuthentication();
+				 app.UseAuthorization();
 
 
-			app.MapControllers();
+				 app.MapControllers();
 
-			app.Run();
-		}
+				 app.Run();
+			 }
 	}
-}
+	}
