@@ -10,7 +10,7 @@ global using DAL.Entities;
 global using DTO.DTOs.Brands;
 global using DTO.DTOs.PowerSupplies;
 global using DTO.DTOs.Roles;
-global using DTO.DTOs.Users;
+global using DTO.DTOs.User.Users;
 global using DTO.DTOs.RefreshTokens;
 global using DTO.DTOs.Spectrums;
 global using DTO.DTOs.CarbonFilters;
@@ -20,5 +20,6 @@ global using DTO.DTOs.Classifications;
 global using DTO.DTOs.NutrientTypes;
  global using DTO.Options;
 global using DTO.DTOs.Nutrients;
+
 
 
