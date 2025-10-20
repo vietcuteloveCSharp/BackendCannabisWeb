@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Service.IServices;
 using Service.IServices.IServicesAuth;
+using Service.IServices.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
