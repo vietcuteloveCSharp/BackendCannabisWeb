@@ -21,6 +21,8 @@
 			services.AddScoped<ITokenService, TokenService>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
+			services.AddScoped<IAdminService, AdminService>();
+			services.AddScoped<IUserService ,UserService>();
 			return services;
 		}
 	}
