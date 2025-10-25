@@ -42,8 +42,8 @@
 				 builder.Services.AddSwaggerGen();
 				 builder.Services.AddDbContext<CannabisAccessorriesDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CannabisAccessorriesDB")));
 
-				 //đăng kí dịch vụ auto mapper, repository, service,mailkit,redis
-				 builder.Services.AddAutoMapper(typeof(MapperDTO_Entity));
+			//đăng kí dịch vụ auto mapper, repository, service,mailkit,redis
+				 builder.Services.AddApplicationAutoMapper();
 				 builder.Services.AddApplicationRepositories();
 				 builder.Services.AddApplicationServices();
 				 builder.Services.AddInfrastructureServices(builder.Configuration);
