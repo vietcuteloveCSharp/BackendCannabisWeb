@@ -1,0 +1,23 @@
+{
+	"JWT": {
+		"Secret": "YOUR_SECRET_HERE",
+		"Issuer": "YOUR_ISSUER",
+		"Audience": "YOUR_AUDIENCE",
+		"ExpiryMinutes": 60,
+		"RefreshTokenExpiryDays": 7
+	},
+	 "ConnectionStrings": {
+		"DefaultConnection": "Server=localhost;Database=YourDb;User Id=YOUR_USER;Password=YOUR_PASSWORD;"
+	},
+	"Redis": {
+		"Host": "localhost",
+		"Port": 6379
+	 },
+	 "SMTP": {
+			"Host": "smtp.example.com",
+			"Port": 587,
+			"User": "your_email@example.com",
+			"Password": "YOUR_PASSWORD"
+	 }
+}
+
