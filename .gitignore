@@ -12,7 +12,7 @@
 *.nuget.*
 *.db
 .vs/
-.sln
+WebCannabisAccessorries.sln
 appsettings.Development.json
 appsettings.Production.json
 appsettings.Staging.json
