@@ -3,10 +3,14 @@
 	public class RedisService : IRedisService
 	{
 		private readonly IDatabase _db;
-		public RedisService(IConfiguration config)
+		public RedisService(IOptions<RedisSetings> redisOptions)
 		{
-			var redis = ConnectionMultiplexer.Connect(config.GetConnectionString("Redis") ?? throw new InvalidOperationException("Redis connection string is not configured."));
-			_db = redis.GetDatabase();
+			var setings = redisOptions.Value;
+			var config = setings.Password is null
+				?$"{setings.Host}:{setings.Port}":$"{setings.Host}:{setings.Port},password={setings.Password}";
+
+			var redis = ConnectionMultiplexer.Connect(config);
+			_db =redis.GetDatabase();
 		}
 		// Lấy giá trị từ Redis
 		public async Task<string?> GetRedisAsync(string key)
