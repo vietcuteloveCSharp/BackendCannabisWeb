@@ -5,10 +5,13 @@ namespace DAL.Dbcontext
 	{
 		public CannabisAccessorriesDBContext CreateDbContext(string[] args)
 		{
+			var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
 			// load config từ appsettings.Development.json
 			var config = new ConfigurationBuilder()
 				.SetBasePath(Directory.GetCurrentDirectory())
-				.AddJsonFile("appsettings.Migrations.json", optional: false)
+				.AddJsonFile("appsettings.json", optional: false)
+				.AddJsonFile($"appsettings.{environment}.json", optional: true)
 				.Build();
 
 			var connectionString = config.GetConnectionString("CannabisAccessorriesDB");
