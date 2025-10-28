@@ -12,6 +12,9 @@
 *.nuget.*
 *.db
 .vs/
+dockerfile
+render.yml
+
 WebCannabisAccessorries.sln
 appsettings.Development.json
 appsettings.Production.json
