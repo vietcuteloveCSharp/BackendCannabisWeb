@@ -553,7 +553,7 @@
 
 				// nếu muốn join sang Users
 				entity.HasOne(e => e.User)
-					  .WithMany(e=>e.AuditLogs)
+					  .WithMany(e => e.AuditLogs)
 					  .HasForeignKey(e => e.UserId)
 					  .OnDelete(DeleteBehavior.SetNull);
 
@@ -774,6 +774,18 @@
 				.HasConstraintName("FK_PRODUCT_CATEGORY_CATEGORYID")
 				.OnDelete(DeleteBehavior.Restrict)
 				.IsRequired();
+			modelBuilder.Entity<Product>()
+				.HasOne(c => c.Brand)
+				.WithMany(c => c.Products)
+				.HasForeignKey(c => c.BrandId)
+				.HasConstraintName("FK_PRODUCT_BRAND_BRANDID")
+				.OnDelete(DeleteBehavior.SetNull);
+			modelBuilder.Entity<Product>()
+				.Property(p => p.BrandPrice)
+				.HasColumnType("decimal(10,2)");
+			modelBuilder.Entity<Product>()
+				.Property(p => p.ProductType)
+				.HasMaxLength(50);
 			modelBuilder.Entity<Product>()
 			   .Property<bool>(c => c.IsActive)
 			   .HasDefaultValue(true)

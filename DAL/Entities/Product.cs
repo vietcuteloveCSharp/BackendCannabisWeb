@@ -12,6 +12,10 @@
 		[Required(ErrorMessage ="Id category is required.")]
         public int CategoryId { get; set; } 
         public bool IsActive { get; set; } =true;
+        public int? BrandId { get; set; }
+		[Column(TypeName = "decimal(10,2)")]
+		public decimal? BrandPrice { get; set; }
+        public string? ProductType { get; set; }
         //naviagtion
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
         public virtual ICollection<CartDetails> CartsDetails { get; set; } = new List<CartDetails>();
@@ -25,5 +29,6 @@
         public virtual GrowLight? GrowLight { get; set; }
         public virtual CarbonFilter? CarbonFilter { get; set; }
         public virtual ICollection<PromotionProduct> PromotionProducts { get; set; } = new List<PromotionProduct>();
+        public virtual Brand? Brand { get; set; }
     }
 }

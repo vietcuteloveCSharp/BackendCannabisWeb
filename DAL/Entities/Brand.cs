@@ -19,6 +19,7 @@
         public virtual ICollection<GrowTent> GrowTents { get; set; } = new List<GrowTent>();
         public virtual ICollection<Dehumidifier> Dehumidifiers { get; set; } = new List<Dehumidifier>();
         public virtual ICollection<GrowLight> GrowLights { get; set; } = new List<GrowLight>();
+        public virtual ICollection<Product> Products { get; set; }= new List<Product>();
 
 
     }
