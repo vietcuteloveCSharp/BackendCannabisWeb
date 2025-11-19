@@ -1,6 +1,6 @@
 ﻿namespace DTO.DTOs.Roles
 {
-	public class CreateRoleDTO
+	public class RoleCreateDTO
 	{
 		[Required(ErrorMessage = "Role name is required.")]
 		public ERoleName RoleName { get; set; }

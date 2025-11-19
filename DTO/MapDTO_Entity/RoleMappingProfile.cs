@@ -7,11 +7,11 @@ namespace DTO.MapDTO_Entity
 		public RoleMappingProfile()
 		{
 			#region Map Role
-			CreateMap<Role, RoleDTO>(MemberList.None);
-			CreateMap<RoleDTO, Role>(MemberList.None);
-			CreateMap<CreateRoleDTO, Role>(MemberList.None)
-				.ForMember(dest => dest.UpdatedAt, opt => opt.Ignore()); 
-			CreateMap<RoleUpdateDTO, Role>(MemberList.None);
+			CreateMap<Role, RoleDTO>(MemberList.None).ReverseMap();
+			CreateMap<RoleCreateDTO, Role>(MemberList.None)
+				.ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
+			CreateMap<RoleUpdateDTO, Role>(MemberList.None)
+				.ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
 			#endregion
 		}
 	}
