@@ -4,6 +4,7 @@ namespace Repository.UnitOfWork
 	public interface IUnitOfWork : IDisposable
 	{
 		public IAddressRepository Addresses { get; }
+		public ICategoryRepository Categories { get; }
 		public IProductRepository Products { get; }
 		public IGrowLightRepository GrowLights { get; }
 		public IGrowTentRepository GrowTents { get; }

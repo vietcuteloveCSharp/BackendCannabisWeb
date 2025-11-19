@@ -41,6 +41,8 @@ namespace Repository.UnitOfWork
 
 		public IAuditLogRepository AuditLogs { get; private set; }
 
+		public ICategoryRepository Categories { get; private set; }
+
 		public UnitOfWork(CannabisAccessorriesDBContext context, IAuditLogRepository auditLogger)
 		{
 			_context = context;
@@ -63,6 +65,7 @@ namespace Repository.UnitOfWork
 			RefreshTokens = new RefreshTokenRepository(_context);
 			Roles = new RoleRepository(_context);
 			Spectrums = new SpectrumRepository(_context);
+			Categories = new CategoryRepository(_context);
 			AuditLogs = auditLogger;
 
 		}

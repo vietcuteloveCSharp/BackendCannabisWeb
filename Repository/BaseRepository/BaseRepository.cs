@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace Repository.BaseRepository
 {
-	public class BaseRepository<T> :IBaseRepository<T> where T : class
+	public class BaseRepository<T> : IBaseRepository<T> where T : class
 	{
 		protected readonly CannabisAccessorriesDBContext _context;
 		protected readonly DbSet<T> _dbSet;
@@ -16,7 +17,7 @@ namespace Repository.BaseRepository
 		//base add method for all repositories
 		public async Task<T?> AddAsync(T entity)
 		{
-			 await _dbSet.AddAsync(entity);
+			await _dbSet.AddAsync(entity);
 			await _context.SaveChangesAsync();
 			return entity;
 		}
@@ -24,19 +25,18 @@ namespace Repository.BaseRepository
 		public async Task<bool> DeleteAsync(int id)
 		{
 			var entity = await _dbSet.FindAsync(id);
-			if(entity == null) { return false; }
+			if (entity == null) { return false; }
 			var property = entity.GetType().GetProperty("IsDeleted");
 			if (property != null)
 			{
 				property.SetValue(entity, true);
 				_dbSet.Update(entity);
-				
+
 			}
 			else
 			{
 				_dbSet.Remove(entity);
 			}
-			await _context.SaveChangesAsync();
 			return true;
 
 		}
@@ -63,8 +63,7 @@ namespace Repository.BaseRepository
 			return await query.FirstOrDefaultAsync(predicate);
 		}
 
-		// base get all method for all repositories
-		public async Task<IEnumerable<T?>> GetAllAsync()
+		public async Task<IEnumerable<T?>> GetAllActiveAsync()
 		{
 			var property = typeof(T).GetProperty("IsDeleted");
 			if (property != null)
@@ -75,19 +74,22 @@ namespace Repository.BaseRepository
 			}
 			return await _dbSet.ToListAsync();
 		}
+
+		// base get all method for all repositories
+		public async Task<IEnumerable<T?>> GetAllAsync()
+		{
+			return await _dbSet.ToListAsync();
+		}
 		// base get by id method for all repositories
 		public async Task<T?> GetByIdAsync(int id)
 		{
 			return await _dbSet.FindAsync(id);
 		}
 		// base update method for all repositories
-		public async Task<T?> UpdateAsync(int id, T updatedEntity)
+		public bool Update(T updatedEntity)
 		{
-			var existing = await _dbSet.FindAsync(id);
-
-			_context.Entry(existing!).CurrentValues.SetValues(updatedEntity);
-			await _context.SaveChangesAsync();
-			return updatedEntity;
+			_dbSet.Update(updatedEntity); // mark entity modified
+			return true;
 		}
 	}
 }
