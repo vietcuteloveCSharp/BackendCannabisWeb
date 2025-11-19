@@ -37,16 +37,16 @@ namespace Service.Services
 			return _mapper.Map<GrowLightDTO>(growLight);
 		}
 
-		public async Task<GrowLightDTO> UpdateGrowLightAsync(int id, GrowLightUpdateDTO dto)
-		{
-			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id,nameof(id));
-			var existing = await _unitOfWork.GrowLights.GetByIdAsync(id)?? throw new NotFoundException($"Grow Light with ID {id} not found");
-			_mapper.Map(dto, existing);
-			existing.UpdatedAt=DateTime.Now;
+		//public async Task<GrowLightDTO> UpdateGrowLightAsync(int id, GrowLightUpdateDTO dto)
+		//{
+		//	ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id,nameof(id));
+		//	var existing = await _unitOfWork.GrowLights.GetByIdAsync(id)?? throw new NotFoundException($"Grow Light with ID {id} not found");
+		//	_mapper.Map(dto, existing);
+		//	existing.UpdatedAt=DateTime.Now;
 
-			await _unitOfWork.GrowLights.UpdateAsync(id, existing);
-			await _unitOfWork.SaveChangesAsync();
-			return _mapper.Map<GrowLightDTO>(existing);
-		}
+		//	await _unitOfWork.GrowLights.UpdateAsync(id, existing);
+		//	await _unitOfWork.SaveChangesAsync();
+		//	return _mapper.Map<GrowLightDTO>(existing);
+		//}
 	}
 }

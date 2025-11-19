@@ -45,7 +45,7 @@ namespace Service.Services
 			_mapper.Map(dto, existing);
 			existing.UpdatedAt = DateTime.Now;
 
-			await _unitOfWork.Seeds.UpdateAsync(id,existing);
+			_unitOfWork.Seeds.Update(existing);
 			await _unitOfWork.SaveChangesAsync();
 			return _mapper.Map<SeedDTO>(existing);
 		}

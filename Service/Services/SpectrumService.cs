@@ -49,11 +49,7 @@
 				throw new NotFoundException($"Spectrum with ID {id} not found.");
 			}
 			var entity = _mapper.Map<Spectrum>(updateSpectrumDTO);
-			var updated = await _repository.UpdateAsync(entity.SpectrumId, entity);
-			if (updated == null)
-			{
-				throw new Exception($"Failed to update spectrum with ID {id}.");
-			}
+			var updated =  _repository.Update(entity);
 			return _mapper.Map<SpectrumDTO>(updated);
 		}
 	}

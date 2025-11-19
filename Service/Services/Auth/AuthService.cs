@@ -1,7 +1,4 @@
-﻿using DTO.DTOs.User.Users;
-using DTO.Request;
-
-namespace Service.Services.ServicesAuth
+﻿namespace Service.Services.ServicesAuth
 {
 	public class AuthService : IAuthService
 	{
@@ -29,7 +26,10 @@ namespace Service.Services.ServicesAuth
 			{
 				throw new UnauthorizedAccessException($"Invalid account");
 			}
+			var hashed = _passwordHasher.HashPassword(user, loginResquestDTO.Password);
+			Console.WriteLine(hashed);
 			var result = _passwordHasher.VerifyHashedPassword(user, user.HashPassword!, loginResquestDTO.Password);
+			Console.WriteLine(result);
 			if (result == PasswordVerificationResult.Failed)
 				throw new UnauthorizedAccessException("Invalid password.");
 
@@ -42,30 +42,23 @@ namespace Service.Services.ServicesAuth
 				Expiration = DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenLifetimeMinutes)
 			};
 			var accessToken = _tokenService.GenerateAccessToken(payload);
-			string? refreshTokenValue = null;
+			var refreshToken = await _refreshTokenService.GenerateRefreshTokenAsync(user.UserId);
 			var tokenDTO = new TokenDTO
 			{
 				AccessToken = accessToken,
+				RefreshToken = refreshToken.RefreshTokenValue,
 				Expiration = payload.Expiration,
 				User = _mapper.Map<UserSummaryDTO>(user)
 			};
-			if (loginResquestDTO.RememberMe)
+			var refreshTokenDTO = new RefreshTokenDTO
 			{
-				var refreshToken = await _refreshTokenService.GenerateRefreshTokenAsync(user.UserId);
-				refreshTokenValue =  refreshToken.RefreshTokenValue;
-
-				var refreshTokenDTO = new RefreshTokenDTO
-				{
 					UserId = user.UserId,
-					RefreshTokenValue = refreshTokenValue,
+					RefreshTokenValue = refreshToken.RefreshTokenValue,
 					IsRevoked = false,
 					ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenLifetimeDays)
-				};
-				await _refreshTokenService.StoreTokenAsync(refreshTokenDTO);
-				tokenDTO.RefreshToken = refreshTokenValue;
-			}
+			};
+			await _refreshTokenService.StoreTokenAsync(refreshTokenDTO);
 			return tokenDTO;
-
 		}
 
 		public async Task LogoutAsync(int userId, string refreshTokenValue)

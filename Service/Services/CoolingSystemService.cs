@@ -41,17 +41,17 @@ namespace Service.Services
 			return _mapper.Map<CoolingSystemDTO>(coolingSystem);
 		}
 
-		public async Task<CoolingSystemDTO> UpdateCoolingSystemAsync(int id, CoolingSystemUpdateDTO dto)
-		{
-			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
-			ArgumentNullException.ThrowIfNull(dto, nameof(dto));
-			var entity = await _unitOfWork.CoolingSystems.GetByIdAsync(id)?? throw  new NotFoundException($"Cooling System  with ID {id} not found."); 
+		//public async Task<CoolingSystemDTO> UpdateCoolingSystemAsync(int id, CoolingSystemUpdateDTO dto)
+		//{
+		//	ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
+		//	ArgumentNullException.ThrowIfNull(dto, nameof(dto));
+		//	var entity = await _unitOfWork.CoolingSystems.GetByIdAsync(id)?? throw  new NotFoundException($"Cooling System  with ID {id} not found."); 
 
-			_mapper.Map(dto, entity);
-			entity.UpdatedAt = DateTime.Now; // Update the timestamp
-			await _unitOfWork.CoolingSystems.UpdateAsync(id, entity);
-			return _mapper.Map<CoolingSystemDTO>(entity);
+		//	_mapper.Map(dto, entity);
+		//	entity.UpdatedAt = DateTime.Now; // Update the timestamp
+		//	await _unitOfWork.CoolingSystems.UpdateAsync(id, entity);
+		//	return _mapper.Map<CoolingSystemDTO>(entity);
 
-		}
+		//}
 	}
 }

@@ -42,12 +42,13 @@ namespace Service.Services.UserManagement
 		public async Task<UserDTO?> UpdateAsync(int id,UpdateUserDTO userDto)
 		{
 			ArgumentException.ThrowIfNullOrWhiteSpace(nameof(userDto));
+			var user = _unitOfWork.Users.GetByIdAsync(id);
+			if (user == null) throw new KeyNotFoundException($"User with id{id} not found");
 			// Map sang entity
 			var entity = _mapper.Map<User>(userDto);
-			entity.UserId = id;
 			entity.UpdatedAt = DateTime.UtcNow;
 			// Gọi repository update
-			var updated = await _unitOfWork.Users.UpdateAsync(id, entity);
+			var updated = _unitOfWork.Users.Update(entity);
 			await _unitOfWork.SaveChangesAsync();
 			return _mapper.Map<UserDTO>(updated);
 

@@ -32,17 +32,17 @@ namespace Service.Services
 			var chipModel = await _unitOfWork.ChipModels.GetByIdAsync(id) ?? throw new NotFoundException($"ChipModel with Id:{id} not found");
 			return _mapper.Map<ChipModelDTO>(chipModel);
 		}
-		//update chip model
-		public async Task<ChipModelDTO> UpdateChipModelAsync(int id,ChipModelUpdateDTO dto)
-		{	
-			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
-			var chipModel = await _unitOfWork.ChipModels.GetByIdAsync(id) ?? throw new NotFoundException($"ChipModel with Id:{id} not found");
-			_mapper.Map(dto, chipModel);
-			chipModel.UpdatedAt = DateTime.Now;
-			await _unitOfWork.ChipModels.UpdateAsync(id, chipModel);
-			await _unitOfWork.SaveChangesAsync();
-			return _mapper.Map<ChipModelDTO>(chipModel);
+		////update chip model
+		//public async Task<ChipModelDTO> UpdateChipModelAsync(int id,ChipModelUpdateDTO dto)
+		//{	
+		//	ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
+		//	var chipModel = await _unitOfWork.ChipModels.GetByIdAsync(id) ?? throw new NotFoundException($"ChipModel with Id:{id} not found");
+		//	_mapper.Map(dto, chipModel);
+		//	chipModel.UpdatedAt = DateTime.Now;
+		//	await _unitOfWork.ChipModels.UpdateAsync(id, chipModel);
+		//	await _unitOfWork.SaveChangesAsync();
+		//	return _mapper.Map<ChipModelDTO>(chipModel);
 
-		}
+		//}
 	}
 }

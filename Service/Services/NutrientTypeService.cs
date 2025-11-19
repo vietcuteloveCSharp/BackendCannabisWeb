@@ -47,8 +47,8 @@
 			if (nutrientType == null) throw new NotFoundException($"Nutrient type with ID {id} not found.");
 
 			_mapper.Map(dto, nutrientType);
-			nutrientType.UpdatedAt =DateTime.Now; //update time
-			await _repository.UpdateAsync(id, nutrientType);
+			nutrientType.UpdatedAt = DateTime.Now; //update time
+			_repository.Update(nutrientType);
 			return _mapper.Map<NutrientTypeDTO>(nutrientType);
 		}
 	}

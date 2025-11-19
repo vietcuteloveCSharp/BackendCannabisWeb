@@ -49,7 +49,7 @@ namespace Service.Services
 			}
 			_mapper.Map(dto, entity);
 			entity.UpdatedAt = DateTime.Now; // Update the timestamp
-			await _repository.UpdateAsync(id,entity);
+			_repository.Update(entity);
 			return _mapper.Map<ClassificationDTO>(entity);
 		}
 	}

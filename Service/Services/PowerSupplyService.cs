@@ -43,11 +43,11 @@
 		public async Task<PowerSupplyDTO?> UpdatePowerSupplyAsync(int id, PowerSupplyUpdateDTO updatePowerSupplyDTO)
 		{
 
-			var powerSupplExists = await _repository.GetByIdAsync(id) ?? throw new NotFoundException($"Power supply with ID {id} not found."); 
+			var powerSupplExists = await _repository.GetByIdAsync(id) ?? throw new NotFoundException($"Power supply with ID {id} not found.");
 			var entity = _mapper.Map<PowerSupply>(updatePowerSupplyDTO);
 			_mapper.Map(updatePowerSupplyDTO, entity);
 			entity.UpdatedAt = DateTime.Now;
-			await _repository.UpdateAsync(entity.PowerSupplyId,entity);
+			_repository.Update(	entity);
 			return _mapper.Map<PowerSupplyDTO>(entity);
 
 		}

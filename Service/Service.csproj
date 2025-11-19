@@ -39,7 +39,6 @@
     <Folder Include="IServices\Inventory\" />
     <Folder Include="IServices\Promotion\" />
     <Folder Include="IServices\Order\" />
-    <Folder Include="IServices\Product\" />
   </ItemGroup>
 
 </Project>

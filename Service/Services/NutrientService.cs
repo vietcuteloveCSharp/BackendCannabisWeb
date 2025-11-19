@@ -56,7 +56,7 @@
 			}
 			_mapper.Map(dto, nutrient);
 			nutrient.UpdatedAt = DateTime.Now;
-			await _repository.UpdateAsync(id, nutrient);
+			_repository.Update(	nutrient);
 			return _mapper.Map<NutrientDTO>(nutrient);
 		}
 	}
