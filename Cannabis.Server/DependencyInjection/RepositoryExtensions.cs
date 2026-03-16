@@ -9,6 +9,7 @@
 			services.AddScoped<IBrandRepository, BrandRepository>();
 			services.AddScoped<IBreederRepository, BreederRepository>();
 			services.AddScoped<ICarbonFilterRepository, CarbonFilterRepository>();
+			services.AddScoped<ICategoryRepository, CategoryRepository>();
 			services.AddScoped<IChipModelRepository, ChipModelRepository>();
 			services.AddScoped<IClassificationRepository, ClassificationRepository>();
 			services.AddScoped<ICoolingSystemRepository, CoolingSystemRepository>();

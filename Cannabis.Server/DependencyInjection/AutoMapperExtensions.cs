@@ -1,6 +1,4 @@
-﻿
-
-namespace Cannabis.Server.DependencyInjection
+﻿namespace Cannabis.Server.DependencyInjection
 {
 	public static class AutoMapperExtensions
 	{
@@ -25,6 +23,8 @@ namespace Cannabis.Server.DependencyInjection
 				cfg.AddProfile<RoleMappingProfile>();
 				cfg.AddProfile<SpectrumMappingProfile>();
 				cfg.AddProfile<UserMappingProfile>();
+				cfg.AddProfile<CategoryMappingProfile>();
+				cfg.AddProfile<ProductMappingProfile>();
 			});
 			return services;
 		}

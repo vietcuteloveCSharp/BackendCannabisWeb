@@ -1,4 +1,6 @@
-﻿namespace Cannabis.Server.DependencyInjection
+﻿using System.IdentityModel.Tokens.Jwt;
+
+namespace Cannabis.Server.DependencyInjection
 {
 	public static class JwtExtensions
 	{
@@ -13,6 +15,10 @@
 
 			if (string.IsNullOrWhiteSpace(jwtSettings.Key))
 				throw new InvalidOperationException("JWT Key is missing in configuration.");
+			// Xóa map mặc định để JWT trả về key ngắn gọn
+			JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+			JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
+
 			// đăng ký JwtBearer và lấy options từ DI
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 					.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,options =>

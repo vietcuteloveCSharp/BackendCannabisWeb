@@ -1,4 +1,9 @@
-﻿namespace Cannabis.Server.DependencyInjection{
+﻿using Service.IServices.Inventory;
+using Service.IServices.Product;
+using Service.Services.Inventory;
+using Service.Services.Product;
+
+namespace Cannabis.Server.DependencyInjection{
 	public static class ServiceExtenstions
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
@@ -8,6 +13,7 @@
 			services.AddScoped<IBrandService, BrandService>();
 			services.AddScoped<IBreederService, BreederService>();
 			services.AddScoped<ICarbonFilterService, CarbonFilterService>();
+			services.AddScoped<ICategoryService, CategoryService>();
 			services.AddScoped<IChipModelService, ChipModelService>();
 			services.AddScoped<IClassificationService, ClassificationService>();
 			services.AddScoped<ICoolingSystemService, CoolingSystemService>();
