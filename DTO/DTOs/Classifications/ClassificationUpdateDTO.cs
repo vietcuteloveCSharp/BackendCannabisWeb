@@ -1,6 +1,6 @@
 ﻿namespace DTO.DTOs.Classifications
 {
-	public class UpdateClassificationDTO
+	public class ClassificationUpdateDTO
 	{
 		
 		public string? Description { get; set; }
