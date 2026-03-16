@@ -10,40 +10,43 @@
 		}
 		
 		// Generate JWT token
-		public string GenerateAccessToken(TokenPayload payload )
+		public string GenerateAccessToken(IEnumerable<Claim> claims)
 		{
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
 			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-			var claims = new List<Claim>
-			{
-				new Claim(JwtRegisteredClaimNames.Sub, payload.UserId),
-				new Claim(JwtRegisteredClaimNames.UniqueName,payload.UserName),
-				new Claim(ClaimTypes.Name, payload.UserName),
-				new Claim(ClaimTypes.Role, payload.Role),
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-				new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString())
-			};
-			var now = DateTime.UtcNow;
-			var expires = now.AddMinutes(_jwtSettings.AccessTokenLifetimeMinutes);
+			//var claims = new List<Claim>
+			//{
+			//	new Claim(JwtRegisteredClaimNames.Sub, payload.UserId.ToString()),
+			//	new Claim(JwtRegisteredClaimNames.UniqueName,payload.UserName),
+			//	new Claim(ClaimTypes.Name, payload.UserName),
+			//	new Claim(ClaimTypes.Role, payload.Role),
+			//	new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+			//	new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString())
+			//};
+			var expires = _jwtSettings.AccessTokenLifetimeSecond;
 			// Bảo vệ trường hợp lifetime âm hoặc bằng 0
-			if (expires <= now)
+			if (expires <= TimeSpan.Zero)
 			{
 				// Giúp token có hiệu lực hợp lệ trong 1 giây (để tránh IDX12401)
-				expires = now.AddSeconds(1);
+				expires = expires = TimeSpan.FromSeconds(1);
+			
 			}
 			// Tạo token
+			var tokenDescriptor = new SecurityTokenDescriptor
+			{
+				Subject = new ClaimsIdentity(claims),
+				Expires = DateTime.UtcNow.Add(expires),
+				Issuer = _jwtSettings.Issuer,
+				Audience = _jwtSettings.Audience,
+				SigningCredentials = creds,
+				NotBefore = DateTime.UtcNow
+			};
 
-			var token = new JwtSecurityToken(
-				issuer: _jwtSettings.Issuer,
-				audience: _jwtSettings.Audience,
-				claims: claims,
-				notBefore:now,
-				expires: expires,
-				signingCredentials: creds
-			);
-			var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-			return tokenString;
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var token = tokenHandler.CreateToken(tokenDescriptor);
+
+			return tokenHandler.WriteToken(token);
 		}
 
 		public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)

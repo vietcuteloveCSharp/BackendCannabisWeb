@@ -85,5 +85,24 @@ namespace Service.Services.UserManagement
 			await _unitOfWork.SaveChangesAsync();
 			return _mapper.Map<UserDTO>(result);
 		}
+
+		public async Task<bool> ChangePasswordAsync(int userId, ChangePasswordDTO changePasswordDto)
+		{
+			var user = await _unitOfWork.Users.GetByIdAsync(userId);
+			if (user == null) throw new NotFoundException("User not found.");
+
+			// 1. Kiểm tra mật khẩu cũ có đúng không
+			var verifyOldPass = _passwordHasher.VerifyHashedPassword(user, user.HashPassword!, changePasswordDto.OldPassword);
+			if (verifyOldPass == PasswordVerificationResult.Failed)
+			{
+				throw new InvalidOperationException("Mật khẩu cũ không chính xác.");
+			}
+
+			// 2. Hash mật khẩu mới và cập nhật
+			user.HashPassword = _passwordHasher.HashPassword(user, changePasswordDto.NewPassword);
+
+			_unitOfWork.Users.Update(user);
+			return await _unitOfWork.SaveChangesAsync() > 0;
+		}
 	}
 }

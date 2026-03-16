@@ -51,7 +51,14 @@ namespace Service.Services.ServicesAuth
 		{
 			if (string.IsNullOrWhiteSpace(email))
 				throw new ArgumentException("Email is required.", nameof(email));
-			var user = await _userService.FindUserByEmailAsync(email) ?? throw new KeyNotFoundException("Email not found.");
+			var user = await _userService.FindUserByEmailAsync(email);
+			// Nếu không có user, chúng ta vẫn "giả vờ" thực hiện các bước tiếp theo
+			if (user == null)
+			{
+				// Log nội bộ để DEV biết, nhưng không trả về lỗi cho Client
+				// _logger.LogInformation($"Yêu cầu OTP cho email không tồn tại: {email}");
+				return; // Kết thúc hàm tại đây, FE vẫn nhận được 200 OK
+			}
 			var key = $"otp:{email}";
 			// 🔹 Kiểm tra xem đã có OTP đang tồn tại chưa
 			var existingOtp = await _redisService.GetRedisAsync(key);

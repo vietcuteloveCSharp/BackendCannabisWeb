@@ -21,6 +21,30 @@ namespace Service.Services.Product
 
 			return _mapper.Map<CategoryDTO>(category);
 		}
+
+		public async Task<bool> DeleteAsync(int id)
+		{
+			var entity = await _unitOfWork.Categories.GetByIdAsync(id);
+
+			if (entity == null || entity.IsDeleted)
+				return false;
+
+			entity.IsDeleted = true;
+			entity.DeletedAt = DateTime.UtcNow;
+
+			_unitOfWork.Categories.Update(entity);
+			await _unitOfWork.SaveChangesAsync();
+
+			return true;
+		}
+
+		public async Task<IEnumerable<CategoryDTO?>> GetAllActiveAsync()
+		{
+			var categories = await _unitOfWork.Categories.GetAllActiveAsync();
+			if (categories == null) return new List<CategoryDTO>();
+			return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+		}
+
 		// Get all categories
 		public async Task<IEnumerable<CategoryDTO?>> GetAllAsync()
 		{
@@ -32,7 +56,7 @@ namespace Service.Services.Product
 		public async Task<CategoryDTO?> GetByIdAsync(int id)
 		{
 			var category = await _unitOfWork.Categories.GetByIdAsync(id);
-			if (category == null) throw new  NotFoundException($"Category with id {id} not found");
+			if (category == null) return null;
 
 			return _mapper.Map<CategoryDTO>(category);
 		}
@@ -47,8 +71,6 @@ namespace Service.Services.Product
 
 		public async Task<bool> UpdateAsync(int id,CategoryUpdateDTO updateCategoryDTO)
 		{
-			ArgumentNullException.ThrowIfNull(updateCategoryDTO, nameof(updateCategoryDTO));
-
 			var category = await _unitOfWork.Categories.GetByIdAsync(id);
 			if (category == null) throw new NotFoundException($"Category with id {id} not found");
 			// Map DTO -> entity

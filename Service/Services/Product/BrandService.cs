@@ -12,20 +12,47 @@ namespace Service.Services.Product
 			_mapper = mapper;
 		}
 		// add brand
-		public async Task<BrandDTO?> AddBrandAsync(BrandCreateDTO brandCreateDTO)
+		public async Task<BrandDTO?> AddAsync(BrandCreateDTO brandCreateDTO)
 		{
 			// Kiểm tra tồn tại
 			var isBrandExist = await _unitOfWork.Brands.BrandNameExistAsync(brandCreateDTO.BrandName);
 			if (isBrandExist)
 				throw new InvalidOperationException("Brand name already exists.");
-			var brandEntity = _mapper.Map<Brand>(brandCreateDTO.BrandName);
+			var brandEntity = _mapper.Map<Brand>(brandCreateDTO);
 			var createdBrand = await _unitOfWork.Brands.AddAsync(brandEntity);
 			await _unitOfWork.SaveChangesAsync();
 			return _mapper.Map<BrandDTO>(createdBrand);
 		}
+		//delete
+		public async Task<bool> DeleteAsync(int id)
+		{
+			var entity = await _unitOfWork.Brands.GetByIdAsync(id);
+
+			if (entity == null || entity.IsDeleted)
+				return false;
+
+			entity.IsDeleted = true;
+			entity.DeletedAt = DateTime.UtcNow;
+
+			_unitOfWork.Brands.Update(entity);
+			await _unitOfWork.SaveChangesAsync();
+
+			return true;
+		}
+
+		public async Task<IEnumerable<BrandDTO>> GetAllActiveAsync()
+		{
+			var brands = await _unitOfWork.Brands.GetAllActiveAsync();
+			if (brands == null || !brands.Any())
+			{
+				return new List<BrandDTO>();
+			}
+			var brandsDTO = _mapper.Map<IEnumerable<BrandDTO>>(brands);
+			return brandsDTO;
+		}
 
 		// Get all brands
-		public async Task<IEnumerable<BrandDTO>> GetAllBrandsAsync()
+		public async Task<IEnumerable<BrandDTO>> GetAllAsync()
 		{
 			var brands = await _unitOfWork.Brands.GetAllAsync();
 			if (brands == null || !brands.Any())
@@ -36,7 +63,7 @@ namespace Service.Services.Product
 			return brandsDTO;
 		}
 		// Get brand by id
-		public async Task<BrandDTO?> GetBrandByIdAsync(int id)
+		public async Task<BrandDTO?> GetByIdAsync(int id)
 		{
 			var brand = await _unitOfWork.Brands.GetByIdAsync(id);
 			if (brand == null)
@@ -48,7 +75,7 @@ namespace Service.Services.Product
 
 
 		//update brand
-		public async Task<bool> UpdateBrandAsync(int id, BrandUpdateDTO updateBrandDTO)
+		public async Task<bool> UpdateAsync(int id, BrandUpdateDTO updateBrandDTO)
 		{
 			var brand = await _unitOfWork.Brands.GetByIdAsync(id) ?? throw new NotFoundException($"Brand with ID {id} not found.");
 

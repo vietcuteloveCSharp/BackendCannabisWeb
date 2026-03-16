@@ -8,5 +8,6 @@ namespace Service.IServices.UserManagement
 		Task<UserDTO?> UpdateAsync(int id,UpdateUserDTO userDto);
 		Task<User?> FindUserByEmailAsync(string email);
 		Task<UserDTO> RegisterUserAsync(CreateUserDTO createUserDTO); //register account
+		Task<bool> ChangePasswordAsync(int userId, ChangePasswordDTO changePasswordDto);
 	}
 }

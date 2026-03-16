@@ -1,4 +1,8 @@
-﻿namespace Service.Services.ServicesAuth
+﻿
+using DAL.Entities;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
+namespace Service.Services.ServicesAuth
 {
 	public class AuthService : IAuthService
 	{
@@ -7,9 +11,9 @@
 		private readonly IRefreshTokenService _refreshTokenService;
 		private readonly IMapper _mapper;
 		private readonly IPasswordHasher<User> _passwordHasher;
-		
+
 		private readonly JwtSettings _jwtSettings;
-		public AuthService(IUnitOfWork unitOfWork, ITokenService tokenService, IRefreshTokenService refreshTokenService, IMapper mapper, IPasswordHasher<User> passwordHasher,IOptions<JwtSettings> jwtSettings)
+		public AuthService(IUnitOfWork unitOfWork, ITokenService tokenService, IRefreshTokenService refreshTokenService, IMapper mapper, IPasswordHasher<User> passwordHasher, IOptions<JwtSettings> jwtSettings)
 		{
 			this._unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(_unitOfWork), "User repository cannot be null.");
 			this._tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService), "Token service cannot be null.");
@@ -21,63 +25,64 @@
 		// Login user and generate access token and refresh token
 		public async Task<TokenDTO> LoginAsync(LoginResquestDTO loginResquestDTO)
 		{
+			// 1. Tìm user (Nên Include luôn Role để tránh query thêm lần nữa sau này)
 			var user = await _unitOfWork.Users.GetByUsernameAsync(loginResquestDTO.Username);
+
+			// 2. Guard Clause: Nếu không có user, ném lỗi ngay
 			if (user == null)
 			{
-				throw new UnauthorizedAccessException($"Invalid account");
+				throw new UnauthorizedAccessException("Tài khoản hoặc mật khẩu không chính xác.");
 			}
-			var hashed = _passwordHasher.HashPassword(user, loginResquestDTO.Password);
-			Console.WriteLine(hashed);
-			var result = _passwordHasher.VerifyHashedPassword(user, user.HashPassword!, loginResquestDTO.Password);
-			Console.WriteLine(result);
-			if (result == PasswordVerificationResult.Failed)
-				throw new UnauthorizedAccessException("Invalid password.");
 
-			// 1. Tạo payload cho token
-			var payload = new TokenPayload
+			// 3. Kiểm tra Password
+			var result = _passwordHasher.VerifyHashedPassword(user, user.HashPassword!, loginResquestDTO.Password);
+			if (result != PasswordVerificationResult.Success)
 			{
-				UserId = user.UserId.ToString(),
-				UserName = user.Username!,
-				Role = user.Role!.RoleName.ToString(),
-				Expiration = DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenLifetimeMinutes)
+				throw new UnauthorizedAccessException("Tài khoản hoặc mật khẩu không chính xác.");
+			}
+
+			// Chuẩn bị Claims gọn nhẹ
+			var claims = new List<Claim>
+				{
+					new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
+					new Claim(JwtRegisteredClaimNames.UniqueName, user.Username!),
+					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+					new Claim("role", user.Role!.RoleName.ToString()) // Key là "role" cực gọn
 			};
-			var accessToken = _tokenService.GenerateAccessToken(payload);
+
+			// 5. Tạo Access Token (Truyền List Claims vào)
+			var accessToken = _tokenService.GenerateAccessToken(claims);
+
+			// 6. Tạo Refresh Token
 			var refreshToken = await _refreshTokenService.GenerateRefreshTokenAsync(user.UserId);
-			var tokenDTO = new TokenDTO
+
+			// 7. Mapping và trả về
+			var expirationTime = _jwtSettings.AccessTokenLifetimeSecond;
+
+			var token= new TokenDTO
 			{
 				AccessToken = accessToken,
 				RefreshToken = refreshToken.RefreshTokenValue,
-				Expiration = payload.Expiration,
+				ExpiresIn = expirationTime,
 				User = _mapper.Map<UserSummaryDTO>(user)
 			};
-			var refreshTokenDTO = new RefreshTokenDTO
-			{
-					UserId = user.UserId,
-					RefreshTokenValue = refreshToken.RefreshTokenValue,
-					IsRevoked = false,
-					ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenLifetimeDays)
-			};
-			await _refreshTokenService.StoreTokenAsync(refreshTokenDTO);
-			return tokenDTO;
+			return token;
 		}
 
 		public async Task LogoutAsync(int userId, string refreshTokenValue)
 		{
-			if (string.IsNullOrEmpty(refreshTokenValue))
-				throw new ArgumentNullException(nameof(refreshTokenValue), "Refresh token value is required.");
-			// 1. Lấy token từ DB
-			var token = await _unitOfWork.RefreshTokens.GetByTokenAsync(refreshTokenValue);
-			// 2. Kiểm tra token có tồn tại & thuộc về user này không
-			if (token == null || token.UserId != userId)
-				throw new UnauthorizedAccessException("Invalid or expired refresh token");
-			if (token.UserId != userId)
-				throw new UnauthorizedAccessException("Token does not belong to this user.");
-			if (token.IsRevoked)
-				return;
-			// 3. Đánh dấu token là đã revoke
-			token.IsRevoked = true;
-			await _unitOfWork.RefreshTokens.UpdateAsync(token);
-			await _unitOfWork.SaveChangesAsync();
+			// Chúng ta dùng GetByTokenAsync để lấy đối tượng token ra check
+			var tokenRecord = await _unitOfWork.RefreshTokens.GetByTokenAsync(refreshTokenValue);
+
+			// 2. Bảo mật: Chỉ thu hồi nếu token đó đúng là của User đang yêu cầu
+			if (tokenRecord != null && tokenRecord.UserId == userId)
+			{
+				// Sử dụng hàm có sẵn trong Repo của bạn
+				await _unitOfWork.RefreshTokens.RevokeTokenAsync(refreshTokenValue);
+
+				// Đừng quên SaveChanges nếu Repo của bạn không tự gọi nó
+				await _unitOfWork.SaveChangesAsync();
+			}
 		}
 
 	}

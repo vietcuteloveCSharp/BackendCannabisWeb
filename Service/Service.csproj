@@ -36,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="IServices\Inventory\" />
     <Folder Include="IServices\Promotion\" />
     <Folder Include="IServices\Order\" />
   </ItemGroup>
