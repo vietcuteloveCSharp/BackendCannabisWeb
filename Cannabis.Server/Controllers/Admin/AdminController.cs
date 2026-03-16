@@ -24,7 +24,7 @@
 		[Authorize(Roles = "Admin")]
 		[ProducesResponseType(typeof(ApiResponse<UserDTO>), 201)]
 		[ProducesResponseType(typeof(ApiResponse<object>),400)]
-		public async Task<IActionResult> CreateAdminAsync([FromBody] adminCreateDTO createAdminDTO)
+		public async Task<IActionResult> CreateAdminAsync([FromBody] AdminCreateDTO createAdminDTO)
 		{
 			// 1. Kiểm tra Model State tự động
 			if (!ModelState.IsValid)

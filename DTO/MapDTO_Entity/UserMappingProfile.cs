@@ -12,7 +12,7 @@ namespace DTO.MapDTO_Entity
 				.ForMember(dest => dest.HashPassword, opt => opt.Ignore())
 				.ForMember(dest => dest.RoleId, opt => opt.Ignore())
 				.ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
-			CreateMap<adminCreateDTO, User>(MemberList.Source)
+			CreateMap<AdminCreateDTO, User>(MemberList.Source)
 				.ForMember(dest => dest.HashPassword, opt => opt.Ignore())
 				.ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
 				.ForMember(dest => dest.CreatedAt, opt => opt.Ignore());

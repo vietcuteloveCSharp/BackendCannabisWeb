@@ -1,6 +1,6 @@
 ﻿namespace DTO.DTOs.Admin.Admins
 {
-	public class adminCreateDTO
+	public class AdminCreateDTO
 	{
 		[Required(ErrorMessage = "Username is required.")]
 		[StringLength(100, ErrorMessage = "Username no more than 100 characters.")]

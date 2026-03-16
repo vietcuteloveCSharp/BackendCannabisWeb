@@ -5,6 +5,6 @@ namespace Service.IServices.AdminManagement
 {
 	public interface IAdminService
 	{
-		Task<UserDTO> RegisterAdminAsync(adminCreateDTO createAdminDTO); //register account
+		Task<UserDTO> RegisterAdminAsync(AdminCreateDTO createAdminDTO); //register account
 	}
 }

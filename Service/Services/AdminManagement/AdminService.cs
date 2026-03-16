@@ -16,7 +16,7 @@ namespace Service.Services.AdminManagement
 			this._passwordHasher = passwordHasher;
 			this._unitOfWork = unitOfWork;
 		}
-		public async Task<UserDTO> RegisterAdminAsync(adminCreateDTO createAdminDTO)
+		public async Task<UserDTO> RegisterAdminAsync(AdminCreateDTO createAdminDTO)
 		{
 			//check null input
 
