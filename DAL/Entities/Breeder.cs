@@ -20,6 +20,6 @@
 		public string PhoneNumber { get; set; } = string.Empty;
 
 		//navigation
-		public virtual ICollection<Seed> Seeds { get; set; } = new List<Seed>();
+		public virtual ICollection<Seed> Seeds { get; set; } = new HashSet<Seed>();
     }
 }

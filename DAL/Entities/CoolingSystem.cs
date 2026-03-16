@@ -9,6 +9,6 @@
         [Column(TypeName = "nvarchar(20)")]
         public ECoolingType Type { get; set; } 
         public string? Description { get; set; }
-		public virtual ICollection<GrowLight> GrowLights { get; set; } = new List<GrowLight>();
+		public virtual ICollection<GrowLight> GrowLights { get; set; } = new HashSet<GrowLight>();
     }
 }

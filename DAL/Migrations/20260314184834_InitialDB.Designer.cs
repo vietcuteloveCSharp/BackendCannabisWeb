@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
-    [DbContext(typeof(CannabisAccessorriesDBContext))]
-    [Migration("20251008073056_InitDb")]
-    partial class InitDb
+    [DbContext(typeof(CannabisAccessoriesDBContext))]
+    [Migration("20260314184834_InitialDB")]
+    partial class InitialDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -140,7 +140,6 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("RoleName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -681,7 +680,7 @@ namespace DAL.Migrations
                         .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<decimal>("DehumidificationCapacity")
-                        .HasColumnType("decimal(3,2)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -1038,7 +1037,7 @@ namespace DAL.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("OrderSatus")
+                    b.Property<string>("OrderStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)");
 
@@ -1214,6 +1213,9 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
+                    b.Property<int?>("BrandId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -1240,10 +1242,16 @@ namespace DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("ProductType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ProductId");
+
+                    b.HasIndex("BrandId");
 
                     b.HasIndex("CategoryId");
 
@@ -1398,7 +1406,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Promotion_Produc", "Promotions");
+                    b.ToTable("Promotion_Product", "Promotions");
                 });
 
             modelBuilder.Entity("DAL.Entities.RefreshToken", b =>
@@ -1575,7 +1583,7 @@ namespace DAL.Migrations
 
                     b.Property<decimal>("IndicaPercentage")
                         .HasPrecision(5, 2)
-                        .HasColumnType("decimal(3,2)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -1591,7 +1599,7 @@ namespace DAL.Migrations
 
                     b.Property<decimal>("SativaPercentage")
                         .HasPrecision(5, 2)
-                        .HasColumnType("decimal(3,2)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<string>("StrainType")
                         .IsRequired()
@@ -1620,7 +1628,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ProductId")
                         .IsUnique()
-                        .HasDatabaseName("IX_GrowLight_ProductId");
+                        .HasDatabaseName("IX_Seed_ProductId");
 
                     b.ToTable("Seeds", "Inventory");
                 });
@@ -2017,21 +2025,21 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.OrderItem", b =>
                 {
-                    b.HasOne("DAL.Entities.Order", "Oder")
+                    b.HasOne("DAL.Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_ODERITEM_ODER");
+                        .HasConstraintName("FK_ORDERITEM_ORDER");
 
                     b.HasOne("DAL.Entities.Product", "Product")
-                        .WithMany("OderItems")
+                        .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("FK_ODERITEM_PRODUCT");
+                        .HasConstraintName("FK_ORDERITEM_PRODUCT");
 
-                    b.Navigation("Oder");
+                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });
@@ -2050,12 +2058,20 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Product", b =>
                 {
+                    b.HasOne("DAL.Entities.Brand", "Brand")
+                        .WithMany("Products")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("FK_PRODUCT_BRAND_BRANDID");
+
                     b.HasOne("DAL.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_PRODUCT_CATEGORY_CATEGORYID");
+
+                    b.Navigation("Brand");
 
                     b.Navigation("Category");
                 });
@@ -2219,6 +2235,8 @@ namespace DAL.Migrations
                     b.Navigation("GrowTents");
 
                     b.Navigation("Nutrients");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("DAL.Entities.Breeder", b =>
@@ -2288,7 +2306,7 @@ namespace DAL.Migrations
 
                     b.Navigation("Nutrient");
 
-                    b.Navigation("OderItems");
+                    b.Navigation("OrderItems");
 
                     b.Navigation("ProductImages");
 

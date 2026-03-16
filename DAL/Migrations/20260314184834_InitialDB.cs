@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDb : Migration
+    public partial class InitialDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -277,6 +277,8 @@ namespace DAL.Migrations
                     ProductName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    BrandId = table.Column<int>(type: "int", nullable: true),
+                    ProductType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
@@ -285,6 +287,13 @@ namespace DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.ProductId);
+                    table.ForeignKey(
+                        name: "FK_PRODUCT_BRAND_BRANDID",
+                        column: x => x.BrandId,
+                        principalSchema: "Products",
+                        principalTable: "Brands",
+                        principalColumn: "BrandId",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_PRODUCT_CATEGORY_CATEGORYID",
                         column: x => x.CategoryId,
@@ -405,7 +414,7 @@ namespace DAL.Migrations
                     DehumidifierId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    DehumidificationCapacity = table.Column<decimal>(type: "decimal(3,2)", nullable: false),
+                    DehumidificationCapacity = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
                     CoverageArea = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
@@ -628,7 +637,7 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Promotion_Produc",
+                name: "Promotion_Product",
                 schema: "Promotions",
                 columns: table => new
                 {
@@ -637,7 +646,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Promotion_Produc", x => new { x.PromotionId, x.ProductId });
+                    table.PrimaryKey("PK_Promotion_Product", x => new { x.PromotionId, x.ProductId });
                     table.ForeignKey(
                         name: "FK_PROMOTIONPRODUCT_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
@@ -671,8 +680,8 @@ namespace DAL.Migrations
                     Yield = table.Column<decimal>(type: "decimal(5,2)", precision: 10, scale: 2, nullable: false),
                     Difficulty = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
-                    IndicaPercentage = table.Column<decimal>(type: "decimal(3,2)", precision: 5, scale: 2, nullable: false),
-                    SativaPercentage = table.Column<decimal>(type: "decimal(3,2)", precision: 5, scale: 2, nullable: false),
+                    IndicaPercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    SativaPercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
                     TotalQuantity = table.Column<int>(type: "INT", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
@@ -751,7 +760,7 @@ namespace DAL.Migrations
                     OldValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NewValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: true),
-                    RoleName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    RoleName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
@@ -813,7 +822,7 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BuyerId = table.Column<int>(type: "int", nullable: false),
                     SellerId = table.Column<int>(type: "int", nullable: false),
-                    OrderSatus = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    OrderStatus = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     ShippingAddress = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     ShippingFee = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
@@ -922,14 +931,14 @@ namespace DAL.Migrations
                 {
                     table.PrimaryKey("PK_OrderItems", x => x.OrderItemId);
                     table.ForeignKey(
-                        name: "FK_ODERITEM_ODER",
+                        name: "FK_ORDERITEM_ORDER",
                         column: x => x.OrderId,
                         principalSchema: "Orders",
                         principalTable: "Orders",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ODERITEM_PRODUCT",
+                        name: "FK_ORDERITEM_PRODUCT",
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
@@ -1278,6 +1287,12 @@ namespace DAL.Migrations
                 column: "ProductName");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_BrandId",
+                schema: "Products",
+                table: "Products",
+                column: "BrandId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 schema: "Products",
                 table: "Products",
@@ -1290,9 +1305,9 @@ namespace DAL.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Promotion_Produc_ProductId",
+                name: "IX_Promotion_Product_ProductId",
                 schema: "Promotions",
-                table: "Promotion_Produc",
+                table: "Promotion_Product",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -1326,7 +1341,7 @@ namespace DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GrowLight_ProductId",
+                name: "IX_Seed_ProductId",
                 schema: "Inventory",
                 table: "Seeds",
                 column: "ProductId",
@@ -1423,7 +1438,7 @@ namespace DAL.Migrations
                 schema: "Promotions");
 
             migrationBuilder.DropTable(
-                name: "Promotion_Produc",
+                name: "Promotion_Product",
                 schema: "Promotions");
 
             migrationBuilder.DropTable(
@@ -1463,10 +1478,6 @@ namespace DAL.Migrations
                 schema: "Inventory");
 
             migrationBuilder.DropTable(
-                name: "Brands",
-                schema: "Products");
-
-            migrationBuilder.DropTable(
                 name: "NutrientTypes",
                 schema: "Inventory");
 
@@ -1488,6 +1499,10 @@ namespace DAL.Migrations
             migrationBuilder.DropTable(
                 name: "Orders",
                 schema: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Brands",
+                schema: "Products");
 
             migrationBuilder.DropTable(
                 name: "Categories",

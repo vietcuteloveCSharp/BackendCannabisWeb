@@ -11,7 +11,7 @@
 
         public int SellerId {  get; set; }
         [Column(TypeName ="nvarchar(20)")]
-        public EOrderSatus OrderSatus {  get; set; }
+        public EOrderSatus OrderStatus {  get; set; }
         [Column(TypeName ="decimal(10,2)")]
         public decimal TotalAmount {  get; set; }
         public string ShippingAddress {  get; set; } = string.Empty;
@@ -25,7 +25,7 @@
 		public virtual ShippingMethod? ShippingMethod { get; set; }
         public virtual Payment? Payment { get; set; }
 
-        public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public virtual ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
+        public virtual ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
     }
 }

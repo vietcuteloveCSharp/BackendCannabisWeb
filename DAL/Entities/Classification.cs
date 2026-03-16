@@ -14,6 +14,6 @@
         public bool IsActive {  get; set; } =true;
         //navigation
 
-        public virtual ICollection<Seed> Seeds { get; set; }  = new List<Seed>();
+        public virtual ICollection<Seed> Seeds { get; set; }  = new HashSet<Seed>();
 	}
 }

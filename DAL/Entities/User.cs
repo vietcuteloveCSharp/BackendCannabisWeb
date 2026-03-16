@@ -29,10 +29,10 @@
 
 		// 2. Đơn hàng người dùng bán
 		public ICollection<Order> OrdersAsSeller { get; set; } = new List<Order>();
-		public virtual ICollection<RefreshToken>? RefreshTokens { get; set; }
-        public virtual ICollection<Address> ? Addresses { get; set; }
-        public virtual ICollection<Review>? Reviews { get; set; }
-        public virtual ICollection<AuditLog>? AuditLogs { get; set; }
+		public virtual ICollection<RefreshToken>? RefreshTokens { get; set; } =new List<RefreshToken>();
+        public virtual ICollection<Address> ? Addresses { get; set; } = new HashSet<Address>();
+        public virtual ICollection<Review>? Reviews { get; set; } = new HashSet<Review>();
+        public virtual ICollection<AuditLog>? AuditLogs { get; set; } = new HashSet<AuditLog>();
 
 
 	}

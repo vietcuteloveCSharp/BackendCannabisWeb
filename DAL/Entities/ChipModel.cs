@@ -15,6 +15,6 @@
         public decimal Efficiency { get; set; } // Hiệu suất (lumen trên watt, tùy chọn)
         public string Description { get; set; } = string.Empty;
 		// Điều hướng quan hệ (Navigation Property)
-		public virtual ICollection<GrowLight> GrowLights { get; set; } = new List<GrowLight>(); // Một model chip có thể dùng trong nhiều thiết bị chiếu sáng
+		public virtual ICollection<GrowLight> GrowLights { get; set; } = new HashSet<GrowLight>(); // Một model chip có thể dùng trong nhiều thiết bị chiếu sáng
     }
 }
