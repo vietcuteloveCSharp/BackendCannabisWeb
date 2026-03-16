@@ -7,6 +7,14 @@ WORKDIR /src
 # Copy solution và project
 COPY ["WebCannabisAccessorries.sln","."]
 COPY ["Cannabis.Server/Cannabis.Server.csproj", "Cannabis.Server/"]
+COPY ["DAL/DAL.csproj","DAL/"]
+COPY ["DTO/DTO.csproj","DTO/"]
+COPY ["Enum/Enum.csproj","Enum/"]
+COPY ["Exceptions/Exceptions.csproj","Exceptions/"]
+COPY ["Middleware/Middleware.csproj","Middleware/"]
+COPY ["Repository/Repository.csproj","Repository/"]
+COPY ["Service/Service.csproj","Service/"]
+COPY ["TestsCannabis/TestsCannabis.csproj","TestsCannabis/"]
 
 RUN dotnet restore "Cannabis.Server/Cannabis.Server.csproj"
 
