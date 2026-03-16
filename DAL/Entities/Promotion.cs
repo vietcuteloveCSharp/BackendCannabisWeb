@@ -23,7 +23,7 @@
         public bool IsActive { get; set; } =false;
 
         //navigation
-        public virtual ICollection<PromotionCategory> PromotionCategories {  get; set; } =new List<PromotionCategory>();
-        public virtual ICollection<PromotionProduct> PromotionProducts { get; set; } = new List<PromotionProduct>();
+        public virtual ICollection<PromotionCategory> PromotionCategories {  get; set; } =new HashSet<PromotionCategory>();
+        public virtual ICollection<PromotionProduct> PromotionProducts { get; set; } = new HashSet<PromotionProduct>();
     }
 }

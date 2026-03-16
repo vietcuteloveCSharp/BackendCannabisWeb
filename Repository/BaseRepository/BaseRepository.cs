@@ -1,22 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace Repository.BaseRepository
 {
-	public class BaseRepository<T> :IBaseRepository<T> where T : class
+	public class BaseRepository<T> : IBaseRepository<T> where T : class
 	{
-		protected readonly CannabisAccessorriesDBContext _context;
+		protected readonly CannabisAccessoriesDBContext _context;
 		protected readonly DbSet<T> _dbSet;
-		public BaseRepository(CannabisAccessorriesDBContext context)
+		public BaseRepository(CannabisAccessoriesDBContext context)
 		{
 			_context = context;
 			_dbSet = context.Set<T>();
 		}
 		//base add method for all repositories
-		public async Task<T?> AddAsync(T entity)
+		public async Task<T> AddAsync(T entity)
 		{
-			 await _dbSet.AddAsync(entity);
+			await _dbSet.AddAsync(entity);
 			await _context.SaveChangesAsync();
 			return entity;
 		}
@@ -24,24 +25,23 @@ namespace Repository.BaseRepository
 		public async Task<bool> DeleteAsync(int id)
 		{
 			var entity = await _dbSet.FindAsync(id);
-			if(entity == null) { return false; }
+			if (entity == null) { return false; }
 			var property = entity.GetType().GetProperty("IsDeleted");
 			if (property != null)
 			{
 				property.SetValue(entity, true);
 				_dbSet.Update(entity);
-				
+
 			}
 			else
 			{
 				_dbSet.Remove(entity);
 			}
-			await _context.SaveChangesAsync();
 			return true;
 
 		}
 
-		public async Task<IEnumerable<T?>> FindAllAsync(Expression<Func<T, bool>> predicate)
+		public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
 		{
 			var query = _dbSet.AsQueryable();
 			var property = typeof(T).GetProperty("IsDeleted");
@@ -63,8 +63,7 @@ namespace Repository.BaseRepository
 			return await query.FirstOrDefaultAsync(predicate);
 		}
 
-		// base get all method for all repositories
-		public async Task<IEnumerable<T?>> GetAllAsync()
+		public async Task<IEnumerable<T>> GetAllActiveAsync()
 		{
 			var property = typeof(T).GetProperty("IsDeleted");
 			if (property != null)
@@ -75,19 +74,36 @@ namespace Repository.BaseRepository
 			}
 			return await _dbSet.ToListAsync();
 		}
+
+		// base get all method for all repositories
+		public async Task<IEnumerable<T>> GetAllAsync()
+		{
+			return await _dbSet.ToListAsync();
+		}
+
+		public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+		{
+			return await _dbSet.AnyAsync(predicate);
+		}
+
 		// base get by id method for all repositories
 		public async Task<T?> GetByIdAsync(int id)
 		{
 			return await _dbSet.FindAsync(id);
 		}
-		// base update method for all repositories
-		public async Task<T?> UpdateAsync(int id, T updatedEntity)
-		{
-			var existing = await _dbSet.FindAsync(id);
 
-			_context.Entry(existing!).CurrentValues.SetValues(updatedEntity);
-			await _context.SaveChangesAsync();
-			return updatedEntity;
+		public IQueryable<T> GetQueryable()
+		{
+			// Trả về Queryable để cho phép xây dựng câu lệnh SQL ở tầng Service
+			// Sử dụng AsNoTracking() nếu bạn chỉ muốn đọc dữ liệu để tăng hiệu năng
+			return _dbSet.AsQueryable();
+		}
+
+		// base update method for all repositories
+		public bool Update(T updatedEntity)
+		{
+			_dbSet.Update(updatedEntity); // mark entity modified
+			return true;
 		}
 	}
 }

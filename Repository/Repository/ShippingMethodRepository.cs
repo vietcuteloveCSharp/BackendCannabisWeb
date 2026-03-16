@@ -8,7 +8,7 @@ namespace Repository.Repository
 {
 	public class ShippingMethodRepository : BaseRepository<ShippingMethod>
 	{
-		public ShippingMethodRepository(CannabisAccessorriesDBContext context) : base(context)
+		public ShippingMethodRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 	}

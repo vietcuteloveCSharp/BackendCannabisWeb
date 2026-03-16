@@ -1,6 +1,6 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Promotion_Produc", Schema ="Promotions")]
+    [Table("Promotion_Product", Schema ="Promotions")]
     public class PromotionProduct
     {
         [Key]

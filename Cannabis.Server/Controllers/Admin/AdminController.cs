@@ -20,12 +20,13 @@
 		/// </returns>
 		/// <response code="201">User registered successfully.</response>
 		/// <response code="400">Invalid input data.</response>
-		[HttpPost("register-admin")]
+		[HttpPost("create-admin")]
 		[Authorize(Roles = "Admin")]
-		[ProducesResponseType(201)]
-		[ProducesResponseType(400)]
-		public async Task<IActionResult> CreateAdminAsync([FromBody] CreateAdminDTO createAdminDTO)
+		[ProducesResponseType(typeof(ApiResponse<UserDTO>), 201)]
+		[ProducesResponseType(typeof(ApiResponse<object>),400)]
+		public async Task<IActionResult> CreateAdminAsync([FromBody] adminCreateDTO createAdminDTO)
 		{
+			// 1. Kiểm tra Model State tự động
 			if (!ModelState.IsValid)
 			{
 				return this.ValidateModelState();
@@ -36,7 +37,7 @@
 				actionName: "GetUserById",
 				controllerName: "User",
 				routeValues: new { id = result.UserId },
-				value: ApiResponse<object>.Ok(result, "User registered successfully")
+				value: ApiResponse<object>.Ok(result, "Admin account created successfully")
 				);
 		}
 	}

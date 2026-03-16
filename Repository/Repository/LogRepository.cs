@@ -3,8 +3,8 @@ namespace Repository.Repository
 {
 	public class LogRepository : ILogRepository
 	{
-		private readonly CannabisAccessorriesDBContext _context;
-		public LogRepository(CannabisAccessorriesDBContext context)
+		private readonly CannabisAccessoriesDBContext _context;
+		public LogRepository(CannabisAccessoriesDBContext context)
 		{
 			this._context = context;
 		}

@@ -2,7 +2,7 @@
 {
 	public class OrderItemRepository : BaseRepository<OrderItem>
 	{
-		public OrderItemRepository(CannabisAccessorriesDBContext context) : base(context)
+		public OrderItemRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 	}

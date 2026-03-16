@@ -42,7 +42,7 @@ namespace Service.Services
 			var entity = await _unitOfWork.Dehumidifiers.GetByIdAsync(id) ?? throw new NotFoundException($"Dehumidifier with Id {id} not found");
 			_mapper.Map(dto, entity);
 			entity.UpdatedAt=DateTime.Now;
-			await _unitOfWork.Dehumidifiers.UpdateAsync(id,entity);
+			 _unitOfWork.Dehumidifiers.Update(entity);
 			await _unitOfWork.SaveChangesAsync();
 			return _mapper.Map<DehumidifierDTO>(entity);
 		}

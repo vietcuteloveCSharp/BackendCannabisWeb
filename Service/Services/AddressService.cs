@@ -72,7 +72,7 @@ namespace Service.Services
 			ArgumentNullException.ThrowIfNull(dto, nameof(dto));
 			var address = await _unitOfWork.Addresses.GetByIdAsync(id) ?? throw new NotFoundException("Address not found");
 			_mapper.Map(address,dto);
-			await _unitOfWork.Addresses.UpdateAsync(id,address);
+			_unitOfWork.Addresses.Update(address);
 			await _unitOfWork.SaveChangesAsync();
 			return _mapper.Map<AddressDTO>(address);
 		}

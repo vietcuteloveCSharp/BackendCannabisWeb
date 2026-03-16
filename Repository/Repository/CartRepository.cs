@@ -3,7 +3,7 @@ namespace Repository.Repository
 {
 	public class CartRepository : BaseRepository<Cart>
 	{
-		public CartRepository(CannabisAccessorriesDBContext context) : base(context)
+		public CartRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 	}

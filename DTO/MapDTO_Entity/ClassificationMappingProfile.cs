@@ -7,10 +7,9 @@ namespace DTO.MapDTO_Entity
 		public ClassificationMappingProfile()
 		{
 			#region Map Classification
-			CreateMap<Classification, ClassificationDTO>(MemberList.None);
-			CreateMap<ClassificationDTO, Classification>(MemberList.None);
-			CreateMap<CreateClassificationDTO, Classification>(MemberList.None);
-			CreateMap<UpdateClassificationDTO, UpdateClassificationDTO>(MemberList.None);
+			CreateMap<Classification, ClassificationDTO>(MemberList.None).ReverseMap();
+			CreateMap<ClassificationCreateDTO, Classification>(MemberList.None);
+			CreateMap<ClassificationUpdateDTO, ClassificationUpdateDTO>(MemberList.None);
 			#endregion
 		}
 	}

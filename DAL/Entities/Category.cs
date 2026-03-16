@@ -12,8 +12,8 @@
 		public string? Description { get; set; }
 
 		//navigation
-		public virtual ICollection<Product> Products { get; set; } = new List<Product>();
-		public virtual ICollection<PromotionCategory> PromotionCategories { get; set; } = new List<PromotionCategory>();
+		public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
+		public virtual ICollection<PromotionCategory> PromotionCategories { get; set; } = new HashSet<PromotionCategory>();
 
     }
 }

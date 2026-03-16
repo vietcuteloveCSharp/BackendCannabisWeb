@@ -2,8 +2,8 @@
 {
 	public class PromotionProductRepository : IPromotionProductRepository
 	{
-		private readonly CannabisAccessorriesDBContext _context;
-		public PromotionProductRepository(CannabisAccessorriesDBContext context)
+		private readonly CannabisAccessoriesDBContext _context;
+		public PromotionProductRepository(CannabisAccessoriesDBContext context)
 		{
 			_context = context;
 		}

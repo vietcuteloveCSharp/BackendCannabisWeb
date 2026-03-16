@@ -60,7 +60,7 @@
 			_mapper.Map(dto, growTent);
 			growTent.UpdatedAt = DateTime.Now;
 
-			await _repository.UpdateAsync(id, growTent);
+			_repository.Update(growTent);
 			return _mapper.Map<GrowTentDTO>(growTent);
 		}
 	}

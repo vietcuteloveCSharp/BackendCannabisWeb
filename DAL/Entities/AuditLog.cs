@@ -16,7 +16,7 @@
 		public string? OldValue { get; set; }
 		public string? NewValue { get; set; }
 		public int? RoleId { get; set; }
-		public string RoleName { get; set; } = string.Empty;
+		public string? RoleName { get; set; } 
 		public int? UserId {  get; set; }
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;

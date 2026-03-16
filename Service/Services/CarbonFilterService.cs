@@ -65,7 +65,7 @@
 			// Assumed: BrandId validity is guaranteed by frontend (already checked with GET /brands/{id})
 			// Map DTO to  entity 
 			_mapper.Map(updateCarbonFilterDTO, existingEntity);
-			await _repository.UpdateAsync(id,existingEntity);
+			_repository.Update(existingEntity);
 
 			return _mapper.Map<CarbonFilterDTO>(existingEntity);
 		}

@@ -32,3 +32,4 @@ global using  Service.IServices.IServicesRedis;
 global using StackExchange.Redis;
 global using Microsoft.EntityFrameworkCore.ChangeTracking;
 global using  Service.Helpers;
+global using DTO.DTOs.Categories;

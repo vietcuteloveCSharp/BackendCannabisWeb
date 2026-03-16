@@ -2,7 +2,7 @@
 {
 	public class SeedRepository : BaseRepository<Seed>, ISeedRepository
 	{
-		public SeedRepository(CannabisAccessorriesDBContext context) : base(context)
+		public SeedRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 	}

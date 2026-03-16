@@ -1,8 +1,8 @@
 ﻿namespace Repository.Repository
 {
 	public class RefreshTokenRepository : IRefreshTokenRepository
-	{	private readonly CannabisAccessorriesDBContext _context;
-		public RefreshTokenRepository(CannabisAccessorriesDBContext context)
+	{	private readonly CannabisAccessoriesDBContext _context;
+		public RefreshTokenRepository(CannabisAccessoriesDBContext context)
 		{
 			this._context = context;
 		}

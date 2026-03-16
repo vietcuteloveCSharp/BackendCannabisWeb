@@ -8,7 +8,7 @@
 		public string? Description { get; set; }
 		public string? Website { get; set; }
 		public bool IsActive { get; set; } = true;
-		public DateTime CreatedAt { get; set; } = DateTime.Now;
+		public DateTime CreatedAt { get; set; } 
 		public DateTime UpdatedAt { get; set; }
 	}
 }

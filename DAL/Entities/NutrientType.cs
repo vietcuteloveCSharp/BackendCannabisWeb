@@ -10,6 +10,6 @@
         public string NutrientName { get; set; } = string.Empty; // Name of the nutrient type
 		public string? Description { get; set; }
         //navigation 
-		public virtual ICollection<Nutrient> Nutrients { get; set; } = new List<Nutrient>();
+		public virtual ICollection<Nutrient> Nutrients { get; set; } = new HashSet<Nutrient>();
 	}
 }

@@ -42,12 +42,13 @@ namespace Service.Services.UserManagement
 		public async Task<UserDTO?> UpdateAsync(int id,UpdateUserDTO userDto)
 		{
 			ArgumentException.ThrowIfNullOrWhiteSpace(nameof(userDto));
+			var user = _unitOfWork.Users.GetByIdAsync(id);
+			if (user == null) throw new KeyNotFoundException($"User with id{id} not found");
 			// Map sang entity
 			var entity = _mapper.Map<User>(userDto);
-			entity.UserId = id;
 			entity.UpdatedAt = DateTime.UtcNow;
 			// Gọi repository update
-			var updated = await _unitOfWork.Users.UpdateAsync(id, entity);
+			var updated = _unitOfWork.Users.Update(entity);
 			await _unitOfWork.SaveChangesAsync();
 			return _mapper.Map<UserDTO>(updated);
 
@@ -83,6 +84,25 @@ namespace Service.Services.UserManagement
 			var result = await _unitOfWork.Users.AddAsync(userEntity);
 			await _unitOfWork.SaveChangesAsync();
 			return _mapper.Map<UserDTO>(result);
+		}
+
+		public async Task<bool> ChangePasswordAsync(int userId, ChangePasswordDTO changePasswordDto)
+		{
+			var user = await _unitOfWork.Users.GetByIdAsync(userId);
+			if (user == null) throw new NotFoundException("User not found.");
+
+			// 1. Kiểm tra mật khẩu cũ có đúng không
+			var verifyOldPass = _passwordHasher.VerifyHashedPassword(user, user.HashPassword!, changePasswordDto.OldPassword);
+			if (verifyOldPass == PasswordVerificationResult.Failed)
+			{
+				throw new InvalidOperationException("Mật khẩu cũ không chính xác.");
+			}
+
+			// 2. Hash mật khẩu mới và cập nhật
+			user.HashPassword = _passwordHasher.HashPassword(user, changePasswordDto.NewPassword);
+
+			_unitOfWork.Users.Update(user);
+			return await _unitOfWork.SaveChangesAsync() > 0;
 		}
 	}
 }

@@ -2,7 +2,7 @@
 {
 	public class AuditLogRepository : BaseRepository<AuditLog>, IAuditLogRepository
 	{
-		public AuditLogRepository(CannabisAccessorriesDBContext context) : base(context)
+		public AuditLogRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 		public async Task<IEnumerable<AuditLog>> GetByTableAsync(string tableName)

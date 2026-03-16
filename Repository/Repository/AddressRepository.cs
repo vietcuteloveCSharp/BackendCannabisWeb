@@ -2,7 +2,7 @@
 {
 	public class AddressRepository : BaseRepository<Address>,IAddressRepository
 	{
-		public AddressRepository(CannabisAccessorriesDBContext context) : base(context)
+		public AddressRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 	}

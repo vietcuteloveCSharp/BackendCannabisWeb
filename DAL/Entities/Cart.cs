@@ -18,7 +18,7 @@
 		public ECartStatus Status { get; set; } = ECartStatus.Active;
 		//navigation 
 		public virtual User? User { get; set; }
-        public virtual ICollection<CartDetails> CartDetails { get; set; } = new List<CartDetails>();
+        public virtual ICollection<CartDetails> CartDetails { get; set; } = new HashSet<CartDetails>();
         
     
         

@@ -1,0 +1,26 @@
+# ===============================
+# BUILD STAGE
+# ===============================
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy solution và project
+COPY ["WebCannabisAccessorries.sln","."]
+COPY ["Cannabis.Server/Cannabis.Server.csproj", "Cannabis.Server/"]
+
+RUN dotnet restore "Cannabis.Server/Cannabis.Server.csproj"
+
+# Copy toàn bộ source
+COPY . .
+
+# Chuyển vào project chính
+WORKDIR /src/Cannabis.Server
+
+# Expose cổng cho container
+EXPOSE 8080
+
+# Biến môi trường ASP.NET
+ENV ASPNETCORE_ENVIRONMENT=Development
+
+# Chạy watch
+CMD ["dotnet", "watch", "run", "--project", "Cannabis.Server.csproj", "--urls", "http://0.0.0.0:8080"]

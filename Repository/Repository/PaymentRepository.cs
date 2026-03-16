@@ -2,7 +2,7 @@
 {
 	public class PaymentRepository : BaseRepository<Payment>
 	{
-		public PaymentRepository(CannabisAccessorriesDBContext context) : base(context)
+		public PaymentRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 	}

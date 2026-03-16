@@ -6,7 +6,7 @@ namespace Repository.UnitOfWork
 	{
 		private IDbContextTransaction? _transaction;
 
-		private readonly CannabisAccessorriesDBContext _context;
+		private readonly CannabisAccessoriesDBContext _context;
 		public IProductRepository Products { get; private set; }
 
 		public IGrowLightRepository GrowLights { get; private set; }
@@ -41,7 +41,9 @@ namespace Repository.UnitOfWork
 
 		public IAuditLogRepository AuditLogs { get; private set; }
 
-		public UnitOfWork(CannabisAccessorriesDBContext context, IAuditLogRepository auditLogger)
+		public ICategoryRepository Categories { get; private set; }
+
+		public UnitOfWork(CannabisAccessoriesDBContext context, IAuditLogRepository auditLogger)
 		{
 			_context = context;
 			Products = new ProductRepository(_context);
@@ -63,6 +65,7 @@ namespace Repository.UnitOfWork
 			RefreshTokens = new RefreshTokenRepository(_context);
 			Roles = new RoleRepository(_context);
 			Spectrums = new SpectrumRepository(_context);
+			Categories = new CategoryRepository(_context);
 			AuditLogs = auditLogger;
 
 		}

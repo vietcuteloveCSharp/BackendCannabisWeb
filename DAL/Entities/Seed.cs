@@ -25,9 +25,9 @@
         public EDifficulty  Difficulty { get; set; }
         [Column(TypeName = "decimal(10,2)")]
         public decimal Price { get; set; }
-        [Column(TypeName = "decimal(3,2)")]
+        [Column(TypeName = "decimal(5,2)")]
         public decimal IndicaPercentage {  get; set; }
-        [Column(TypeName = "decimal(3,2)")]
+        [Column(TypeName = "decimal(5,2)")]
         public decimal SativaPercentage { get; set; }
         public int TotalQuantity {  get; set; }
         public string Description { get; set; } =string.Empty;

@@ -2,7 +2,7 @@
 {
 	public class ChipModelRepository : BaseRepository<ChipModel>,IChipModelRepository
 	{
-		public ChipModelRepository(CannabisAccessorriesDBContext context) : base(context)
+		public ChipModelRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 	}

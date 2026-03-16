@@ -2,7 +2,7 @@
 {
 	public class BreederRepository : BaseRepository<Breeder>,IBreederRepository
 	{
-		public BreederRepository(CannabisAccessorriesDBContext context) : base(context)
+		public BreederRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 	}

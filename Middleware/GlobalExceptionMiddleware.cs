@@ -6,12 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
+
 
 namespace Middleware
 {
@@ -39,35 +41,46 @@ namespace Middleware
 		private static Task HandleExceptionAsync(HttpContext context, Exception ex)
 		{
 			//phân loại lỗi
-			var code = HttpStatusCode.InternalServerError;
+			HttpStatusCode code = HttpStatusCode.InternalServerError;
+			ApiResponse<object> apiResponse;
 			switch (ex)
 			{
-				case KeyNotFoundException:
-					code = HttpStatusCode.NotFound;
-					break;
+				case ValidationException vex:
+					code = HttpStatusCode.BadRequest;
+					apiResponse = ApiResponse<object>.Fail(
+					"Validation failed",
+					vex.Message.Split("; ") // tách các lỗi từng field
+					);
+				break;
 				case NotFoundException:
 					code = HttpStatusCode.NotFound;
+					apiResponse = ApiResponse<object>.Fail(ex.Message);
 					break;
 				case UnauthorizedAccessException:
 					code = HttpStatusCode.Unauthorized;
+					apiResponse = ApiResponse<object>.Fail(ex.Message);
 					break;
 				case ArgumentException:
 					code = HttpStatusCode.BadRequest;
+					apiResponse = ApiResponse<object>.Fail(ex.Message);
 					break;
 				case InvalidOperationException:
 					code = HttpStatusCode.BadRequest;
+					apiResponse = ApiResponse<object>.Fail(ex.Message);
 					break;
 				case DbUpdateException:
 					code = HttpStatusCode.InternalServerError;
+					apiResponse = ApiResponse<object>.Fail("Database update error");
+					break;
+				default:
+					code = HttpStatusCode.InternalServerError;
+					apiResponse = ApiResponse<object>.Fail("Internal server error");
 					break;
 			}
 			var logger = context.RequestServices.GetRequiredService<ILogger<GlobalExceptionMiddleware>>();
 			logger.LogError(ex, "Unhandled exception handled by middleware with status code {StatusCode}", (int)code);
 
-			// Tạo response JSON đồng nhất (dựa trên ApiResponse)
-			var apiResponse = ApiResponse<string>.Fail(
-				message: ex.Message
-			);
+		
 			var json = JsonSerializer.Serialize(apiResponse, new JsonSerializerOptions
 			{
 				PropertyNamingPolicy = JsonNamingPolicy.CamelCase
