@@ -1,4 +1,6 @@
-﻿namespace DTO.MapDTO_Entity
+﻿using DTO.DTOs.Shared;
+
+namespace DTO.MapDTO_Entity
 {
 	public class RefreshTokenMappingProfile :Profile
 	{
