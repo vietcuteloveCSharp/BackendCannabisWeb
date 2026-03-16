@@ -3,7 +3,7 @@ namespace Repository.Repository
 {
 	public class CoolingSystemRepository :BaseRepository<CoolingSystem>, ICoolingSystemRepository
 	{
-		public CoolingSystemRepository(CannabisAccessorriesDBContext context) : base(context)
+		public CoolingSystemRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		
 		}

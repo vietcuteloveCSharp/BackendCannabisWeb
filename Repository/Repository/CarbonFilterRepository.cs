@@ -2,7 +2,7 @@
 {
 	public class CarbonFilterRepository : BaseRepository<CarbonFilter>,ICarbonFilterRepository
 	{
-		public CarbonFilterRepository(CannabisAccessorriesDBContext context) : base(context)
+		public CarbonFilterRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 	}

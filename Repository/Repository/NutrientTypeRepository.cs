@@ -2,7 +2,7 @@
 {
 	public class NutrientTypeRepository : BaseRepository<NutrientType>,INutrientTypeRepository
 	{
-		public NutrientTypeRepository(CannabisAccessorriesDBContext context) : base(context)
+		public NutrientTypeRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 	}

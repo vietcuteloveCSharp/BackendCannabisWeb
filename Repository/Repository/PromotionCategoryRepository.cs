@@ -5,8 +5,8 @@ namespace Repository.Repository
 {
 	public class PromotionCategoryRepository : IPromotionCategoryRepository
 	{
-		private readonly CannabisAccessorriesDBContext _context;
-		public PromotionCategoryRepository(CannabisAccessorriesDBContext context)
+		private readonly CannabisAccessoriesDBContext _context;
+		public PromotionCategoryRepository(CannabisAccessoriesDBContext context)
 		{
 			this._context = context;
 		}

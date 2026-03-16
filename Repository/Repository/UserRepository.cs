@@ -3,7 +3,7 @@ namespace Repository.Repository
 {
 	public class UserRepository : BaseRepository<User>, IUserRepository
 	{
-		public UserRepository(CannabisAccessorriesDBContext context) : base(context)
+		public UserRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 			
 		}

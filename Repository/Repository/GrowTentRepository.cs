@@ -2,7 +2,7 @@
 {
 	public class GrowTentRepository :BaseRepository<GrowTent>, IGrowTentRepository
 	{
-		public GrowTentRepository(CannabisAccessorriesDBContext context) : base(context)
+		public GrowTentRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 		}
 	}

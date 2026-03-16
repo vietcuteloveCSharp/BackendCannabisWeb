@@ -3,7 +3,7 @@
 	public class BrandRepository : BaseRepository<Brand>,IBrandRepository
 	{
 	
-		public BrandRepository(CannabisAccessorriesDBContext context) : base(context)
+		public BrandRepository(CannabisAccessoriesDBContext context) : base(context)
 		{
 			
 		}		
