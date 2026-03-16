@@ -56,7 +56,7 @@ namespace TestsCannabis.TestAPI.Admin
 		[Fact]
 		public async Task RegisterAdmin_ShouldReturn201_WhenRoleIsAdmin()
 		{
-			var dto = new CreateAdminDTO
+			var dto = new AdminCreateDTO
 			{
 				Username = "admin_create_test",
 				Password = "StrongPassA1!",
@@ -73,7 +73,7 @@ namespace TestsCannabis.TestAPI.Admin
 		[Fact]
 		public async Task RegisterAdmin_ShouldReturn403_WhenRoleIsEmployee()
 		{
-			var dto = new CreateAdminDTO
+			var dto = new AdminCreateDTO
 			{
 				Username = "employee_try_admin",
 				Password = "StrongPassA1!",
@@ -90,7 +90,7 @@ namespace TestsCannabis.TestAPI.Admin
 		[Fact]
 		public async Task RegisterAdmin_ShouldReturn403_WhenRoleIsUser()
 		{
-			var dto = new CreateAdminDTO
+			var dto = new AdminCreateDTO
 			{
 				Username = "user_try_admin",
 				Password = "StrongPassA1",
@@ -107,7 +107,7 @@ namespace TestsCannabis.TestAPI.Admin
 		public async Task RegisterAdmin_ShouldReturn401_WhenNoToken()
 		{
 			// Arrange
-			var dto = new CreateAdminDTO
+			var dto = new AdminCreateDTO
 			{
 				Username = "unauth_test_user",
 				Password = "StrongPassA1!",

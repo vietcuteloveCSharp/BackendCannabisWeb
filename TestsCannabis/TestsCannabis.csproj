@@ -35,6 +35,11 @@
   <ItemGroup>
     <Folder Include="TestAPI\Share\" />
     <Folder Include="TestAPI\User\" />
+    <Folder Include="TestService\AdminTests\" />
+    <Folder Include="TestService\AuthTests\" />
+    <Folder Include="TestService\ForgotPasswordTests\" />
+    <Folder Include="TestService\RefreshTokenTest\" />
+    <Folder Include="TestService\UserTests\" />
   </ItemGroup>
 
 </Project>

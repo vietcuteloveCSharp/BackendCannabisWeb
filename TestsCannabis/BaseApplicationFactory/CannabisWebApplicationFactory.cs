@@ -28,7 +28,7 @@ namespace TestsCannabis.BaseApplicationFactory
 			{
 				// Xoá DbContext cũ
 				var descriptor = services.SingleOrDefault(
-					d => d.ServiceType == typeof(DbContextOptions<CannabisAccessorriesDBContext>));
+					d => d.ServiceType == typeof(DbContextOptions<CannabisAccessoriesDBContext>));
 				var redisDescriptor = services.SingleOrDefault(
 				d => d.ServiceType == typeof(IRedisService));
 				services.AddAuthentication("TestScheme").AddScheme<AuthenticationSchemeOptions, TestAuthHandler_NoPass>(
@@ -41,7 +41,7 @@ namespace TestsCannabis.BaseApplicationFactory
 				}
 
 				// Thêm DbContext với InMemoryDb
-				services.AddDbContext<CannabisAccessorriesDBContext>(options =>
+				services.AddDbContext<CannabisAccessoriesDBContext>(options =>
 				{
 					options.UseInMemoryDatabase("TestAPI");
 					//options.UseInternalServiceProvider(provider);
@@ -55,7 +55,7 @@ namespace TestsCannabis.BaseApplicationFactory
 				// ✅ khởi tạo db và seed data 
 				var sp = services.BuildServiceProvider();
 				using var scope = sp.CreateScope();
-				var db = scope.ServiceProvider.GetRequiredService<CannabisAccessorriesDBContext>();
+				var db = scope.ServiceProvider.GetRequiredService<CannabisAccessoriesDBContext>();
 				db.Database.EnsureCreated();
 				// seed data
 				if (!db.Users.Any())
