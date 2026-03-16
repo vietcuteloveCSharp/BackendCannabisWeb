@@ -7,15 +7,15 @@ namespace Repository.BaseRepository
 {
 	public class BaseRepository<T> : IBaseRepository<T> where T : class
 	{
-		protected readonly CannabisAccessorriesDBContext _context;
+		protected readonly CannabisAccessoriesDBContext _context;
 		protected readonly DbSet<T> _dbSet;
-		public BaseRepository(CannabisAccessorriesDBContext context)
+		public BaseRepository(CannabisAccessoriesDBContext context)
 		{
 			_context = context;
 			_dbSet = context.Set<T>();
 		}
 		//base add method for all repositories
-		public async Task<T?> AddAsync(T entity)
+		public async Task<T> AddAsync(T entity)
 		{
 			await _dbSet.AddAsync(entity);
 			await _context.SaveChangesAsync();
@@ -41,7 +41,7 @@ namespace Repository.BaseRepository
 
 		}
 
-		public async Task<IEnumerable<T?>> FindAllAsync(Expression<Func<T, bool>> predicate)
+		public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
 		{
 			var query = _dbSet.AsQueryable();
 			var property = typeof(T).GetProperty("IsDeleted");
@@ -63,7 +63,7 @@ namespace Repository.BaseRepository
 			return await query.FirstOrDefaultAsync(predicate);
 		}
 
-		public async Task<IEnumerable<T?>> GetAllActiveAsync()
+		public async Task<IEnumerable<T>> GetAllActiveAsync()
 		{
 			var property = typeof(T).GetProperty("IsDeleted");
 			if (property != null)
@@ -76,15 +76,29 @@ namespace Repository.BaseRepository
 		}
 
 		// base get all method for all repositories
-		public async Task<IEnumerable<T?>> GetAllAsync()
+		public async Task<IEnumerable<T>> GetAllAsync()
 		{
 			return await _dbSet.ToListAsync();
 		}
+
+		public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+		{
+			return await _dbSet.AnyAsync(predicate);
+		}
+
 		// base get by id method for all repositories
 		public async Task<T?> GetByIdAsync(int id)
 		{
 			return await _dbSet.FindAsync(id);
 		}
+
+		public IQueryable<T> GetQueryable()
+		{
+			// Trả về Queryable để cho phép xây dựng câu lệnh SQL ở tầng Service
+			// Sử dụng AsNoTracking() nếu bạn chỉ muốn đọc dữ liệu để tăng hiệu năng
+			return _dbSet.AsQueryable();
+		}
+
 		// base update method for all repositories
 		public bool Update(T updatedEntity)
 		{
