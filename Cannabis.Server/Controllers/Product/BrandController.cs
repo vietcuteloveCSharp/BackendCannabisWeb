@@ -46,7 +46,7 @@ namespace Cannabis.Server.Controllers.Product
 		public async Task<IActionResult> GetById(int id)
 		{
 			var brand = await _brandService.GetByIdAsync(id);
-			return Ok(ApiResponse<BrandDTO>.Ok(brand));
+			return Ok(ApiResponse<BrandDTO>.Ok(brand!));
 		}
 		  /// <summary>
         /// Add a new brand.

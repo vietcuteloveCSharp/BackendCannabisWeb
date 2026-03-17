@@ -86,7 +86,7 @@ namespace Cannabis.Server.Controllers.Shared
 				SameSite = SameSiteMode.Strict
 			});
 
-			return Ok(ApiResponse<object>.Ok(null, "Đăng xuất thành công."));
+			return Ok(ApiResponse<object>.Ok("", "Đăng xuất thành công."));
 		}
 		[HttpPost("change-password")]
 		[Authorize] // Phải login mới đổi được
