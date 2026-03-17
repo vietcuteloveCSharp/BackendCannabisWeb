@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-	[Table("RefreshTokens", Schema = "Users")]
 	public class RefreshToken
 	{
 		public int Id { get; set; }
@@ -9,6 +8,6 @@
 		public bool IsRevoked { get; set; }
 		public int UserId { get; set; }
 		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-		public virtual User? User { get; set; }
+		public virtual User User { get; set; } = default!;
 	}
 }

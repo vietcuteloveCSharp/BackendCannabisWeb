@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("PowerSupplies", Schema = "lighting")]
     public class PowerSupply : BaseEntity
     {
         [Key]

@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("NutrientTypes",Schema = "Inventory")]   
     public class NutrientType :BaseEntity
     {
         [Key]

@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Promotion_Product", Schema ="Promotions")]
     public class PromotionProduct
     {
         [Key]
@@ -8,7 +7,7 @@
         [Key]
         public int ProductId { get; set; }
 
-        public Promotion? Promotion { get; set; }
-        public Product? Product { get; set; }
+        public Promotion Promotion { get; set; } = default!;
+        public Product Product { get; set; } = default!;
     }
 }

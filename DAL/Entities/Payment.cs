@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Payments", Schema = "Orders")]
     public class Payment :BaseEntity
     {
         [Key]
@@ -14,7 +13,7 @@
 		public string Description { get; set; } = string.Empty;
         //navigation
 
-        public virtual Order? Order { get; set; } 
+        public virtual Order Order { get; set; } = default!; 
 
     }
 }

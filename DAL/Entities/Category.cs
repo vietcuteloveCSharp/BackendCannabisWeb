@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Categories", Schema = "Products")]
     public class Category :BaseEntity
     {
         [Key]    

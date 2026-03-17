@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Orders",Schema = "Orders")]   
     public class Order : BaseEntity
     {
         [Key]

@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("ShippingMethod",Schema ="Oders")]
     public class ShippingMethod :BaseEntity
     {
         [Key]
@@ -16,6 +15,6 @@
 		public int EstimatedDeliveryDays { get; set; } // số ngày dự kiến
 		public DateTime EstimatedDeliveryDate { get; set; }//  giao thực tế tính toán được
 		//navigation
-		public virtual Order? Order { get; set; }
+		public virtual Order Order { get; set; } = default!;
     }
 }

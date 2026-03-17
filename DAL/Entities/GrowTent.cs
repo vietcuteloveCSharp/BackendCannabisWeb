@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("GrowTents", Schema = "Inventory")]
     public class GrowTent :BaseEntity
     {
         [Key]
@@ -16,7 +15,7 @@
         public string Material { get; set; }  =string.Empty;
 		public bool Waterproof { get; set; }=false;
         public int Quantity { get; set; }
-        [Column(TypeName = "decimal(10,2")]
+        
         public decimal Price { get; set; }
         [StringLength(255, ErrorMessage = "Frame material no more than 255 characters.")]
         public string FrameMaterial { get; set; } = string.Empty;

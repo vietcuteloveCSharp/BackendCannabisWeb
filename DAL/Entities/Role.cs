@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Roles",Schema = "Users")]
     public class Role :BaseEntity
     {
         [Key]

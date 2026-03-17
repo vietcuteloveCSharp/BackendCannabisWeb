@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Seeds",Schema = "Inventory")]       
     public class Seed :BaseEntity
     {
         [Key]
@@ -32,9 +31,9 @@
         public int TotalQuantity {  get; set; }
         public string Description { get; set; } =string.Empty;
 		//navi
-		public virtual Breeder? Breeder { get; set; }
-        public virtual Product? Product { get; set; }
-        public virtual Classification? Classification { get; set; }
+		public virtual Breeder Breeder { get; set; } = default!;
+        public virtual Product Product { get; set; } = default!;
+        public virtual Classification Classification { get; set; } = default!;
 
     }
 }

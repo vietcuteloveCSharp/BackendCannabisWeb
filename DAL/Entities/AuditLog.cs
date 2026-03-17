@@ -1,6 +1,6 @@
 ﻿namespace DAL.Entities
 {
-    [Table("AuditLogs",Schema ="Logs")]
+    
     public class AuditLog
     {
         [Key]

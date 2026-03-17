@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Brands", Schema = "Products")]
     public class Brand :BaseEntity
     {
         [Key]

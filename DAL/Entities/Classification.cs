@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Classifies")]   
     public class Classification : BaseEntity
     {
        
