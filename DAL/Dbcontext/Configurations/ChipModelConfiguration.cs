@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<ChipModel> builder)
 		{
+			builder.ToTable("ChipModels", "Inventory");
 			builder.HasKey(c => c.ChipModelId);
 
 			builder.Property(c => c.Manufacturer)

@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<ShippingMethod> builder)
 		{
+			builder.ToTable("ShippingMethods", "Orders");
 			builder.HasKey(c => c.ShippingId);
 			builder.Property(c => c.ShippingId).ValueGeneratedOnAdd();
 			builder.Property(c => c.Name).HasMaxLength(150).IsRequired();
@@ -22,9 +23,10 @@ namespace DAL.Dbcontext.Configurations
 				   .WithOne(c => c.ShippingMethod)
 				   .HasForeignKey<ShippingMethod>(c => c.OrderId)
 				   .HasConstraintName("FK_SHIPPINGMETHOD_ORDER_ORDERID")
+				   .OnDelete(DeleteBehavior.Cascade)
 				   .IsRequired();
 
-			builder.HasIndex(c => c.OrderId).HasDatabaseName("IX_ShippingMethod_OrderId");
+			builder.HasIndex(x => x.OrderId).IsUnique();
 		}
 	}
 }

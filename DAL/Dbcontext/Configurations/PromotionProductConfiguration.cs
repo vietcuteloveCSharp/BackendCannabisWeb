@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<PromotionProduct> builder)
 		{
+			builder.ToTable("PromotionProducts", "Promotions");
 			builder.HasKey(pp => new { pp.PromotionId, pp.ProductId });
 
 			builder.HasOne(c => c.Promotion)
@@ -24,6 +25,7 @@ namespace DAL.Dbcontext.Configurations
 				   .HasForeignKey(c => c.ProductId)
 				   .HasConstraintName("FK_PROMOTIONPRODUCT_PRODUCT_PRODUCTID")
 				   .IsRequired();
+			builder.HasQueryFilter(x => !x.Product.IsDeleted);
 		}
 	}
 }

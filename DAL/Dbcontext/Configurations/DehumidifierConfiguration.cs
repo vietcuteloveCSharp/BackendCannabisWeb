@@ -11,11 +11,12 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Dehumidifier> builder)
 		{
+			builder.ToTable("Dehumidifiers", "Inventory");
 			builder.HasKey(d => d.DehumidifierId);
 			builder.Property(d => d.DehumidificationCapacity).HasColumnType("decimal(5,2)");
-			builder.Property(d => d.CoverageArea).HasColumnType("decimal(10,2)");
+			builder.Property(d => d.CoverageArea).HasPrecision(10, 2);
 			builder.Property(d => d.NoiseLevel).HasColumnType("decimal(5,2)");
-			builder.Property(d => d.PowerConsumption).HasColumnType("decimal(10,2)");
+			builder.Property(d => d.PowerConsumption).HasPrecision(10, 2);
 			builder.Property(d => d.Description).HasMaxLength(1000);
 			builder.Property(d => d.BrandId).IsRequired();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<RefreshToken> builder)
 		{
+			builder.ToTable("RefreshTokens", "Users");
 			builder.HasKey(c => c.Id);
 			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.RefreshTokenValue).IsRequired().HasMaxLength(256);
@@ -22,6 +24,8 @@ namespace DAL.Dbcontext.Configurations
 				   .WithMany(c => c.RefreshTokens)
 				   .HasForeignKey(r => r.UserId)
 				   .OnDelete(DeleteBehavior.Cascade);
+		
+			builder.HasQueryFilter(rt => !rt.User.IsDeleted);
 		}
 	}
 }

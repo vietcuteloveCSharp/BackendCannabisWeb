@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Promotion> builder)
 		{
+			builder.ToTable("Promotions", "Promotions");
 			builder.HasKey(c => c.PromotionId);
 			builder.Property(c => c.PromotionId).ValueGeneratedOnAdd();
 			builder.Property(c => c.PromotionName).HasColumnType("NVARCHAR(255)").IsRequired();
@@ -20,8 +21,8 @@ namespace DAL.Dbcontext.Configurations
 			builder.Property(c => c.MinimumOrderValue).HasPrecision(12, 2).IsRequired();
 			builder.Property(c => c.MaximumDiscountValue).HasPrecision(12, 2).IsRequired();
 			builder.Property(c => c.MinimumQuantity).IsRequired();
-			builder.Property(a => a.StartDate).HasDefaultValueSql("CURRENT_TIMESTAMP").IsRequired();
-			builder.Property(a => a.EndDate).HasDefaultValueSql("CURRENT_TIMESTAMP").IsRequired();
+			builder.Property(a => a.StartDate).HasDefaultValueSql("GETUTCDATE()").IsRequired();
+			builder.Property(a => a.EndDate).HasDefaultValueSql("GETUTCDATE()").IsRequired();
 			builder.Property(a => a.IsActive).HasDefaultValue(true).IsRequired();
 			builder.HasIndex(c => c.PromotionName).HasDatabaseName("IX_Promotion_PromotionName");
 		}

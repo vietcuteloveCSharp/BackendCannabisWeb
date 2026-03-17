@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Product> builder)
 		{
+			builder.ToTable("Products", "Products");
 			builder.HasKey(c => c.ProductId);
 			builder.Property(c => c.ProductId).ValueGeneratedOnAdd();
 			builder.Property(c => c.ProductName).HasMaxLength(255).IsRequired();
@@ -28,9 +29,9 @@ namespace DAL.Dbcontext.Configurations
 				   .WithMany(c => c.Products)
 				   .HasForeignKey(c => c.BrandId)
 				   .HasConstraintName("FK_PRODUCT_BRAND_BRANDID")
-				   .OnDelete(DeleteBehavior.SetNull);
+				   .OnDelete(DeleteBehavior.Restrict);
 
-			builder.HasIndex(c => c.ProductName).HasDatabaseName("IX_Product_ProductName");
+			builder.HasIndex(c => c.ProductName).HasDatabaseName("IX_Product_ProductName").IsUnique();
 		}
 	}
 }

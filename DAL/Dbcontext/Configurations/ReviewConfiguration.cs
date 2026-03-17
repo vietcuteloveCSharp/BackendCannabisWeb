@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Review> builder)
 		{
+			builder.ToTable("Reviews", "Reviews");
 			builder.HasKey(c => c.ReviewId);
 			builder.Property(c => c.ReviewId).ValueGeneratedOnAdd();
 
@@ -18,7 +19,7 @@ namespace DAL.Dbcontext.Configurations
 				.WithMany(c => c.Reviews)
 				.HasForeignKey(c => c.UserId)
 				.HasConstraintName("FK_REVIEW_USER_USERID")
-				.OnDelete(DeleteBehavior.NoAction)
+				.OnDelete(DeleteBehavior.Restrict)
 				.IsRequired();
 
 			builder.HasOne(c => c.Product)

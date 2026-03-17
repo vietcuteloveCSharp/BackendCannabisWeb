@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<ProductImage> builder)
 		{
+			builder.ToTable("ProductImages", "Products");
 			builder.HasKey(c => c.ProductImageId);
 			builder.Property(c => c.ProductImageId).ValueGeneratedOnAdd();
 			builder.Property<string>(c => c.ImageUrl).IsRequired();
@@ -20,7 +21,7 @@ namespace DAL.Dbcontext.Configurations
 				   .WithMany(c => c.ProductImages)
 				   .HasForeignKey(c => c.ProductId)
 				   .HasConstraintName("FK_PRODUCTIMAGE_PRODUCT_PRODUCTID")
-				   .OnDelete(DeleteBehavior.Restrict)
+				   .OnDelete(DeleteBehavior.Cascade)
 				   .IsRequired();
 		}
 	}

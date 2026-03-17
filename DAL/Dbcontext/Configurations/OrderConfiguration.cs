@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Order> builder)
 		{
+			builder.ToTable("Orders", "Orders");
 			builder.HasKey(c => c.OrderId);
 			builder.Property(c => c.OrderId).ValueGeneratedOnAdd();
 
