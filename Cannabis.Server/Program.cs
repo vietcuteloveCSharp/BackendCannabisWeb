@@ -116,7 +116,6 @@ namespace Cannabis.Server
 			app.UseHttpsRedirection();
 			app.UseCors("AllowAll");
 			app.UseMiddleware<GlobalExceptionMiddleware>();
-			app.UseMiddleware<JwtMiddleware>();
 			app.UseRouting();
 			app.UseAuthentication();
 			app.UseAuthorization();

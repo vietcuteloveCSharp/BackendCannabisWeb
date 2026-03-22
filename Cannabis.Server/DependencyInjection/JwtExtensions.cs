@@ -1,5 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+using static Enum.Domain.System_User;
 
 namespace Cannabis.Server.DependencyInjection
 {
