@@ -105,5 +105,18 @@ namespace Repository.BaseRepository
 			_dbSet.Update(updatedEntity); // mark entity modified
 			return true;
 		}
+
+		public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+		{
+			IQueryable<T> query = _dbSet;
+
+			// Load các bảng liên quan nếu có
+			foreach (var include in includes)
+			{
+				query = query.Include(include);
+			}
+
+			return await query.FirstOrDefaultAsync(predicate);
+		}
 	}
 }

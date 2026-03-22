@@ -10,6 +10,9 @@ global using Repository.IRepository;
 global using Repository.BaseRepository;
 global using DAL.Inherited;
 global using Microsoft.EntityFrameworkCore.ChangeTracking;
-global using static Enum.EnumableClass.EnumableClass;
+global using static Enum.Domain.Orders;
+global using static Enum.Domain.Product_Inventory;
+global using static Enum.Domain.System_User;
+global using static Enum.Domain.TechnicalSpecs;
 global using Repository.Repository;
 
