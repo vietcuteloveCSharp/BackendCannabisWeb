@@ -1,4 +1,6 @@
-﻿namespace DAL.Dbcontext
+﻿using System.Linq.Expressions;
+
+namespace DAL.Dbcontext
 {
 	public class CannabisAccessoriesDBContext : DbContext
 	{
@@ -49,25 +51,54 @@
 			{
 				if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
 				{
-					modelBuilder.Entity(entityType.ClrType).Property<DateTime>("CreatedAt")
-						.HasDefaultValueSql("GETUTCDATE()")
-						.ValueGeneratedOnAdd();
+					var method = typeof(ModelBuilder)
+			.GetMethods()
+			.First(m => m.Name == "Entity" && m.IsGenericMethod)
+			.MakeGenericMethod(entityType.ClrType);
 
-					modelBuilder.Entity(entityType.ClrType).Property<DateTime?>("UpdatedAt");
+					var entityBuilder = method.Invoke(modelBuilder, null);
 
-					modelBuilder.Entity(entityType.ClrType).Property<bool>("IsDeleted")
-						.HasDefaultValue(false);
+					var param = Expression.Parameter(entityType.ClrType, "e");
+					var prop = Expression.Property(param, "IsDeleted");
+					var body = Expression.Equal(prop, Expression.Constant(false));
+					var lambda = Expression.Lambda(body, param);
 
-					modelBuilder.Entity(entityType.ClrType).Property<DateTime?>("DeletedAt");
+					entityType.SetQueryFilter(lambda);
 				}
 			}
-			
+
 		}
 
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 
+		}
+		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+		{
+			var entries = ChangeTracker.Entries<BaseEntity>();
+
+			foreach (var entry in entries)
+			{
+				switch (entry.State)
+				{
+					case EntityState.Added:
+						entry.Entity.CreatedAt = DateTime.UtcNow;
+						break;
+
+					case EntityState.Modified:
+						entry.Entity.UpdatedAt = DateTime.UtcNow;
+						break;
+
+					case EntityState.Deleted:
+						entry.State = EntityState.Modified;
+						entry.Entity.IsDeleted = true;
+						entry.Entity.DeletedAt = DateTime.UtcNow;
+						break;
+				}
+			}
+
+			return base.SaveChangesAsync(cancellationToken);
 		}
 	}
 }

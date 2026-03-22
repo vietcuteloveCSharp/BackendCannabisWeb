@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<PromotionCategory> builder)
 		{
+			builder.ToTable("PromotionsCategories", "Promotions");
 			builder.HasKey(pc => new { pc.PromotionId, pc.CategoryId });
 
 			builder.HasOne(c => c.Promotion)
@@ -24,6 +25,7 @@ namespace DAL.Dbcontext.Configurations
 				.HasForeignKey(c => c.CategoryId)
 				.HasConstraintName("FK_PROMOTIONCATEGORY_CATEGORY_CATEGORYID")
 				.IsRequired();
+			builder.HasQueryFilter(x => !x.Category.IsDeleted);
 		}
 	}
 }

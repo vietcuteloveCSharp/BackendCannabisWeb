@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Payment> builder)
 		{
+			builder.ToTable("Payments", "Orders");
 			builder.HasKey(c => c.PaymentId);
 			builder.Property(c => c.PaymentId).ValueGeneratedOnAdd();
 			builder.Property(c => c.PaymentName).HasMaxLength(300).IsRequired();

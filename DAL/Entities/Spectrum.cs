@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Spectrums",Schema = "Inventory")]   
     public class Spectrum : BaseEntity
     {
         [Key]

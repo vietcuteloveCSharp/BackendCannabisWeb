@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Reviews",Schema ="Reviews")]
     public class Review :BaseEntity
     {
         [Key]
@@ -17,9 +16,9 @@
         [StringLength(150,ErrorMessage = "Review title no more than 150 characters.")]
         public string ReviewTitle { get; set; }  = string.Empty;
 		//navigation
-		public virtual User? User { get; set; }
-        public virtual Product? Product { get; set; }
-        public virtual Order? Order { get; set; }
+		public virtual User User { get; set; } = default!;
+        public virtual Product Product { get; set; } = default!;
+        public virtual Order Order { get; set; } = default!;
 
     }
 }

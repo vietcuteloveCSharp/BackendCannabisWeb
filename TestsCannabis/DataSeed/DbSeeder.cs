@@ -2,7 +2,7 @@
 {
 	public static class DbSeeder
 	{
-		public static async Task SeedAll(CannabisAccessorriesDBContext db)
+		public static async Task SeedAll(CannabisAccessoriesDBContext db)
 		{
 			SeedRoles(db);
 			SeedUsers(db);
@@ -17,7 +17,7 @@
 			SeedNutrients(db);
 			await db.SaveChangesAsync();
 		}
-		private static void SeedRoles(CannabisAccessorriesDBContext db)
+		private static void SeedRoles(CannabisAccessoriesDBContext db)
 		{
 			if (db.Roles.Any()) return;
 			db.Roles.AddRange(new List<Role>
@@ -48,7 +48,7 @@
 				}
 			});
 		}
-		private static void SeedUsers(CannabisAccessorriesDBContext db)
+		private static void SeedUsers(CannabisAccessoriesDBContext db)
 		{
 			if (db.Users.Any()) return;
 			var password = "Vuvietanh1!";
@@ -119,7 +119,7 @@
 			db.Users.AddRange(users);
 
 		}
-		private static void SeedAddresses(CannabisAccessorriesDBContext db)
+		private static void SeedAddresses(CannabisAccessoriesDBContext db)
 		{
 			if (db.Addresses.Any()) return;
 
@@ -193,7 +193,7 @@
 			};
 			db.Addresses.AddRange(addresses);
 		}
-		private static void SeedBrands(CannabisAccessorriesDBContext db)
+		private static void SeedBrands(CannabisAccessoriesDBContext db)
 		{
 			if (db.Brands.Any()) return;
 
@@ -255,7 +255,7 @@
 			};
 			db.Brands.AddRange(brands);
 		}
-		private static void SeedCarbonFilters(CannabisAccessorriesDBContext db)
+		private static void SeedCarbonFilters(CannabisAccessoriesDBContext db)
 		{
 			if (db.CarbonFilters.Any()) return;
 
@@ -321,7 +321,7 @@
 			};
 			db.CarbonFilters.AddRange(carbonFilters);
 		}
-		private static void SeedClassifications(CannabisAccessorriesDBContext db)
+		private static void SeedClassifications(CannabisAccessoriesDBContext db)
 		{
 			if (db.Classifications.Any()) return; // tránh seed trùng khi test lại
 
@@ -367,7 +367,7 @@
 
 			db.Classifications.AddRange(classifications);
 		}
-		private static void SeedSpectrums(CannabisAccessorriesDBContext db)
+		private static void SeedSpectrums(CannabisAccessoriesDBContext db)
 		{
 			if (db.Spectrums.Any()) return;
 
@@ -412,7 +412,7 @@
 
 			db.Spectrums.AddRange(spectrums);
 		}
-		private static void SeedChipModels(CannabisAccessorriesDBContext db)
+		private static void SeedChipModels(CannabisAccessoriesDBContext db)
 		{
 			if (db.ChipModels.Any()) return;
 
@@ -472,7 +472,7 @@
 
 			db.ChipModels.AddRange(chipModels);
 		}
-		private static void SeedProductImages(CannabisAccessorriesDBContext db)
+		private static void SeedProductImages(CannabisAccessoriesDBContext db)
 		{
 			if (db.ProductImages.Any()) return;
 
@@ -535,7 +535,7 @@
 
 			db.ProductImages.AddRange(productImages);
 		}
-		private static void SeedNutrients(CannabisAccessorriesDBContext db)
+		private static void SeedNutrients(CannabisAccessoriesDBContext db)
 		{
 			if (db.Nutrients.Any()) return;
 
@@ -596,7 +596,7 @@
 
 			db.Nutrients.AddRange(nutrients);
 		}
-		private static void SeedNutrientTypes(CannabisAccessorriesDBContext db)
+		private static void SeedNutrientTypes(CannabisAccessoriesDBContext db)
 		{
 			if (db.NutrientTypes.Any()) return;
 

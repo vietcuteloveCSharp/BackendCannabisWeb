@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Orders",Schema = "Orders")]   
     public class Order : BaseEntity
     {
         [Key]
@@ -11,7 +10,7 @@
 
         public int SellerId {  get; set; }
         [Column(TypeName ="nvarchar(20)")]
-        public EOrderSatus OrderStatus {  get; set; }
+        public EOrderStatus OrderStatus {  get; set; }
         [Column(TypeName ="decimal(10,2)")]
         public decimal TotalAmount {  get; set; }
         public string ShippingAddress {  get; set; } = string.Empty;

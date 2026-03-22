@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Users", Schema = "Users")]
     public class User :BaseEntity
     {
         [Key]
@@ -22,14 +21,14 @@
         public EUserStatus Status { get; set; } = EUserStatus.Active;
 		[Required(ErrorMessage ="Id role is required.")]
         public int RoleId { get; set; }
-        public virtual Role? Role { get; set; }
+        public virtual Role Role { get; set; } = default!;
         public virtual Cart? Cart { get; set; } 
 		// 1. Đơn hàng người dùng mua
 		public ICollection<Order> OrdersAsBuyer { get; set; } = new List<Order>();
 
 		// 2. Đơn hàng người dùng bán
 		public ICollection<Order> OrdersAsSeller { get; set; } = new List<Order>();
-		public virtual ICollection<RefreshToken>? RefreshTokens { get; set; } =new List<RefreshToken>();
+		public virtual ICollection<RefreshToken> RefreshTokens { get; set; } =new List<RefreshToken>();
         public virtual ICollection<Address> ? Addresses { get; set; } = new HashSet<Address>();
         public virtual ICollection<Review>? Reviews { get; set; } = new HashSet<Review>();
         public virtual ICollection<AuditLog>? AuditLogs { get; set; } = new HashSet<AuditLog>();

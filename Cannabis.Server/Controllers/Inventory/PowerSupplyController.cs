@@ -7,7 +7,7 @@ using Service.IServices.Inventory;
 namespace Cannabis.Server.Controllers.Inventory
 {
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/powersupplies")]
+	[Route("api/v{version:apiVersion}/[controller]")]
 	[ApiController]
 	[Authorize]
 	public class PowerSupplyController : ControllerBase

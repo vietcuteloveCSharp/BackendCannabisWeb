@@ -17,10 +17,8 @@ namespace Service.Services.Inventory
 
 		public async Task<bool> DeleteAsync(int id)
 		{
-			var entity = await _unitOfWork.ChipModels.GetByIdAsync(id);
-
-			if (entity == null || entity.IsDeleted)
-				return false;
+			var entity = await _unitOfWork.ChipModels.GetByIdAsync(id)
+			?? throw new NotFoundException($"ChipModel ID {id} không tồn tại.");
 
 			entity.IsDeleted = true;
 			entity.DeletedAt = DateTime.UtcNow;
@@ -55,23 +53,37 @@ namespace Service.Services.Inventory
 			}
 			return _mapper.Map<IEnumerable<ChipModelDTO>>(chipModels);
 		}
-
+		//get chip model by id
 		public async Task<ChipModelDTO?> GetByIdAsync(int id)
-		{ 
-			var chipModel = await _unitOfWork.ChipModels.GetByIdAsync(id) ?? throw new NotFoundException($"ChipModel with Id:{id} not found");
+		{
+			var chipModel = await _unitOfWork.ChipModels.GetByIdAsync(id);
+			if (chipModel == null || chipModel.IsDeleted) return null;
 			return _mapper.Map<ChipModelDTO>(chipModel);
 		}
 		//update chip model
 		public async Task<bool> UpdateAsync(int id, ChipModelUpdateDTO dto)
 		{
-			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id, nameof(id));
-			var chipModel = await _unitOfWork.ChipModels.GetByIdAsync(id) ?? throw new NotFoundException($"ChipModel with Id:{id} not found");
-			_mapper.Map(dto, chipModel);
-			chipModel.UpdatedAt = DateTime.Now;
-			 _unitOfWork.ChipModels.Update(chipModel);
-			await _unitOfWork.SaveChangesAsync();
-			return true;
+			// 1. Validate ID nhanh 
+			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id);
 
+			// 2. Tìm Entity. Nếu null, ném NotFoundException để Middleware tự xử lý trả về 404.
+			// Dùng GetByIdAsync (FindAsync) ở đây là hợp lý vì ta cần Tracking để Update.
+			var chipModel = await _unitOfWork.ChipModels.GetByIdAsync(id)
+				?? throw new NotFoundException($"ChipModel ID {id} không tồn tại.");
+
+			// 3. Map đè dữ liệu từ DTO vào Entity đã được tracking. 
+			// AutoMapper sẽ chỉ thay đổi các field có trong DTO, giữ nguyên các field khác.
+			_mapper.Map(dto, chipModel);
+
+			// 4. Cập nhật thời gian (luôn dùng UtcNow)
+			chipModel.UpdatedAt = DateTime.UtcNow;
+
+			// 5. Đánh dấu Update và Save. 
+			// nhưng gọi để tường minh và đảm bảo trạng thái EntityState.Modified.
+			_unitOfWork.ChipModels.Update(chipModel);
+			await _unitOfWork.SaveChangesAsync();
+
+			return true;
 		}
 	}
 }

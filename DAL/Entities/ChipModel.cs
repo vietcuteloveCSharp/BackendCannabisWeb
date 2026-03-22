@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("ChipModels",Schema = "Inventory")]
     public class ChipModel : BaseEntity
     {
         [Key]

@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Role> builder)
 		{
+			builder.ToTable("Roles", "Users");
 			builder.HasKey(c => c.RoleId);
 			builder.Property(c => c.RoleId).ValueGeneratedOnAdd();
 			builder.Property(c => c.RoleName).IsRequired().HasConversion<string>();

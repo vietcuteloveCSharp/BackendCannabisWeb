@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("CartDetails", Schema = "Orders")]
     public class CartDetails :BaseEntity
     {
         [Key]
@@ -14,7 +13,7 @@
 		[Column(TypeName = "decimal(10,2)")]
         public decimal Price { get; set; }
 		//navigation
-		public virtual Product? Product { get; set; }
-        public virtual Cart? Cart { get; set; }
+		public virtual Product Product { get; set; } = default!;
+        public virtual Cart Cart { get; set; } = default!;
     }
 }

@@ -11,13 +11,14 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<GrowTent> builder)
 		{
+			builder.ToTable("GrowTents", "Inventory");
 			builder.HasKey(gt => gt.GrowtentId);
 			builder.Property(gt => gt.BrandId).IsRequired();
 			builder.Property(gt => gt.Dimensions).HasMaxLength(100).IsRequired();
 			builder.Property(gt => gt.Material).HasMaxLength(255).IsRequired();
 			builder.Property(gt => gt.Waterproof).HasDefaultValue(false);
 			builder.Property(gt => gt.Quantity).IsRequired();
-			builder.Property(gt => gt.Price).HasColumnType("decimal(10,2)").IsRequired();
+			builder.Property(gt => gt.Price).HasPrecision(10, 2).IsRequired();
 			builder.Property(gt => gt.FrameMaterial).HasMaxLength(255).IsRequired();
 			builder.Property(gt => gt.WarrantyPeriod).IsRequired();
 			builder.Property(gt => gt.Description).HasMaxLength(1000);

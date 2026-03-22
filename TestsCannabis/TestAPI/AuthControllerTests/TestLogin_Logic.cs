@@ -22,7 +22,7 @@ namespace TestsCannabis.TestAPI.AuthControllerTests
 			{
 				Username = "testadmin01",   // user có sẵn từ DbSeeder
 				Password = "Vuvietanh1!",
-				RememberMe = false
+				
 			};
 
 			// Act
@@ -44,8 +44,8 @@ namespace TestsCannabis.TestAPI.AuthControllerTests
 			var dto = new LoginResquestDTO
 			{
 				Username = "testadmin01",
-				Password = "Vuvietanh1!",
-				RememberMe = true
+				Password = "Vuvietanh1!"
+				
 			};
 
 			// Act

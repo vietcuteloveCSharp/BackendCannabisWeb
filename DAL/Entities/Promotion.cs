@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Promotions", Schema = "Promotions")]
     public class Promotion :BaseEntity
     {
         [Key]

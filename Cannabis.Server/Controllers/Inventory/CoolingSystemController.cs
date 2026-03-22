@@ -6,9 +6,9 @@ using DTO.DTOs.CoolingSystems; // Đảm bảo đúng namespace của DTO
 namespace Cannabis.Server.Controllers.Inventory
 {
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/cooling-systems")] // Sử dụng kebab-case cho chuẩn REST
+	[Route("api/v{version:apiVersion}/[controller]")] // Sử dụng kebab-case cho chuẩn REST
 	[ApiController]
-	[Authorize] // Yêu cầu xác thực (JWT) cho tất cả các endpoint
+	[Authorize(Roles="Admin")] // Yêu cầu xác thực (JWT) cho tất cả các endpoint
 	public class CoolingSystemController(ICoolingSystemService coolingSystemService) : ControllerBase
 	{
 		private readonly ICoolingSystemService _coolingSystemService = coolingSystemService;
@@ -49,10 +49,8 @@ namespace Cannabis.Server.Controllers.Inventory
 		public async Task<IActionResult> GetById(int id)
 		{
 			var data = await _coolingSystemService.GetByIdAsync(id);
-			if (data == null)
-				return NotFound(ApiResponse<string>.Fail("Cooling system not found."));
 
-			return Ok(ApiResponse<CoolingSystemDTO>.Ok(data));
+			return Ok(ApiResponse<CoolingSystemDTO>.Ok(data!));
 		}
 
 		/// <summary>

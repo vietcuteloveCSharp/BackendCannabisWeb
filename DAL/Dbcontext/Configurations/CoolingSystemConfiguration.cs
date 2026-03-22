@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<CoolingSystem> builder)
 		{
+			builder.ToTable("CoolingSystems", "Inventory");
 			builder.HasKey(c => c.CoolingSystemId);
 
 			builder.Property(c => c.Type)

@@ -1,4 +1,6 @@
-﻿namespace DTO.DTOs.User.Users
+﻿using static Enum.Domain.System_User;
+
+namespace DTO.DTOs.User.Users
 {
 	public class CreateUserDTO
 	{

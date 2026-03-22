@@ -11,11 +11,12 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<GrowLight> builder)
 		{
+			builder.ToTable("GrowLights", "Inventory");
 			builder.HasKey(gl => gl.GrowLightId);
 			builder.Property(gl => gl.BrandId).IsRequired();
 			builder.Property(gl => gl.Quantity).IsRequired();
 			builder.Property(gl => gl.Wattage).IsRequired();
-			builder.Property(gl => gl.Price).HasColumnType("decimal(10,2)").IsRequired();
+			builder.Property(gl => gl.Price).HasPrecision(10, 2).IsRequired();
 			builder.Property(gl => gl.CoverageArea).IsRequired();
 			builder.Property(gl => gl.WarrantyPeriod).IsRequired();
 			builder.Property(gl => gl.PowerSupplyId).IsRequired();

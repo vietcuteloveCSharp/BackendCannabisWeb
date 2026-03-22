@@ -25,6 +25,10 @@ namespace Repository.UnitOfWork
 		public ISpectrumRepository Spectrums { get; }
 		public IAuditLogRepository AuditLogs { get; }
 		Task<int> SaveChangesAsync();
-		void Rollback();
+		Task BeginTransactionAsync();
+		Task CommitTransactionAsync();
+		Task RollbackTransactionAsync();
+		Task DisposeTransactionAsync();
+	
 	}
 }

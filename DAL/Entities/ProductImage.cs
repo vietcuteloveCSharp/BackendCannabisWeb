@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("ProductImages", Schema = "Products")]
     public class ProductImage : BaseEntity
     {
         [Key]

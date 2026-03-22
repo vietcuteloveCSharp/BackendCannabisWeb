@@ -49,17 +49,46 @@ namespace Service.Services.Product
 		/// Xóa mềm sản phẩm.
 		public async Task<bool> DeleteAsync(int id)
 		{
-			var product = await _unitOfWork.Products.GetByIdAsync(id);
+			// Bắt đầu một giao dịch (Transaction)
+			await _unitOfWork.BeginTransactionAsync();
+			try
+			{
+				var product = await _unitOfWork.Products.GetByIdAsync(id);
+				if (product == null || product.IsDeleted)
+				{
+					return false;
+				}
 
-			if (product == null || product.IsDeleted)
-				return false; 
+				// 1. Xóa mềm Product cha
+				product.IsDeleted = true;
+				product.DeletedAt = DateTime.UtcNow;
+				_unitOfWork.Products.Update(product);
 
-			product.IsDeleted = true;
-			product.DeletedAt = DateTime.UtcNow;
+				// 2. Tìm và xóa mềm các bảng vệ tinh liên quan
+				// Ví dụ với bảng Seeds
+				var seed = await _unitOfWork.Seeds.FindAsync(s => s.ProductId == id);
+				if (seed != null && !seed.IsDeleted)
+				{
+					seed.IsDeleted = true;
+					seed.DeletedAt = DateTime.UtcNow;
+					// Nếu bảng Seed của bạn có cột DeletedAt thì bổ sung thêm
+					_unitOfWork.Seeds.Update(seed);
+				}
 
-			_unitOfWork.Products.Update(product);
-			await _unitOfWork.SaveChangesAsync() ;
-			return true;
+				// 3. Thực hiện lưu tất cả thay đổi
+				await _unitOfWork.SaveChangesAsync();
+
+				// 4. Commit giao dịch nếu mọi thứ ổn
+				await _unitOfWork.CommitTransactionAsync();
+
+				return true;
+			}
+			catch (Exception)
+			{
+				// Nếu có bất kỳ lỗi nào, Rollback lại toàn bộ dữ liệu về trạng thái cũ
+				await _unitOfWork.RollbackTransactionAsync();
+				throw; // Re-throw để Controller hoặc Middleware xử lý lỗi
+			}
 		}
 
 		//get all product active

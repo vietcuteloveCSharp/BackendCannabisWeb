@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Cart> builder)
 		{
+			builder.ToTable("Carts", "Orders");
 			builder.HasKey(c => c.CartId);
 
 			builder.Property(c => c.UserId)

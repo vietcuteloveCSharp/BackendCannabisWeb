@@ -30,7 +30,8 @@ namespace Cannabis.Server.Controllers.User
 		/// <exception cref="NotFoundException">
 		/// Thrown when the user with the specified ID does not exist.
 		/// </exception>
-		[HttpGet("{id}")]
+		[HttpGet("{id:int}")]
+		[Authorize(Roles="Admin")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -57,16 +58,13 @@ namespace Cannabis.Server.Controllers.User
 		[ProducesResponseType(400)]
 		public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserDTO createUserDTO)
 		{
-			if (!ModelState.IsValid)
-			{
-				return this.ValidateModelState();
-			}
+			
 			var result = await _UserService.RegisterUserAsync(createUserDTO);
 
 			return CreatedAtAction(
 				actionName: "GetUserById",
 				controllerName: "User",
-				routeValues: new { id = result.UserId },
+				routeValues: new { version = "1.0",id = result.UserId },
 				value: ApiResponse<object>.Ok(result, "User registered successfully")
 				);
 		}

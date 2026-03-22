@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cannabis.Server.Controllers.Inventory
 {
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/spectrums")]
+	[Route("api/v{version:apiVersion}/[controller]")]
 	[ApiController]
 	public class SpectrumController : ControllerBase
 	{

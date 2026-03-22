@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Carts", Schema = "Orders")]
     public class Cart :BaseEntity
     {
         [Key]
@@ -17,7 +16,7 @@
 		[Column(TypeName = "nvarchar(20)")]
 		public ECartStatus Status { get; set; } = ECartStatus.Active;
 		//navigation 
-		public virtual User? User { get; set; }
+		public virtual User User { get; set; } = default!;
         public virtual ICollection<CartDetails> CartDetails { get; set; } = new HashSet<CartDetails>();
         
     

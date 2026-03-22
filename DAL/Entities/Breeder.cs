@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Breeders" ,Schema = "Products")]
     public class Breeder :BaseEntity
     {
         [Key]

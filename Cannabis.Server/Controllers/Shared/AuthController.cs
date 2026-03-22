@@ -1,4 +1,5 @@
 ﻿using DTO.DTOs.Shared;
+using DTO.TokenDTOs;
 
 namespace Cannabis.Server.Controllers.Shared
 {
@@ -42,8 +43,7 @@ namespace Cannabis.Server.Controllers.Shared
 			var tokenResult = new TokenResultDTO
 			{
 				AccessToken = tokenDto.AccessToken,
-				RefreshToken = tokenDto.RefreshToken,
-				ExpiresIn = tokenDto.ExpiresIn ,
+				ExpiresAt = DateTime.UtcNow.AddSeconds(tokenDto.ExpiresInSeconds),
 				User = tokenDto.User!
 			};
 			return Ok(ApiResponse<TokenResultDTO>.Ok(tokenResult, "Login successful"));
@@ -86,7 +86,7 @@ namespace Cannabis.Server.Controllers.Shared
 				SameSite = SameSiteMode.Strict
 			});
 
-			return Ok(ApiResponse<object>.Ok(null, "Đăng xuất thành công."));
+			return Ok(ApiResponse<object>.Ok("", "Đăng xuất thành công."));
 		}
 		[HttpPost("change-password")]
 		[Authorize] // Phải login mới đổi được
@@ -155,8 +155,6 @@ namespace Cannabis.Server.Controllers.Shared
 		[ProducesResponseType(400)]
 		public async Task<IActionResult> ForgotPassword([FromBody] ResetPasswordParam resetPasswordParam)
 		{
-			if (!ModelState.IsValid)
-				return this.ValidateModelState();
 
 			await _forgotPasswordService.ForgotPasswordAsync(resetPasswordParam);
 			return Ok(ApiResponse<string>.Content("Password has been reset successfully."));

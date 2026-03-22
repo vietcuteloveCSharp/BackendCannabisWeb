@@ -4,9 +4,9 @@ using Service.IServices.Inventory;
 namespace Cannabis.Server.Controllers.Inventory
 {
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/chip-models")]
+	[Route("api/v{version:apiVersion}/[controller]")]
 	[ApiController]
-	[Authorize]
+	[Authorize(Roles ="Admin")]
 	public class ChipModelController : ControllerBase
 	{
 		private readonly IChipModelService _chipModelService;

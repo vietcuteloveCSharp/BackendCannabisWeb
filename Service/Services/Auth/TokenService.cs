@@ -24,19 +24,19 @@
 			//	new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 			//	new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString())
 			//};
-			var expires = _jwtSettings.AccessTokenLifetimeSecond;
+			var expires = _jwtSettings.AccessTokenLifetimeSeconds;
 			// Bảo vệ trường hợp lifetime âm hoặc bằng 0
-			if (expires <= TimeSpan.Zero)
+			if (expires <= 0)
 			{
 				// Giúp token có hiệu lực hợp lệ trong 1 giây (để tránh IDX12401)
-				expires = expires = TimeSpan.FromSeconds(1);
+				expires = 1;
 			
 			}
 			// Tạo token
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
 				Subject = new ClaimsIdentity(claims),
-				Expires = DateTime.UtcNow.Add(expires),
+				Expires = DateTime.UtcNow.AddSeconds(_jwtSettings.AccessTokenLifetimeSeconds),
 				Issuer = _jwtSettings.Issuer,
 				Audience = _jwtSettings.Audience,
 				SigningCredentials = creds,

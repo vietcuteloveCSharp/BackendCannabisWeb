@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Spectrum> builder)
 		{
+			builder.ToTable("Spectrums", "Inventory");
 			builder.HasKey(c => c.SpectrumId);
 			builder.Property(c => c.SpectrumId).ValueGeneratedOnAdd();
 

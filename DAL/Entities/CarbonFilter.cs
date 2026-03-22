@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("CarbonFilters",Schema = "Inventory")]
     public class CarbonFilter :BaseEntity
     {
         [Key]
@@ -30,7 +29,7 @@
         public string ModelNumber { get; set; } = string.Empty; // Số model
 
         //navigation
-        public virtual Brand? Brand { get; set; }
-        public virtual Product? Product { get; set; }
+        public virtual Brand Brand { get; set; } = default!;
+        public virtual Product Product { get; set; } = default!;
     }
 }

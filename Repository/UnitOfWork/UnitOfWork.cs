@@ -11,7 +11,7 @@ namespace Repository.UnitOfWork
 
 		public IGrowLightRepository GrowLights { get; private set; }
 
-		 public IGrowTentRepository GrowTents { get; private set; }
+		public IGrowTentRepository GrowTents { get; private set; }
 
 		public ICarbonFilterRepository CarbonFilters { get; private set; }
 
@@ -19,7 +19,7 @@ namespace Repository.UnitOfWork
 
 		public ISeedRepository Seeds { get; private set; }
 
-		public INutrientRepository Nutrients { get;private set; }
+		public INutrientRepository Nutrients { get; private set; }
 
 		public IAddressRepository Addresses { get; private set; }
 		public IUserRepository Users { get; private set; }
@@ -37,7 +37,7 @@ namespace Repository.UnitOfWork
 
 		public IRoleRepository Roles { get; private set; }
 
-		public ISpectrumRepository Spectrums {get; private set;}
+		public ISpectrumRepository Spectrums { get; private set; }
 
 		public IAuditLogRepository AuditLogs { get; private set; }
 
@@ -70,35 +70,70 @@ namespace Repository.UnitOfWork
 
 		}
 
-		
+		// Cập nhật hàm Dispose chung của UnitOfWork
 		public void Dispose()
 		{
+			_transaction?.Dispose(); // Giải phóng transaction nếu còn
 			_context.Dispose();
-			GC.SuppressFinalize(this); //optional, if you have a finalizer
-		}
-		//huỷ tất cả nếu có lỗi xảy ra
-		public void Rollback()
-		{
-			_transaction?.Rollback();
+			GC.SuppressFinalize(this);
 		}
 
 		public async Task<int> SaveChangesAsync()
 		{
 			return await _context.SaveChangesAsync();
 		}
+
 		//bắt đầu 1 transaction với database
 		public async Task BeginTransactionAsync()
 		{
-			_transaction = await _context.Database.BeginTransactionAsync();
+			// Kiểm tra nếu đã có transaction rồi thì không tạo mới (Nested transaction handling)
+			if (_transaction == null)
+			{
+				_transaction = await _context.Database.BeginTransactionAsync();
+			}
 		}
-		//xác nhận transaction và lưu thay đổi vào database
-		public async Task CommitAsync()
+		// Xác nhận và Lưu
+		public async Task CommitTransactionAsync()
+		{
+			try
+			{
+				//lưu trc khi commit
+				await SaveChangesAsync();
+
+				if (_transaction != null)
+				{
+					await _transaction.CommitAsync();
+				}
+			}
+			catch (Exception)
+			{
+				await RollbackTransactionAsync();
+				throw;
+			}
+			finally
+			{
+				await DisposeTransactionAsync();
+			}
+		}
+		// Rollback bất đồng bộ
+		public async Task RollbackTransactionAsync()
 		{
 			if (_transaction != null)
 			{
-				await _transaction.CommitAsync();
-				await _transaction.DisposeAsync();
+				await _transaction.RollbackAsync();
+				await DisposeTransactionAsync();
 			}
 		}
+		// Hàm hỗ trợ giải phóng transaction
+		public async Task DisposeTransactionAsync()
+		{
+			if (_transaction != null)
+			{
+				await _transaction.DisposeAsync();
+				_transaction = null;
+			}
+		}
+		// Cập nhật hàm Dispose chung của UnitOfWork
+		
 	}
 }

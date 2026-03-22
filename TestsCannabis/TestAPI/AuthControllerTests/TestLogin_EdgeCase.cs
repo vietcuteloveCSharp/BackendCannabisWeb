@@ -28,7 +28,7 @@ namespace TestsCannabis.TestAPI.AuthControllerTests
 			{
 				Username = username,
 				Password = password,
-				RememberMe =false
+				
 			};
 
 			// Act

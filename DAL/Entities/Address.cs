@@ -1,6 +1,6 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Addresses")]
+    
     public class Address :BaseEntity
     {
         [Key]
@@ -32,7 +32,7 @@
 		public bool IsDefault {  get; set; } =false;
 
         //navigation
-        public virtual User? User { get; set; } 
+        public virtual User User { get; set; } = default!;
        
 	}
 }

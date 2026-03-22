@@ -11,6 +11,8 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Category> builder)
 		{
+			builder.ToTable("Categories", "Products");
+
 			builder.HasKey(c => c.CategoryId);
 
 			builder.Property(c => c.CategoryName).HasMaxLength(100).IsRequired();

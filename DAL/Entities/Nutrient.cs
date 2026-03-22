@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("Nutrients",Schema = "Inventory")]
     public class Nutrient :BaseEntity
     {
         [Key]
@@ -24,10 +23,10 @@
         public string? Description { get; set; }
         public DateTime? ExpirationDate { get; set; }
         [StringLength(255, ErrorMessage = "Storage instructions no more than 255 characters.")]
-        public string StorageInstructions { get; set; } = string.Empty; 
-		public virtual Brand? Brand { get; set; }
-        public virtual NutrientType? NutrientType { get; set; }
-        public virtual Product? Product { get; set; }
+        public string StorageInstructions { get; set; } = string.Empty;
+        public virtual Brand Brand { get; set; } = default!;
+        public virtual NutrientType NutrientType { get; set; } = default!;
+        public virtual Product Product { get; set; } = default!;
          
     }
 }

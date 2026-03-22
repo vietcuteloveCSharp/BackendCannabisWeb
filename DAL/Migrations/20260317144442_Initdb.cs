@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDB : Migration
+    public partial class Initdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "Logs");
+                name: "Users");
 
             migrationBuilder.EnsureSchema(
                 name: "Products");
@@ -24,19 +24,10 @@ namespace DAL.Migrations
                 name: "Orders");
 
             migrationBuilder.EnsureSchema(
-                name: "lighting");
-
-            migrationBuilder.EnsureSchema(
                 name: "Promotions");
 
             migrationBuilder.EnsureSchema(
-                name: "Users");
-
-            migrationBuilder.EnsureSchema(
                 name: "Reviews");
-
-            migrationBuilder.EnsureSchema(
-                name: "Oders");
 
             migrationBuilder.CreateTable(
                 name: "Brands",
@@ -50,9 +41,9 @@ namespace DAL.Migrations
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Website = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -61,7 +52,7 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Breeders",
+                name: "Breeds",
                 schema: "Products",
                 columns: table => new
                 {
@@ -74,14 +65,14 @@ namespace DAL.Migrations
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Breeders", x => x.BreederId);
+                    table.PrimaryKey("PK_Breeds", x => x.BreederId);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,9 +84,9 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -115,9 +106,9 @@ namespace DAL.Migrations
                     Generation = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Efficiency = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -126,7 +117,8 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Classifies",
+                name: "Classifications",
+                schema: "Products",
                 columns: table => new
                 {
                     ClassificationId = table.Column<int>(type: "int", nullable: false)
@@ -135,14 +127,14 @@ namespace DAL.Migrations
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classifies", x => x.ClassificationId);
+                    table.PrimaryKey("PK_Classifications", x => x.ClassificationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,9 +146,9 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -173,9 +165,9 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NutrientName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -185,16 +177,16 @@ namespace DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "PowerSupplies",
-                schema: "lighting",
+                schema: "Inventory",
                 columns: table => new
                 {
                     PowerSupplyId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     Voltage = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -216,12 +208,12 @@ namespace DAL.Migrations
                     MinimumOrderValue = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
                     MinimumQuantity = table.Column<int>(type: "int", nullable: false),
                     MaximumDiscountValue = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -238,9 +230,9 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -257,9 +249,9 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -277,11 +269,11 @@ namespace DAL.Migrations
                     ProductName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    BrandId = table.Column<int>(type: "int", nullable: true),
+                    BrandId = table.Column<int>(type: "int", nullable: false),
                     ProductType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -293,7 +285,7 @@ namespace DAL.Migrations
                         principalSchema: "Products",
                         principalTable: "Brands",
                         principalColumn: "BrandId",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PRODUCT_CATEGORY_CATEGORYID",
                         column: x => x.CategoryId,
@@ -304,7 +296,7 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Promotion_Category",
+                name: "PromotionsCategories",
                 schema: "Promotions",
                 columns: table => new
                 {
@@ -313,7 +305,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Promotion_Category", x => new { x.PromotionId, x.CategoryId });
+                    table.PrimaryKey("PK_PromotionsCategories", x => new { x.PromotionId, x.CategoryId });
                     table.ForeignKey(
                         name: "FK_PROMOTIONCATEGORY_CATEGORY_CATEGORYID",
                         column: x => x.CategoryId,
@@ -342,11 +334,11 @@ namespace DAL.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(20)", nullable: false, defaultValue: "Active"),
+                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Active"),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -372,7 +364,7 @@ namespace DAL.Migrations
                     AirflowRate = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     FilterMaterial = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Diameter = table.Column<decimal>(type: "decimal(4,2)", nullable: false),
                     Length = table.Column<decimal>(type: "decimal(4,2)", nullable: false),
@@ -382,9 +374,9 @@ namespace DAL.Migrations
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     WarrantyPeriod = table.Column<int>(type: "int", nullable: false),
                     ModelNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -417,13 +409,13 @@ namespace DAL.Migrations
                     DehumidificationCapacity = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
-                    CoverageArea = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    CoverageArea = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     NoiseLevel = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
-                    PowerConsumption = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    PowerConsumption = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -456,7 +448,7 @@ namespace DAL.Migrations
                     BrandId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Wattage = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     CoverageArea = table.Column<int>(type: "int", nullable: false),
                     WarrantyPeriod = table.Column<int>(type: "int", nullable: false),
                     PowerSupplyId = table.Column<int>(type: "int", nullable: false),
@@ -466,9 +458,9 @@ namespace DAL.Migrations
                     Lifespan = table.Column<int>(type: "int", nullable: false),
                     ModelNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -498,7 +490,7 @@ namespace DAL.Migrations
                     table.ForeignKey(
                         name: "FK_GROWLIGHT_POWERSUPPLY",
                         column: x => x.PowerSupplyId,
-                        principalSchema: "lighting",
+                        principalSchema: "Inventory",
                         principalTable: "PowerSupplies",
                         principalColumn: "PowerSupplyId",
                         onDelete: ReferentialAction.Restrict);
@@ -531,13 +523,13 @@ namespace DAL.Migrations
                     Material = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Waterproof = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     FrameMaterial = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     WarrantyPeriod = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -578,9 +570,9 @@ namespace DAL.Migrations
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     StorageInstructions = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -619,9 +611,9 @@ namespace DAL.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsMainImage = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -633,11 +625,11 @@ namespace DAL.Migrations
                         principalSchema: "Products",
                         principalTable: "Products",
                         principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Promotion_Product",
+                name: "PromotionProducts",
                 schema: "Promotions",
                 columns: table => new
                 {
@@ -646,7 +638,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Promotion_Product", x => new { x.PromotionId, x.ProductId });
+                    table.PrimaryKey("PK_PromotionProducts", x => new { x.PromotionId, x.ProductId });
                     table.ForeignKey(
                         name: "FK_PROMOTIONPRODUCT_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
@@ -684,9 +676,9 @@ namespace DAL.Migrations
                     SativaPercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
                     TotalQuantity = table.Column<int>(type: "INT", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -695,9 +687,10 @@ namespace DAL.Migrations
                     table.ForeignKey(
                         name: "FK_SEED_CLASSIFICATION_CLASSIFYID",
                         column: x => x.ClassifyId,
-                        principalTable: "Classifies",
+                        principalSchema: "Products",
+                        principalTable: "Classifications",
                         principalColumn: "ClassificationId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SEED_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
@@ -706,16 +699,17 @@ namespace DAL.Migrations
                         principalColumn: "ProductId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Seeds_Breeders_BreederId",
+                        name: "FK_Seeds_Breeds_BreederId",
                         column: x => x.BreederId,
                         principalSchema: "Products",
-                        principalTable: "Breeders",
+                        principalTable: "Breeds",
                         principalColumn: "BreederId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Addresses",
+                schema: "Users",
                 columns: table => new
                 {
                     AddressId = table.Column<int>(type: "int", nullable: false)
@@ -729,9 +723,9 @@ namespace DAL.Migrations
                     HouseNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     IsDefault = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -748,7 +742,7 @@ namespace DAL.Migrations
 
             migrationBuilder.CreateTable(
                 name: "AuditLogs",
-                schema: "Logs",
+                schema: "Users",
                 columns: table => new
                 {
                     AuditLogId = table.Column<int>(type: "int", nullable: false)
@@ -795,9 +789,9 @@ namespace DAL.Migrations
                     Session_Id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -827,9 +821,9 @@ namespace DAL.Migrations
                     ShippingAddress = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     ShippingFee = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     TrackingNumber = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -886,10 +880,10 @@ namespace DAL.Migrations
                     CartId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -922,9 +916,9 @@ namespace DAL.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -956,9 +950,9 @@ namespace DAL.Migrations
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     PaymentName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -986,9 +980,9 @@ namespace DAL.Migrations
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Comments = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     ReviewTitle = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -1014,12 +1008,13 @@ namespace DAL.Migrations
                         column: x => x.UserId,
                         principalSchema: "Users",
                         principalTable: "Users",
-                        principalColumn: "UserId");
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShippingMethod",
-                schema: "Oders",
+                name: "ShippingMethods",
+                schema: "Orders",
                 columns: table => new
                 {
                     ShippingId = table.Column<int>(type: "int", nullable: false)
@@ -1029,14 +1024,14 @@ namespace DAL.Migrations
                     Carrier = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     EstimatedDeliveryDays = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     EstimatedDeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShippingMethod", x => x.ShippingId);
+                    table.PrimaryKey("PK_ShippingMethods", x => x.ShippingId);
                     table.ForeignKey(
                         name: "FK_SHIPPINGMETHOD_ORDER_ORDERID",
                         column: x => x.OrderId,
@@ -1048,36 +1043,37 @@ namespace DAL.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_UserId",
+                schema: "Users",
                 table: "Addresses",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuditLogs_Action",
-                schema: "Logs",
+                schema: "Users",
                 table: "AuditLogs",
                 column: "Action");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuditLogs_CreatedAt",
-                schema: "Logs",
+                schema: "Users",
                 table: "AuditLogs",
                 column: "CreatedAt");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuditLogs_RoleId",
-                schema: "Logs",
+                schema: "Users",
                 table: "AuditLogs",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuditLogs_TableName",
-                schema: "Logs",
+                schema: "Users",
                 table: "AuditLogs",
                 column: "TableName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuditLogs_UserId",
-                schema: "Logs",
+                schema: "Users",
                 table: "AuditLogs",
                 column: "UserId");
 
@@ -1091,7 +1087,7 @@ namespace DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Breeder_Email",
                 schema: "Products",
-                table: "Breeders",
+                table: "Breeds",
                 column: "Email",
                 unique: true);
 
@@ -1151,7 +1147,8 @@ namespace DAL.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "UX_Classifications_ClassificationName",
-                table: "Classifies",
+                schema: "Products",
+                table: "Classifications",
                 column: "ClassificationName",
                 unique: true);
 
@@ -1284,7 +1281,8 @@ namespace DAL.Migrations
                 name: "IX_Product_ProductName",
                 schema: "Products",
                 table: "Products",
-                column: "ProductName");
+                column: "ProductName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_BrandId",
@@ -1299,15 +1297,9 @@ namespace DAL.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Promotion_Category_CategoryId",
+                name: "IX_PromotionProducts_ProductId",
                 schema: "Promotions",
-                table: "Promotion_Category",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Promotion_Product_ProductId",
-                schema: "Promotions",
-                table: "Promotion_Product",
+                table: "PromotionProducts",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -1315,6 +1307,12 @@ namespace DAL.Migrations
                 schema: "Promotions",
                 table: "Promotions",
                 column: "PromotionName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PromotionsCategories_CategoryId",
+                schema: "Promotions",
+                table: "PromotionsCategories",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",
@@ -1341,13 +1339,6 @@ namespace DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Seed_ProductId",
-                schema: "Inventory",
-                table: "Seeds",
-                column: "ProductId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Seeds_BreederId",
                 schema: "Inventory",
                 table: "Seeds",
@@ -1360,9 +1351,16 @@ namespace DAL.Migrations
                 column: "ClassifyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShippingMethod_OrderId",
-                schema: "Oders",
-                table: "ShippingMethod",
+                name: "IX_Seeds_ProductId",
+                schema: "Inventory",
+                table: "Seeds",
+                column: "ProductId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShippingMethods_OrderId",
+                schema: "Orders",
+                table: "ShippingMethods",
                 column: "OrderId",
                 unique: true);
 
@@ -1391,11 +1389,12 @@ namespace DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Addresses");
+                name: "Addresses",
+                schema: "Users");
 
             migrationBuilder.DropTable(
                 name: "AuditLogs",
-                schema: "Logs");
+                schema: "Users");
 
             migrationBuilder.DropTable(
                 name: "CarbonFilters",
@@ -1434,11 +1433,11 @@ namespace DAL.Migrations
                 schema: "Products");
 
             migrationBuilder.DropTable(
-                name: "Promotion_Category",
+                name: "PromotionProducts",
                 schema: "Promotions");
 
             migrationBuilder.DropTable(
-                name: "Promotion_Product",
+                name: "PromotionsCategories",
                 schema: "Promotions");
 
             migrationBuilder.DropTable(
@@ -1454,8 +1453,8 @@ namespace DAL.Migrations
                 schema: "Inventory");
 
             migrationBuilder.DropTable(
-                name: "ShippingMethod",
-                schema: "Oders");
+                name: "ShippingMethods",
+                schema: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Carts",
@@ -1471,7 +1470,7 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "PowerSupplies",
-                schema: "lighting");
+                schema: "Inventory");
 
             migrationBuilder.DropTable(
                 name: "Spectrums",
@@ -1486,14 +1485,15 @@ namespace DAL.Migrations
                 schema: "Promotions");
 
             migrationBuilder.DropTable(
-                name: "Classifies");
+                name: "Classifications",
+                schema: "Products");
 
             migrationBuilder.DropTable(
                 name: "Products",
                 schema: "Products");
 
             migrationBuilder.DropTable(
-                name: "Breeders",
+                name: "Breeds",
                 schema: "Products");
 
             migrationBuilder.DropTable(

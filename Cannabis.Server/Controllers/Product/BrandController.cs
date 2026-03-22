@@ -5,7 +5,7 @@ using Service.IServices.Product;
 namespace Cannabis.Server.Controllers.Product
 {
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/brands")]
+	[Route("api/v{version:apiVersion}/[controller]")]
 	[ApiController]
 	public class BrandController(IBrandService brandService) : ControllerBase
 	{
@@ -46,7 +46,7 @@ namespace Cannabis.Server.Controllers.Product
 		public async Task<IActionResult> GetById(int id)
 		{
 			var brand = await _brandService.GetByIdAsync(id);
-			return Ok(ApiResponse<BrandDTO>.Ok(brand));
+			return Ok(ApiResponse<BrandDTO>.Ok(brand!));
 		}
 		  /// <summary>
         /// Add a new brand.
@@ -85,7 +85,7 @@ namespace Cannabis.Server.Controllers.Product
 		/// <summary>
 		/// Soft delete brand
 		/// </summary>
-		[HttpDelete("{int:id}")]
+		[HttpDelete("{id:int}")]
 		[ProducesResponseType(typeof(ApiResponse<bool>), 200)]
 		[ProducesResponseType(404)]
 		public async Task<IActionResult> Delete(int id)

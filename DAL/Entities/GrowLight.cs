@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("GrowLights", Schema = "Inventory")]
     public class GrowLight : BaseEntity
     {
         [Key]
@@ -11,7 +10,6 @@
         public int BrandId { get; set; }
         public int Quantity { get; set; }
         public int Wattage {  get; set; }
-        [Column(TypeName = "decimal(10,2)")]
         public decimal Price { get; set; }
         public int CoverageArea { get; set; } // Unit: m²
         public int WarrantyPeriod { get; set; } // Unit: months
@@ -28,12 +26,12 @@
         public string Description { get; set; } = string.Empty;
 
 		// Navigation Properties
-		public virtual Brand? Brand { get; set; }
-        public virtual PowerSupply? PowerSupply { get; set; }
-        public virtual ChipModel? ChipModel { get; set; }
-        public virtual CoolingSystem? CoolingSystem { get; set; }
-        public virtual Spectrum? Spectrum { get; set; }
-        public virtual Product? Product { get; set; }
+		public virtual Brand Brand { get; set; } = default!;
+        public virtual PowerSupply PowerSupply { get; set; } = default!;
+        public virtual ChipModel ChipModel { get; set; } = default!;
+        public virtual CoolingSystem CoolingSystem { get; set; } = default!;
+        public virtual Spectrum Spectrum { get; set; } = default!;
+        public virtual Product Product { get; set; } = default!;
 
     }
 }

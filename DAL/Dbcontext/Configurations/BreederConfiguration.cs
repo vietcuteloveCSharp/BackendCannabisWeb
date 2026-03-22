@@ -11,6 +11,7 @@ namespace DAL.Dbcontext.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Breeder> builder)
 		{
+			builder.ToTable("Breeds", "Products");
 			builder.HasKey(b => b.BreederId);
 
 			builder.Property(b => b.BreederName)

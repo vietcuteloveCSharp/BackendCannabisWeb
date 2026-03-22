@@ -1,6 +1,5 @@
 ﻿namespace DAL.Entities
 {
-    [Table("CoolingSystems",Schema = "Inventory")]
     public class CoolingSystem : BaseEntity
     {
         [Key]

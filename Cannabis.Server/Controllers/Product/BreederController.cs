@@ -6,7 +6,7 @@ using Service.IServices.Product;
 namespace Cannabis.Server.Controllers.Product
 {
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/breeders")]
+	[Route("api/v{version:apiVersion}/[controller]")]
 	[ApiController]
 	[Authorize] // Yêu cầu đăng nhập cho tất cả các thao tác xem
 	public class BreederController(IBreederService breederService) : ControllerBase
