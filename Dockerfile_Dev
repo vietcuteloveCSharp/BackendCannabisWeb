@@ -1,11 +1,9 @@
-# ===============================
-# BUILD STAGE
-# ===============================
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+
 WORKDIR /src
 
-# Copy solution và project
-COPY ["WebCannabisAccessorries.sln","."]
+# copy csproj để restore cache
+COPY ["WebCannabisAccessorries.sln", "."]
 COPY ["Cannabis.Server/Cannabis.Server.csproj", "Cannabis.Server/"]
 COPY ["DAL/DAL.csproj","DAL/"]
 COPY ["DTO/DTO.csproj","DTO/"]
@@ -18,17 +16,14 @@ COPY ["TestsCannabis/TestsCannabis.csproj","TestsCannabis/"]
 
 RUN dotnet restore "Cannabis.Server/Cannabis.Server.csproj"
 
-# Copy toàn bộ source
-COPY . .
+# ⚠️ KHÔNG cần COPY . .
+# vì sẽ mount volume từ ngoài vào
 
-# Chuyển vào project chính
 WORKDIR /src/Cannabis.Server
 
-# Expose cổng cho container
 EXPOSE 8080
 
-# Biến môi trường ASP.NET
 ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=1
 
-# Chạy watch
-CMD ["dotnet", "watch", "run", "--project", "Cannabis.Server.csproj", "--urls", "http://0.0.0.0:8080"]
+CMD ["dotnet", "watch", "run", "--urls", "http://0.0.0.0:8080"]
