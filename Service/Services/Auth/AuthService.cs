@@ -56,14 +56,14 @@ namespace Service.Services.ServicesAuth
 			// 6. Tạo Refresh Token
 			var refreshToken = await _refreshTokenService.GenerateRefreshTokenAsync(user.UserId);
 
-			// 7. Mapping và trả về
-			var expirationTime = _jwtSettings.AccessTokenLifetimeSecond;
+			// Lấy số giây từ config (3600)
+			var expirationSeconds = _jwtSettings.AccessTokenLifetimeSeconds;
 
 			var token= new TokenDTO
 			{
 				AccessToken = accessToken,
 				RefreshToken = refreshToken.RefreshTokenValue,
-				ExpiresIn = expirationTime,
+				ExpiresInSeconds = expirationSeconds, // Gán số giây vào đây
 				User = _mapper.Map<UserSummaryDTO>(user)
 			};
 			return token;

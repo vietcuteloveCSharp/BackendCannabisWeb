@@ -49,7 +49,7 @@ namespace Service.Services.ServicesAuth
 				UserId = userId,
 				RefreshTokenValue = refreshTokenValue,
 				CreatedAt = DateTime.UtcNow,
-				ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenLifetimeDays), // thời gian sống 30 ngày, có thể config
+				ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays), // thời gian sống 30 ngày, có thể config
 				IsRevoked = false
 			};
 			await _unitOfWork.RefreshTokens.AddAsync(refreshToken);
