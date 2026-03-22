@@ -7,65 +7,69 @@ namespace TestsCannabis.BaseApplicationFactory
 {
 	public class CannabisWebApplicationFactory : WebApplicationFactory<Program>
 	{
+		
+		protected override void ConfigureWebHost(IWebHostBuilder builder)
+		{
+			base.ConfigureWebHost(builder);
+
+			builder.ConfigureServices((context,services) =>
+			{
+				// 1. Xóa cấu hình DB thật (SQL Server) để thay bằng InMemory
+				var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<CannabisAccessoriesDBContext>));
+
+				if (descriptor != null) services.Remove(descriptor);
+
+				services.AddDbContext<CannabisAccessoriesDBContext>(options =>
+				{
+					// Dùng tên DB ngẫu nhiên để các Test Case không đè dữ liệu lên nhau
+					options.UseInMemoryDatabase("IntegrationTest_Shared_DB");
+				});
+				services.Configure<JwtConfig>(context.Configuration.GetSection("Jwt"));
+				// 2. Mock các dịch vụ bên ngoài (Email, Redis)
+				services.AddSingleton<FakeRedisService>();
+				services.AddSingleton<IRedisService>(sp =>
+					sp.GetRequiredService<FakeRedisService>());
+				services.AddSingleton<IEmailService, FakeEmailService>();
+
+				//services.AddAuthentication("TestScheme")
+				//	.AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("TestScheme", options => { });				
+			});
+			
+		}
 		protected override IHost CreateHost(IHostBuilder builder)
 		{
+			
+
 			builder.UseEnvironment("Development");
+
 			builder.ConfigureAppConfiguration((context, config) =>
 			{
+
 				var apiPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../Cannabis.Server"));
 				config.SetBasePath(apiPath);
 				config.AddJsonFile("appsettings.json", false, true)
 					  .AddJsonFile("appsettings.Development.json", true, true)
 					  .AddEnvironmentVariables();
 			});
-			return base.CreateHost(builder);
-		}
-		protected override void ConfigureWebHost(IWebHostBuilder builder)
-		{
-			base.ConfigureWebHost(builder);
+			// 2. Build Host từ builder
+			var host = base.CreateHost(builder);
 
-			builder.ConfigureServices(services =>
+			// 3. Thực hiện Seed Data NGAY TẠI ĐÂY (Sử dụng đúng Service Provider của Host)
+			using (var scope = host.Services.CreateScope())
 			{
-				// Xoá DbContext cũ
-				var descriptor = services.SingleOrDefault(
-					d => d.ServiceType == typeof(DbContextOptions<CannabisAccessoriesDBContext>));
-				var redisDescriptor = services.SingleOrDefault(
-				d => d.ServiceType == typeof(IRedisService));
-				services.AddAuthentication("TestScheme").AddScheme<AuthenticationSchemeOptions, TestAuthHandler_NoPass>(
-							"TestScheme", options => { });
-				if (descriptor != null)
-					services.Remove(descriptor);
-				if (redisDescriptor != null)
-				{
-					services.Remove(redisDescriptor);
-				}
-
-				// Thêm DbContext với InMemoryDb
-				services.AddDbContext<CannabisAccessoriesDBContext>(options =>
-				{
-					options.UseInMemoryDatabase("TestAPI");
-					//options.UseInternalServiceProvider(provider);
-				});
-
-				services.AddSingleton<FakeRedisService>();
-				services.AddSingleton<IRedisService>(sp =>
-					sp.GetRequiredService<FakeRedisService>());
-				services.AddSingleton<IEmailService, FakeEmailService>();
-
-				// ✅ khởi tạo db và seed data 
-				var sp = services.BuildServiceProvider();
-				using var scope = sp.CreateScope();
 				var db = scope.ServiceProvider.GetRequiredService<CannabisAccessoriesDBContext>();
-				db.Database.EnsureCreated();
-				// seed data
-				if (!db.Users.Any())
-				{
-					DbSeeder.SeedAll(db).GetAwaiter().GetResult();
-				}
-			});
-			
-		}
 
+				// Đảm bảo Database InMemory được làm sạch và tạo mới
+				db.Database.EnsureDeleted();
+				db.Database.EnsureCreated();
+				db.ChangeTracker.Clear();
+				// Nạp toàn bộ dữ liệu mẫu (Roles, Users...)
+				// Dùng .GetAwaiter().GetResult() vì CreateHost không cho phép async trực tiếp
+				DbSeeder.SeedAll(db).GetAwaiter().GetResult();
+			}
+
+			return host;
+		}
 	}
 
 }

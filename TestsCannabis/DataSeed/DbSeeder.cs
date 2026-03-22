@@ -1,30 +1,92 @@
-﻿namespace TestsCannabis.DataSeed
+﻿using static Enum.Domain.Product_Inventory;
+using static Enum.Domain.System_User;
+using static Enum.Domain.TechnicalSpecs;
+using static Enum.Domain.Orders;
+using System.Threading.Tasks;
+
+namespace TestsCannabis.DataSeed
 {
 	public static class DbSeeder
 	{
 		public static async Task SeedAll(CannabisAccessoriesDBContext db)
 		{
+			
+			// Thứ tự seed quan trọng: Seed bảng cha trước bảng con
 			SeedRoles(db);
 			SeedUsers(db);
-			SeedAddresses(db);
-			SeedBrands(db);
-			SeedCarbonFilters(db);
-			SeedClassifications(db);
+			SeedBrands(db); // Cha của Products
+			SeedNutrientTypes(db);
 			SeedSpectrums(db);
 			SeedChipModels(db);
+
+			// Các bảng mới bạn yêu cầu
+			SeedCategories(db);
+			SeedBreeders(db);
+			SeedPowerSupplies(db);
+			SeedCoolingSystems(db);
 			SeedProductImages(db);
-			SeedNutrientTypes(db);
+			// Cuối cùng là các bảng chứa khóa ngoại đến các bảng trên
+			SeedCarbonFilters(db);
 			SeedNutrients(db);
+
 			await db.SaveChangesAsync();
+			var roleCount = db.Roles.Count();
+			Console.WriteLine($"--- SEED COMPLETED: {roleCount} roles in memory ---");
 		}
-		private static void SeedRoles(CannabisAccessoriesDBContext db)
+		// 1. Seed Categories (Phân loại sản phẩm: Đèn, Lều, Quạt...)
+		private static void SeedCategories(CannabisAccessoriesDBContext db)
 		{
-			if (db.Roles.Any()) return;
+			if (db.Categories.Any()) return;
+			db.Categories.AddRange(new List<Category>
+				{
+					new Category { CategoryId = 1, CategoryName = "Grow Lights", Description = "Đèn quang hợp" },
+					new Category { CategoryId = 2, CategoryName = "Ventilation", Description = "Hệ thống thông gió" },
+					new Category { CategoryId = 3, CategoryName = "Nutrients", Description = "Dinh dưỡng" },
+					new Category { CategoryId = 4, CategoryName = "Tents", Description = "Lều trồng" }
+				}
+			);
+		}
+		// 2. Seed Breeders (Nhà lai tạo giống)
+		private static void SeedBreeders(CannabisAccessoriesDBContext db)
+		{
+			if (db.Breeders.Any()) return;
+			db.Breeders.AddRange(new List<Breeder>
+				{
+					new Breeder { BreederId = 1, BreederName = "Barney's Farm", Country = "Netherlands" },
+					new Breeder { BreederId = 2, BreederName = "FastBuds", Country = "USA" },
+					new Breeder { BreederId = 3, BreederName = "Dutch Passion", Country = "Netherlands" }
+				}
+			);
+		}
+		// 3. Seed PowerSupplies (Nguồn điện cho đèn LED)
+		private static void SeedPowerSupplies(CannabisAccessoriesDBContext db)
+		{
+			if (db.PowerSupplies.Any()) return;
+			db.PowerSupplies.AddRange(new List<PowerSupply>
+			{
+				new PowerSupply { Type = EPowerSypplyType.AC, Voltage = 240},
+				new PowerSupply {Type = EPowerSypplyType.AC, Voltage = 96 },
+				new PowerSupply { Type = EPowerSypplyType.TA, Voltage = 128 }
+
+			});
+		}
+		// 4. Seed CoolingSystems (Hệ thống tản nhiệt)
+		private static void SeedCoolingSystems(CannabisAccessoriesDBContext db)
+		{
+			if (db.CoolingSystems.Any()) return;
+			db.CoolingSystems.AddRange(new List<CoolingSystem>
+			{
+					new CoolingSystem {  Type = ECoolingType.Active,Description="test" },
+					new CoolingSystem {  Type = ECoolingType.Passive,Description="test" },
+			});
+		}
+		private static void  SeedRoles(CannabisAccessoriesDBContext db)
+		{
 			db.Roles.AddRange(new List<Role>
 			{
 				new Role
 				{
-					RoleId = 1,
+					RoleId = (int)ERoleName.Admin,
 					RoleName = ERoleName.Admin,
 					Description = "Admin",
 					CreatedAt = DateTime.Now,
@@ -32,7 +94,7 @@
 				},
 				new Role
 				{
-					RoleId =2,
+					RoleId =(int)ERoleName.Employee,
 					RoleName =ERoleName.Employee,
 					Description  ="Employee",
 					CreatedAt= DateTime.Now,
@@ -40,13 +102,15 @@
 				},
 				new Role
 				{
-					RoleId =3,
+					RoleId =(int)ERoleName.User,
 					RoleName =ERoleName.User,
 					Description  ="User",
 					CreatedAt= DateTime.Now,
 					UpdatedAt= DateTime.Now
 				}
 			});
+			 db.SaveChangesAsync();
+			
 		}
 		private static void SeedUsers(CannabisAccessoriesDBContext db)
 		{
@@ -57,59 +121,39 @@
 			{
 				new User
 				{
+					UserId = 1,
 					Username = "testadmin01",
 					Name = "Nguyễn Văn A",
 					Email = "admin01@example.com",
 					PhoneNumber = "0912345671",
 					CreatedAt = DateTime.Now,
-					UpdatedAt = DateTime.Now,
 					Status = EUserStatus.Active,
-					RoleId = 1 // Admin
+					RoleId = (int)ERoleName.Admin // Admin
 				},
 				new User
 				{
+					UserId =3,
 					Username = "testemployee01",
 					Name = "Trần Thị B",
 					Email = "employee01@example.com",
 					PhoneNumber = "0912345672",
-					RoleId = 2, // Employee
+					RoleId = (int)ERoleName.Employee, // Employee
 					Status = EUserStatus.Active,
 					CreatedAt = DateTime.Now,
-					UpdatedAt = DateTime.Now
+					
 				},
 				new User
-				{
+				{	UserId = 2,
 					Username = "testuser01",
 					Name = "Lê Văn C",
 					Email = "user01@example.com",
 					PhoneNumber = "0912345673",
-					RoleId = 3, // User
+					RoleId = (int)ERoleName.User, // User
 					Status = EUserStatus.Active,
 					CreatedAt = DateTime.Now,
-					UpdatedAt = DateTime.Now
-				},
-				new User
-				{
-					Username = "testadmin02",
-					Name = "Phạm Thị D",
-					Email = "admin02@example.com",
-					PhoneNumber = "0912345674",
-					RoleId = 1,
-					Status = EUserStatus.Active,
-					CreatedAt = DateTime.Now,
-					UpdatedAt = DateTime.Now
-				},
-				 new User
-				 {
-					Username = "guest01",
-					Name = "Hoàng Văn E",
-					Email = "guest01@example.com",
-					PhoneNumber = "0912345675",
-					RoleId = 2,
-					Status = EUserStatus.Active,
-					CreatedAt = DateTime.Now,
-					UpdatedAt = DateTime.Now
-				 },
+					
+				}
+				
 			};
 			// Hash password cho tất cả user
 			foreach (var user in users)
@@ -117,7 +161,8 @@
 				user.HashPassword = hasher.HashPassword(user, password);
 			}
 			db.Users.AddRange(users);
-
+			db.SaveChanges();
+			
 		}
 		private static void SeedAddresses(CannabisAccessoriesDBContext db)
 		{
