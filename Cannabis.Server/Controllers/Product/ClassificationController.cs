@@ -6,7 +6,7 @@ using DTO.DTOs.Classifications; // Đảm bảo đúng namespace
 namespace Cannabis.Server.Controllers.Product
 {
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/classifications")]
+	[Route("api/v{version:apiVersion}/[controller]")]
 	[ApiController]
 	[Authorize] // Yêu cầu xác thực cơ bản để xem
 	public class ClassificationController(IClassificationService classificationService) : ControllerBase

@@ -7,7 +7,7 @@ using Service.Services.Inventory;
 namespace Cannabis.Server.Controllers.Inventory
 {
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/nutrienttypes")]
+	[Route("api/v{version:apiVersion}/[controller]")]
 	[ApiController]
 	[Authorize]
 	public class NutrientTypeController(INutrientTypeService nutrientTypeService) : ControllerBase
@@ -53,7 +53,6 @@ namespace Cannabis.Server.Controllers.Inventory
 		/// Create new nutrient type
 		/// </summary>
 		[HttpPost]
-		[Authorize(Roles = "Admin")]
 		[ProducesResponseType(typeof(ApiResponse<NutrientTypeDTO>), 201)]
 		[ProducesResponseType(404)]
 		public async Task<IActionResult> Create([FromBody] NutrientTypeCreateDTO dto)
@@ -87,7 +86,6 @@ namespace Cannabis.Server.Controllers.Inventory
 		/// Soft delete Nutrient type
 		/// </summary>
 		[HttpDelete("{id:int}")]
-		[Authorize(Roles = "Admin")]
 		[ProducesResponseType(typeof(ApiResponse<bool>), 200)]
 		[ProducesResponseType(404)]
 		public async Task<IActionResult> Delete(int id)

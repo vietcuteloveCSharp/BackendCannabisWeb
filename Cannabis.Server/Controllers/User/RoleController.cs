@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Cannabis.Server.Controllers.Admin
+namespace Cannabis.Server.Controllers.User
 {
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/roles")]
+	[Route("api/v{version:apiVersion}/[controller]")]
 	[ApiController]
-	[Authorize(Roles ="Admin")]
+	
 	public class RoleController : ControllerBase
 	{
 		private readonly IRoleService _roleService;
@@ -26,17 +26,13 @@ namespace Cannabis.Server.Controllers.Admin
 		public async Task<IActionResult> CreateRoleAsync([FromBody] RoleCreateDTO createRoleDTO)
 		{
 
-			if (!ModelState.IsValid)
-			{
-				return this.ValidateModelState();
-			}
 			var createdRole = await _roleService.AddRoleAsync(createRoleDTO);
 			var response = ApiResponse<object>.Ok(createdRole, "Role created successfully.");
 			var version = (string?)Request.RouteValues["version"] ?? "1.0";
 			var locationUrl = Url.Action(
 				nameof(GetRoleByIdAsync),
 					"Role",
-				new { version = version, id = createdRole.RoleId },
+				new { version, id = createdRole.RoleId },
 				Request.Scheme);
 			return Created(locationUrl!, ApiResponse<object>.Ok(createdRole, "Role created successfully."));
 		}
@@ -96,8 +92,7 @@ namespace Cannabis.Server.Controllers.Admin
 		[ProducesResponseType(typeof(ApiResponse<string>), 404)]
 		public async Task<IActionResult> UpdateRoleAsync(int id, [FromBody] RoleUpdateDTO updateRoleDTO)
 		{
-			if (!ModelState.IsValid)
-				return this.ValidateModelState();
+			
 			var updatedRole = await _roleService.UpdateRoleAsync(id, updateRoleDTO);
 			return Ok(ApiResponse<object>.Ok(updatedRole!, "Role updated successfully."));
 		}

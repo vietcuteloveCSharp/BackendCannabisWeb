@@ -4,7 +4,7 @@ using Service.IServices.Product;
 namespace Cannabis.Server.Controllers.Product
 {
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/categories")]
+	[Route("api/v{version:apiVersion}/[controller]")]
 	[ApiController]
 	public class CategoryController(ICategoryService categoryService) : ControllerBase
 	{
@@ -53,10 +53,7 @@ namespace Cannabis.Server.Controllers.Product
 		[ProducesResponseType(typeof(ApiResponse<CategoryDTO>),500)]
 		public async Task<IActionResult> Create([FromBody] CategoryCreateDTO categoryDTO)
 		{
-			if (!ModelState.IsValid)
-			{
-				return this.ValidateModelState();
-			}
+			
 			var createdCategory = await _categoryService.AddAsync(categoryDTO);
 			if (createdCategory == null)
 				return BadRequest(ApiResponse<string>.Fail("Create failed"));
