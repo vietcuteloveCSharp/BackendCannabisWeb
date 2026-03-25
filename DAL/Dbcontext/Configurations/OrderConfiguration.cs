@@ -20,7 +20,7 @@ namespace DAL.Dbcontext.Configurations
 
 			builder.Property(c => c.OrderStatus).HasConversion<string>().IsRequired();
 			builder.Property(c => c.TotalAmount).HasPrecision(10, 2).IsRequired();
-			builder.Property(c => c.TrackingNumber).HasMaxLength(50).IsRequired();
+			builder.Property(c => c.TrackingNumber).HasMaxLength(50);
 			builder.Property(c => c.ShippingFee).HasPrecision(10, 2);
 			builder.Property(c => c.ShippingAddress).HasMaxLength(2000);
 		}

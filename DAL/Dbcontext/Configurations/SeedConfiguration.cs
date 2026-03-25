@@ -20,7 +20,7 @@ namespace DAL.Dbcontext.Configurations
 			builder.HasOne(c => c.Classification).WithMany(c => c.Seeds).HasForeignKey(c => c.ClassifyId).HasConstraintName("FK_SEED_CLASSIFICATION_CLASSIFYID").OnDelete(DeleteBehavior.Restrict).IsRequired();
 			builder.Property(c => c.FloweringTimeDays).HasColumnType("INT");
 			builder.Property(c => c.Yield).HasPrecision(10, 2);
-			builder.Property(c => c.Difficulty).HasConversion<string>().IsRequired();
+			builder.Property(c => c.Difficulty).HasConversion<string>();
 			builder.Property(c => c.Price).HasPrecision(10, 2).IsRequired();
 			builder.Property(c => c.IndicaPercentage).HasPrecision(5, 2).IsRequired();
 			builder.Property(c => c.SativaPercentage).HasPrecision(5, 2).IsRequired();
@@ -33,6 +33,14 @@ namespace DAL.Dbcontext.Configurations
 				.HasForeignKey(s => s.BreederId)
 				.OnDelete(DeleteBehavior.Restrict);
 			builder.HasIndex(x => x.ProductId).IsUnique();
+
+			// 2. Cấu hình các trường mới bổ sung
+			builder.Property(c => c.Genetics).HasMaxLength(255); // Giới hạn để tối ưu DB
+			builder.Property(c => c.IndoorHeightCm).HasColumnType("INT");
+			builder.HasIndex(x => x.StrainType).HasDatabaseName("IX_SEEDS_STRAINTYPE"); // Filter cực nhiều
+			builder.HasIndex(x => x.THCContent).HasDatabaseName("IX_SEEDS_THC"); // Filter theo độ mạnh
+			builder.HasIndex(x => x.Price).HasDatabaseName("IX_SEEDS_PRICE");       // Filter theo giá tiền
+			builder.HasIndex(x => x.ProductId).IsUnique().HasDatabaseName("IX_SEED_PRODUCTID");
 		}
 	}
 }

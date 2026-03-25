@@ -13,6 +13,7 @@ namespace DAL.Dbcontext.Configurations
 		{
 			builder.ToTable("GrowLights", "Inventory");
 			builder.HasKey(gl => gl.GrowLightId);
+
 			builder.Property(gl => gl.BrandId).IsRequired();
 			builder.Property(gl => gl.Quantity).IsRequired();
 			builder.Property(gl => gl.Wattage).IsRequired();
@@ -26,6 +27,11 @@ namespace DAL.Dbcontext.Configurations
 			builder.Property(gl => gl.Lifespan).IsRequired();
 			builder.Property(gl => gl.ModelNumber).HasMaxLength(100).IsRequired();
 			builder.Property(gl => gl.Description).HasMaxLength(1000);
+			builder.Property(gl => gl.PPF).HasPrecision(10, 2);
+			builder.Property(gl => gl.Efficacy).HasPrecision(5, 2);
+			builder.Property(gl => gl.IsDimmable)
+			   .HasDefaultValue(false)
+			   .IsRequired();
 
 			builder.HasOne(gl => gl.Brand).WithMany(b => b.GrowLights).HasForeignKey(gl => gl.BrandId).OnDelete(DeleteBehavior.Restrict).HasConstraintName("FK_GROWLIGHT_BRAND");
 			builder.HasOne(gl => gl.PowerSupply).WithMany(ps => ps.GrowLights).HasForeignKey(gl => gl.PowerSupplyId).OnDelete(DeleteBehavior.Restrict).HasConstraintName("FK_GROWLIGHT_POWERSUPPLY");
@@ -40,7 +46,10 @@ namespace DAL.Dbcontext.Configurations
 			builder.HasIndex(gl => gl.PowerSupplyId).HasDatabaseName("IX_GrowLights_PowerSupplyId");
 			builder.HasIndex(gl => gl.CoolingSystemId).HasDatabaseName("IX_GrowLights_CoolingSystemId");
 			builder.HasIndex(gl => gl.SpectrumId).HasDatabaseName("IX_GrowLights_SpectrumId");
-			builder.HasIndex(g => g.ProductId).HasDatabaseName("IX_Growlight_ProductId");
+			builder.HasIndex(g => g.ProductId).HasDatabaseName("IX_Growlight_ProductId").IsUnique();
+			// --- THÊM INDEX ĐỂ TỐI ƯU TRUY VẤN ---
+			builder.HasIndex(gl => gl.Wattage).HasDatabaseName("IX_GrowLights_Wattage"); // Người dùng lọc theo công suất rất nhiều
+			builder.HasIndex(gl => gl.Price).HasDatabaseName("IX_GrowLights_Price");     // Lọc theo ngân sách
 		}
 	}
 }

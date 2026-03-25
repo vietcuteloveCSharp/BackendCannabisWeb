@@ -4,25 +4,24 @@
     {
         [Key]
         public int NutrientId { get; set; }
-		[Required(ErrorMessage = "Id product is required.")]
 		public int ProductId { get; set; }
-		[Required(ErrorMessage = "Id brand is required.")]
         public int BrandId {  get; set; }
-        [Required(ErrorMessage = "Id nutrient type is required.")]
+        public int NutrientTypeId { get; set; }
 
-        public int NutrientTypeId {  get; set; }
-        public int Quantity { get; set; }
-        [Column(TypeName = "decimal(10,2)")]
+		public EApplicationStage ApplicationStage { get; set; } // Giai đoạn sử dụng
+		public bool IsPhBuffered { get; set; } // Có tự cân bằng pH không (Ví dụ dòng pH Perfect của Advanced Nutrients)
+		public string DilutionRate { get; set; } = string.Empty; // Tỉ lệ pha khuyến cáo (ví dụ: 2ml/L)
+
+		public int Quantity { get; set; }
         public decimal Price {  get; set; }
         public int VolumeMl { get; set; }
-        [StringLength(255,ErrorMessage = "Ingredients no more than 255 characters.")]
+       
         public string Ingredients { get; set; } = string.Empty;
-		[StringLength(50, ErrorMessage = "NpkRatio no more than 50 characters.")]
         public string NpkRatio { get; set; } = string.Empty; // Tỷ lệ NPK
-		public bool IsOrganic { get; set; } = false;
+        public bool IsOrganic { get; set; } = false;
+
         public string? Description { get; set; }
         public DateTime? ExpirationDate { get; set; }
-        [StringLength(255, ErrorMessage = "Storage instructions no more than 255 characters.")]
         public string StorageInstructions { get; set; } = string.Empty;
         public virtual Brand Brand { get; set; } = default!;
         public virtual NutrientType NutrientType { get; set; } = default!;

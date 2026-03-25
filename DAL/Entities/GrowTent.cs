@@ -11,8 +11,12 @@
         [StringLength(100,ErrorMessage = "Dimensions no more than 100 characters.")]
         public string Dimensions { get; set; } = string.Empty;
 		[StringLength(255, ErrorMessage = "Material no more than 255 characters.")]
-
-        public string Material { get; set; }  =string.Empty;
+		public int WidthCm { get; set; }  // Rộng
+		public int LengthCm { get; set; } // Dài
+		public int HeightCm { get; set; } // Cao
+        public string Material { get; set; } = string.Empty;
+        public int? CanvasDensity { get; set; }
+		public string ReflectiveMaterial { get; set; } =string.Empty;
 		public bool Waterproof { get; set; }=false;
         public int Quantity { get; set; }
         

@@ -27,8 +27,7 @@ namespace DAL.Dbcontext.Configurations
 			builder.Property(b => b.Website)
 				  .HasMaxLength(255);
 
-			builder.Property(b => b.IsActive)
-				  .HasDefaultValue(true);
+			builder.Property(b => b.IsPremium).HasDefaultValue(false);
 
 			// ✅ Index: BrandName (search nhiều) 
 			builder.HasIndex(b => b.BrandName)

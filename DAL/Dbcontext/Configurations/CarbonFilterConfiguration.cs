@@ -14,10 +14,18 @@ namespace DAL.Dbcontext.Configurations
 			builder.ToTable("CarbonFilters", "Inventory");
 			builder.HasKey(cf => cf.CarbonFilterId);
 
-			builder.Property(cf => cf.AirflowRate).HasMaxLength(150);
+			// --- Cấu hình thông số kỹ thuật (Kỹ thuật số hóa) ---
+			builder.Property(cf => cf.AirflowRateCFM).IsRequired();
+			builder.Property(cf => cf.FlangeSizeInch).HasPrecision(4, 1).IsRequired(); // Ví dụ: 6.5 inch
+			builder.Property(cf => cf.CarbonBedThicknessMm).HasPrecision(5, 2);
 			builder.Property(cf => cf.Price).HasPrecision(10, 2);
 			builder.Property(cf => cf.Description).HasMaxLength(1000);
-
+			builder.Property(cf => cf.Diameter).HasPrecision(6, 2);
+			builder.Property(cf => cf.Length).HasPrecision(6, 2);
+			// Nhiệt độ cần chính xác hơn bản cũ (decimal 3,2 là quá hẹp)
+			builder.Property(cf => cf.MinTemperature).HasPrecision(5, 2);
+			builder.Property(cf => cf.MaxTemperature).HasPrecision(5, 2);
+			builder.Property(cf => cf.ModelNumber).HasMaxLength(100).IsRequired();
 			// Brand (OK rồi)
 			builder.Property(cf => cf.BrandId).IsRequired();
 
@@ -42,6 +50,8 @@ namespace DAL.Dbcontext.Configurations
 			builder.HasIndex(cf => cf.ProductId)
 				  .IsUnique() // 🔥 QUAN TRỌNG
 				  .HasDatabaseName("IX_CarbonFilter_ProductId");
+			builder.HasIndex(cf => cf.FlangeSizeInch).HasDatabaseName("IX_CarbonFilter_FlangeSize"); // User lọc theo kích cỡ quạt
+			builder.HasIndex(cf => cf.AirflowRateCFM).HasDatabaseName("IX_CarbonFilter_Airflow");    // Lọc theo công suất hút
 		}
 	}
 }

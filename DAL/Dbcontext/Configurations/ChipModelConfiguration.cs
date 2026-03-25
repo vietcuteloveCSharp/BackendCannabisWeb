@@ -22,6 +22,10 @@ namespace DAL.Dbcontext.Configurations
 				  .HasMaxLength(100)
 				  .IsRequired();
 
+			builder.Property(c => c.ModelName)
+				.HasMaxLength(100) .IsRequired();
+
+
 			builder.Property(c => c.Generation)
 				  .HasMaxLength(50);
 
