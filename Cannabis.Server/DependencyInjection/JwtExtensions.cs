@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using static Enum.Domain.System_User;
 
 namespace Cannabis.Server.DependencyInjection
@@ -6,32 +7,35 @@ namespace Cannabis.Server.DependencyInjection
 	public static class JwtExtensions
 	{
 		public static IServiceCollection AddJwtAuth(this IServiceCollection services, IConfiguration config)
-		{
-			// bind config section "Jwt" -> JwtSettings
-			services.Configure<JwtSettings>(config.GetSection("Jwt"));
+		{  
+			
 
+			var jwtSection = config.GetSection("Jwt");
 			// Lấy giá trị ngay bây giờ từ config (để dùng khi cấu hình TokenValidationParameters)
-			var jwtSettings = config.GetSection("Jwt").Get<JwtSettings>()
+			var jwtSettings = jwtSection.Get<JwtSettings>()
 				?? throw new InvalidOperationException("Jwt section is missing in configuration.");
 
-			if (string.IsNullOrWhiteSpace(jwtSettings.Key))
-				throw new InvalidOperationException("JWT Key is missing in configuration.");
-			// Xóa map mặc định để JWT trả về key ngắn gọn
-			JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-			JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
+
+			// 2. Kiểm tra Null một cách an toàn
+			if (jwtSettings == null || string.IsNullOrWhiteSpace(jwtSettings.Key))
+			{
+				throw new InvalidOperationException("Cấu hình JWT (Key) bị thiếu trong appsettings.json.");
+			}
+			var key = Encoding.UTF8.GetBytes(jwtSettings.Key);
 
 			// đăng ký JwtBearer và lấy options từ DI
 			services.AddAuthentication(options => {
 						options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-							options.DefaultChallengeScheme= JwtBearerDefaults.AuthenticationScheme;
-						})
+						options.DefaultChallengeScheme= JwtBearerDefaults.AuthenticationScheme;
+			})
 			.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,options =>
 			{
-						// cấu hình token validation
+				// cấu hình token validation
 				options.RequireHttpsMetadata = false;
 				options.SaveToken = true;
+				
 
-				options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+				options.TokenValidationParameters = new TokenValidationParameters
 				{
 					ValidateIssuer = true,
 					ValidateAudience = true,
@@ -39,34 +43,49 @@ namespace Cannabis.Server.DependencyInjection
 					ValidateIssuerSigningKey = true,
 					ValidIssuer = jwtSettings.Issuer,
 					ValidAudience = jwtSettings.Audience,
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
+					IssuerSigningKey = new SymmetricSecurityKey(key),
+					NameClaimType = ClaimTypes.Name,
+					RoleClaimType = ClaimTypes.Role,
 					ClockSkew = TimeSpan.Zero // loại bỏ độ trễ thời gian
 				};
 				// cấu hình event cho product
 				options.Events = new JwtBearerEvents
 				{
+					OnAuthenticationFailed = context =>
+					{
+						// Đặt Breakpoint tại dòng này
+						var error = context.Exception.Message;
+						Console.WriteLine($"Token lỏ vì: {error}");
+
+						// Nếu lỗi do hết hạn, context.Exception sẽ là SecurityTokenExpiredException
+						return Task.CompletedTask;
+					},
 					OnTokenValidated = async context =>
 					{
 						// 1. Lấy DbContext từ DI
 						var dbContext = context.HttpContext.RequestServices.GetRequiredService<CannabisAccessoriesDBContext>();
 						// 2. Lấy UserId từ Claims (NameIdentifier)
-						var userIdClaim = context.Principal?.FindFirst(JwtRegisteredClaimNames.Sub);
-
+						var userIdClaim = context.Principal?.FindFirst(ClaimTypes.NameIdentifier);
+						
 						if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
 						{
-							context.Fail("Token không hợp lệ hoặc thiếu định danh.");
+							context.Fail("Unauthorized: Missing User ID.");
 							return;
 						}
 						// 3. Kiểm tra trạng thái thực tế trong DB
-						var userStatus = await dbContext.Users
+						var user = await dbContext.Users
 							.AsNoTracking()
 							.Where(u => u.UserId == userId)
-							.Select(u => u.Status)
+							.Select(u => new { u.Status })
 							.FirstOrDefaultAsync();
 						// 4. Nếu User không tồn tại hoặc bị khóa, chặn ngay lập tức
-						if (userStatus == default || userStatus == EUserStatus.Inactive)
+						if (user == null)
 						{
 							context.Fail("Tài khoản đã bị khóa hoặc không tồn tại.");
+						}
+						if ((int)user.Status != (int)EUserStatus.Active)
+						{
+							context.Fail("Tài khoản của bạn đang bị khóa hoặc chưa kích hoạt.");
 						}
 					},
 					OnChallenge = async context =>
@@ -79,6 +98,7 @@ namespace Cannabis.Server.DependencyInjection
 							context.Response.ContentType = "application/json";
 							string message = "Yêu cầu xác thực để truy cập tài nguyên này.";
 
+							var failureReason = context.AuthenticateFailure?.Message;
 							// Nếu có lỗi từ OnTokenValidated gán sang
 							if (!string.IsNullOrEmpty(context.ErrorDescription))
 							{
