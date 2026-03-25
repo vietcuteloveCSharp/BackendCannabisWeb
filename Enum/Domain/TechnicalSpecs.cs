@@ -8,17 +8,12 @@ namespace Enum.Domain
 {
 	public static class TechnicalSpecs
 	{
-		public enum EPowerSupplyType
-		{
-			AC = 0,
-			DC = 1,
-			Battery = 2
-		}
-
+		
 		public enum ECoolingType
 		{
-			Active = 0,  // Có quạt
-			Passive = 1  // Tản nhiệt nhôm tự nhiên
+			AirConditioning = 0,
+			Fan = 1,
+			WaterCooling = 2
 		}
 	}
 }

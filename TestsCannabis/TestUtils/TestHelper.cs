@@ -8,7 +8,7 @@ namespace TestsCannabis.TestUtils
 			Key = "test-secret-key-1234567890",
 			Issuer = "TestIssuer",
 			Audience = "TestAudience",
-			AccessTokenLifetimeSeconds = 3600,
+			AccessTokenLifetimeMinutes = 60,
 			RefreshTokenExpiryDays = 7
 		});
 	}

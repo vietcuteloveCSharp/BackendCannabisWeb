@@ -12,6 +12,7 @@
 *.nuget.*
 *.db
 .vs/
+.vscode/
 dockerfile
 render.yml
 

@@ -8,7 +8,7 @@
 		Task<ClassificationDTO> CreateAsync(ClassificationCreateDTO dto);
 		Task<bool> UpdateAsync(int id, ClassificationUpdateDTO dto);
 		Task<bool> DeleteAsync(int id);
-		Task<bool> NameExistsAsync(string classifiName);
+		//Task<bool> NameExistsAsync(string classifiName);
 		
 	}
 }

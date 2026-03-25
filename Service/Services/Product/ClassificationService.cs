@@ -15,8 +15,8 @@ namespace Service.Services
 		// Create a new classification
 		public async Task<ClassificationDTO> CreateAsync(ClassificationCreateDTO dto)
 		{
-			if (await NameExistsAsync(dto.ClassificationName))
-				throw new InvalidOperationException("Classification name already exists.");
+			//if (await NameExistsAsync(dto.ClassificationName))
+			//	throw new InvalidOperationException("Classification name already exists.");
 			var entity = _mapper.Map<Classification>(dto);
 			await _unitOfWork.Classifications.AddAsync(entity);
 			await _unitOfWork.SaveChangesAsync();
@@ -57,14 +57,14 @@ namespace Service.Services
 			await _unitOfWork.SaveChangesAsync();
 			return true;
 		}
-		public async Task<bool> NameExistsAsync(string classifiName)
-		{
-			var Classification = await _unitOfWork.Classifications.FindAsync(
-				x => x.ClassificationName.ToLower() == classifiName.ToLower() && !x.IsDeleted
-			);
-			return Classification != null;
+		//public async Task<bool> NameExistsAsync(string classifiName)
+		//{
+		//	var Classification = await _unitOfWork.Classifications.FindAsync(
+		//		x => x..ToLower() == classifiName.ToLower() && !x.IsDeleted
+		//	);
+		//	return Classification != null;
 
-		}
+		//}
 
 		public async Task<IEnumerable<ClassificationDTO>> GetAllActiveAsync()
 		{

@@ -43,11 +43,11 @@ namespace Service.Services.ServicesAuth
 
 			// Chuẩn bị Claims gọn nhẹ
 			var claims = new List<Claim>
-				{
-					new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-					new Claim(JwtRegisteredClaimNames.UniqueName, user.Username!),
-					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-					new Claim("role", user.Role!.RoleName.ToString()) // Key là "role" cực gọn
+			{
+				new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+				new Claim(ClaimTypes.Role, user.Role!.RoleName.ToString()),
+				new Claim(ClaimTypes.Name, user.Username!),
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
 			};
 
 			// 5. Tạo Access Token (Truyền List Claims vào)
@@ -57,9 +57,9 @@ namespace Service.Services.ServicesAuth
 			var refreshToken = await _refreshTokenService.GenerateRefreshTokenAsync(user.UserId);
 
 			// Lấy số giây từ config (3600)
-			var expirationSeconds = _jwtSettings.AccessTokenLifetimeSeconds;
+			var expirationSeconds = _jwtSettings.AccessTokenLifetimeMinutes;
 
-			var token= new TokenDTO
+			var token = new TokenDTO
 			{
 				AccessToken = accessToken,
 				RefreshToken = refreshToken.RefreshTokenValue,
