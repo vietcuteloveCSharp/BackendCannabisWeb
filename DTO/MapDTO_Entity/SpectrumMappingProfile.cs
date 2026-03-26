@@ -7,12 +7,12 @@ namespace DTO.MapDTO_Entity
 		public SpectrumMappingProfile()
 		{
 			#region Map Spectrum
-			CreateMap<Spectrum, SpectrumDTO>(MemberList.None);
-			CreateMap<SpectrumDTO, Spectrum>(MemberList.None);
+			CreateMap<Spectrum, SpectrumDTO>(MemberList.None).ReverseMap();
 			CreateMap<SpectrumCreateDTO, Spectrum>(MemberList.None)
 			.ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
-			
-			CreateMap<SpectrumUpdateDTO, Spectrum>(MemberList.None);
+
+			CreateMap<SpectrumUpdateDTO, Spectrum>(MemberList.None)
+			.ForMember(dest => dest.SpectrumChartUrl, opt => opt.Ignore()); // THÊM DÒNG NÀY
 			#endregion
 		}
 	}

@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Promotion> builder)
 		{
 			builder.ToTable("Promotions", "Promotions");
-			builder.HasKey(c => c.PromotionId);
-			builder.Property(c => c.PromotionId).ValueGeneratedOnAdd();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.PromotionName).HasColumnType("NVARCHAR(255)").IsRequired();
 			builder.Property(c => c.Description).HasMaxLength(1000);
 			builder.Property(c => c.DiscountType).HasConversion<string>().IsRequired();

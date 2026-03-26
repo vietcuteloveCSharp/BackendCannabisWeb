@@ -66,7 +66,7 @@ namespace Cannabis.Server.Controllers.Inventory
 			if (created == null)
 				return BadRequest(ApiResponse<string>.Fail("Failed to create chip model"));
 
-			return CreatedAtAction(nameof(GetByIdAsync), new { id = created.ChipModelId }, ApiResponse<ChipModelDTO>.Ok(created));
+			return Ok(ApiResponse<ChipModelDTO>.Ok(created));
 		}
 
 		/// <summary>

@@ -3,29 +3,26 @@
     public class CarbonFilter :BaseEntity
     {
         [Key]
-        public int CarbonFilterId { get; set; }
-		[Required(ErrorMessage = "Id product is required.")]
+        public int Id { get; set; }
 		public int ProductId { get; set; }
-		[StringLength(150, ErrorMessage = "AirflowRate name cannot exceed 150 characters.")]
-        public string AirflowRate { get; set; } = string.Empty; // Lưu lượng không khí
-        [Required(ErrorMessage = " Id Brand is required.")]
-        public int BrandId { get; set; } // Mã thương hiệu
+		public int BrandId { get; set; } // Mã thương hiệu
+        // TỐI ƯU: Chuyển sang số để lọc (Ví dụ: 400 CFM)
+        public int AirflowRateCFM { get; set; }
+		// TỐI ƯU: Kích thước miệng nối cực quan trọng (4, 6, 8, 10, 12 inch)
+		public decimal FlangeSizeInch { get; set; }
         public int Quantity { get; set; } =0;
-        [Column(TypeName ="decimal(10,2)")]
         public decimal Price { get; set; } // Giá
         public string FilterMaterial { get; set; } = string.Empty; // Chất liệu lọc
-        [Column(TypeName = "decimal(4,2)")]
-        public decimal Diameter { get; set; } // Đường kính
-        [Column(TypeName = "decimal(4,2)")]
+		public decimal CarbonBedThicknessMm { get; set; } // Độ dày lớp than (càng dày lọc càng kỹ)
+		public decimal Diameter { get; set; } // Đường kính
         public decimal Length { get; set; } // Chiều dài
         public int Lifespan { get; set; } // Tuổi thọ (giờ hoặc ngày)
-        [Column(TypeName = "decimal(3,2)")]
+
         public decimal MinTemperature { get; set; } // Nhiệt độ tối thiểu
-        [Column(TypeName = "decimal(3,2)")]
+   
         public decimal MaxTemperature { get; set; } // Nhiệt độ tối đa
         public string? Description { get; set; } // Mô tả sản phẩm
         public int WarrantyPeriod { get; set; }//thời gian bảo hành
-        [StringLength(50, ErrorMessage = "ModelNumber name cannot exceed 50 characters.")]
         public string ModelNumber { get; set; } = string.Empty; // Số model
 
         //navigation

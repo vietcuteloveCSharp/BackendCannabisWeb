@@ -3,11 +3,13 @@
     public class Dehumidifier :BaseEntity
     {
         [Key]
-        public int DehumidifierId { get; set; }
-		[Required(ErrorMessage = "Id product is required.")]
+        public int Id { get; set; }
 		public int ProductId { get; set; }
         public decimal DehumidificationCapacity { get; set; } // Capacity in liters/day or similar
-        public int Quantity { get; set; }
+        public decimal TankCapacityLiters { get; set; }
+        public bool HasContinuousDrainage { get; set; }
+		public bool HasAutoHumidistat { get; set; }
+		public int Quantity { get; set; }
         [Required(ErrorMessage ="Id brand is required.")]
         public int BrandId { get; set; } // Foreign Key
        

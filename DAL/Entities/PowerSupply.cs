@@ -3,9 +3,9 @@
     public class PowerSupply : BaseEntity
     {
         [Key]
-        public int PowerSupplyId { get; set; }
+        public int Id { get; set; }
         [Column(TypeName = "nvarchar(20)")]
-        public EPowerSypplyType Type { get; set; } 
+        public EPowerSypplyType PowerSupplyType { get; set; } 
         public int Voltage { get; set; }
 		public virtual ICollection<GrowLight> GrowLights { get; set; } = new HashSet<GrowLight>();
     }

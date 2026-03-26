@@ -12,7 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<NutrientType> builder)
 		{
 			builder.ToTable("NutrientTypes", "Inventory");
-			builder.HasKey(c => c.NutrientTypeId);
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.NutrientName).HasMaxLength(150).IsRequired();
 			builder.Property(c => c.Description).HasMaxLength(1000);
 		}

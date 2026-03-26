@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Nutrient> builder)
 		{
 			builder.ToTable("Nutrients", "Inventory");
-			builder.HasKey(c => c.NutrientId);
-			builder.Property(c => c.NutrientId).ValueGeneratedOnAdd();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
 			builder.HasOne(c => c.Brand)
 				.WithMany(c => c.Nutrients)
@@ -28,6 +28,13 @@ namespace DAL.Dbcontext.Configurations
 				.HasConstraintName("FK_NUTRIENT_NUTRIENTTYPE_NUTRIENTTYPEID")
 				.OnDelete(DeleteBehavior.Restrict)
 				.IsRequired();
+			builder.Property(c => c.ApplicationStage)
+				.HasConversion<string>() // Lưu dạng chữ (VEGETATIVE, FLOWERING) cho dễ đọc DB
+				.HasMaxLength(30)
+				.IsRequired();
+
+			builder.Property(c => c.IsPhBuffered).HasDefaultValue(false);
+			builder.Property(c => c.DilutionRate).HasMaxLength(100);
 
 			builder.Property<int>(c => c.Quantity).IsRequired();
 			builder.Property(c => c.Price).HasPrecision(10, 2).IsRequired();
@@ -48,7 +55,11 @@ namespace DAL.Dbcontext.Configurations
 				.HasConstraintName("FK_NUTRIENT_PRODUCT_PRODUCTID")
 				.OnDelete(DeleteBehavior.Cascade);
 
-			builder.HasIndex(g => g.ProductId).HasDatabaseName("IX_Nutrient_ProductId");
+			builder.HasIndex(g => g.ProductId).HasDatabaseName("IX_Nutrient_ProductId").IsUnique();
+			// --- HỆ THỐNG INDEX TỐI ƯU ---
+			builder.HasIndex(c => c.ApplicationStage).HasDatabaseName("IX_Nutrient_Stage"); // Lọc theo giai đoạn (Veg/Bloom)
+			builder.HasIndex(c => c.IsOrganic).HasDatabaseName("IX_Nutrient_Organic");      // Lọc phân hữu cơ
+			builder.HasIndex(c => c.Price).HasDatabaseName("IX_Nutrient_Price");
 		}
 	}
 }

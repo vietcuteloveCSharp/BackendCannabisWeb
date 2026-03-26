@@ -13,8 +13,8 @@ namespace DTO.MapDTO_Entity
 		{
 			CreateMap<Seed, SeedDTO>()
 			.ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product!.ProductName))
-			.ForMember(dest => dest.BreederName, opt => opt.MapFrom(src => src.Breeder!.BreederName))
-			.ForMember(dest => dest.ClassifyName, opt => opt.MapFrom(src => src.Classification!.ClassificationName));
+			.ForMember(dest => dest.BreederName, opt => opt.MapFrom(src => src.Breeder!.BreederName));
+			
 
 			// Map từ Mega DTO sang Seed
 			CreateMap<SeedCreateRequestDTO, Seed>()

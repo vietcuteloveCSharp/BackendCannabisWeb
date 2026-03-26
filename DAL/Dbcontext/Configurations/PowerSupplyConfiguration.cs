@@ -12,9 +12,9 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<PowerSupply> builder)
 		{
 			builder.ToTable("PowerSupplies", "Inventory");
-			builder.HasKey(c => c.PowerSupplyId);
-			builder.Property(c => c.PowerSupplyId).ValueGeneratedOnAdd();
-			builder.Property(c => c.Type).HasConversion<string>().IsRequired();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
+			builder.Property(c => c.PowerSupplyType).HasConversion<string>().IsRequired();
 			builder.Property<int>(c => c.Voltage).IsRequired();
 		}
 	}

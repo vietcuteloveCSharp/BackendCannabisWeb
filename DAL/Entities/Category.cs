@@ -4,7 +4,7 @@
     {
         [Key]    
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CategoryId { get; set; }
+        public int Id { get; set; }
         [Required(ErrorMessage = "Category name is required.")]
         [StringLength(100,ErrorMessage = "Category name not more than 100 characters.")]
         public string CategoryName { get; set; } = string.Empty;

@@ -7,8 +7,7 @@ namespace DTO.MapDTO_Entity
 		public PowerSupplyMappingProfile()
 		{
 			#region Map PowerSupply
-			CreateMap<PowerSupply, PowerSupplyDTO>(MemberList.None);
-			CreateMap<PowerSupplyDTO, PowerSupply>(MemberList.None);
+			CreateMap<PowerSupply, PowerSupplyDTO>(MemberList.None).ReverseMap();
 			CreateMap<PowerSupplyCreateDTO, PowerSupply>(MemberList.None);
 			CreateMap<PowerSupplyUpdateDTO, PowerSupply>(MemberList.None);
 			#endregion

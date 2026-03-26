@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Product> builder)
 		{
 			builder.ToTable("Products", "Products");
-			builder.HasKey(c => c.ProductId);
-			builder.Property(c => c.ProductId).ValueGeneratedOnAdd();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.ProductName).HasMaxLength(255).IsRequired();
 			builder.Property(p => p.ProductType).HasMaxLength(50);
 			builder.Property<bool>(c => c.IsActive).HasDefaultValue(true).IsRequired();

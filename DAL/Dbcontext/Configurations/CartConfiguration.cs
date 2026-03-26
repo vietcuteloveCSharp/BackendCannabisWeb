@@ -12,7 +12,7 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Cart> builder)
 		{
 			builder.ToTable("Carts", "Orders");
-			builder.HasKey(c => c.CartId);
+			builder.HasKey(c => c.Id);
 
 			builder.Property(c => c.UserId)
 				  .IsRequired();

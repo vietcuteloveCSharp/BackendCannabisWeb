@@ -69,8 +69,7 @@ namespace Cannabis.Server.Controllers.Inventory
 			if (!ModelState.IsValid) return BadRequest(ApiResponse<string>.Fail("Invalid data."));
 
 			var created = await _coolingSystemService.CreateAsync(dto);
-			return CreatedAtAction(nameof(GetById),
-				new { id = created.CoolingSystemId },
+			return Ok(
 				ApiResponse<CoolingSystemDTO>.Ok(created, "Created successfully."));
 		}
 

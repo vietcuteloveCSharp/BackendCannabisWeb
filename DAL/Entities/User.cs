@@ -3,7 +3,7 @@
     public class User :BaseEntity
     {
         [Key]
-        public int UserId { get; set; }
+        public int Id { get; set; }
         [Required(ErrorMessage = "Username is required.")]
         [StringLength(100, ErrorMessage = "Username no more than 100 characters.")]
         public string? Username { get; set; }

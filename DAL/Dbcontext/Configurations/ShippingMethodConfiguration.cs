@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<ShippingMethod> builder)
 		{
 			builder.ToTable("ShippingMethods", "Orders");
-			builder.HasKey(c => c.ShippingId);
-			builder.Property(c => c.ShippingId).ValueGeneratedOnAdd();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.Name).HasMaxLength(150).IsRequired();
 			builder.Property(c => c.Carrier).HasMaxLength(150).IsRequired();
 			builder.Property(c => c.EstimatedDeliveryDate).HasColumnType("datetime2").IsRequired();

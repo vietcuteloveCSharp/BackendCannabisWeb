@@ -12,15 +12,26 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Spectrum> builder)
 		{
 			builder.ToTable("Spectrums", "Inventory");
-			builder.HasKey(c => c.SpectrumId);
-			builder.Property(c => c.SpectrumId).ValueGeneratedOnAdd();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
 			builder.Property(c => c.Type)
 				.HasConversion<string>()
 				.IsRequired();
+			builder.Property(s => s.ColorHexCode)
+				   .HasMaxLength(10)
+				   .IsFixedLength(); // Thường là #RRGGBB hoặc #RRGGBBAA
+
+			// URL ảnh biểu đồ bước sóng
+			builder.Property(s => s.SpectrumChartUrl)
+				   .HasMaxLength(500)
+					.IsUnicode(false)
+					.HasColumnType("varchar(500)");
 
 			builder.Property(c => c.Description)
 				.HasMaxLength(1000);
+			builder.Property(s => s.ColorTemperatureK).HasColumnType("int");
+			builder.Property(s => s.CRI).HasColumnType("int");
 
 			// Quan hệ ngược với GrowLight (nếu cần thiết, trong context bạn đã define ở phía GrowLight)
 		}

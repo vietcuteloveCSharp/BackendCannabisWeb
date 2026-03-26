@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<CoolingSystem> builder)
 		{
 			builder.ToTable("CoolingSystems", "Inventory");
-			builder.HasKey(c => c.CoolingSystemId);
-
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.Type)
 				  .HasConversion<string>()
 				  .HasMaxLength(20)

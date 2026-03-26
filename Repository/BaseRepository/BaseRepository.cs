@@ -118,5 +118,10 @@ namespace Repository.BaseRepository
 
 			return await query.FirstOrDefaultAsync(predicate);
 		}
+
+		public async Task<T?> DeleteRangeAsync(Expression<Func<T, bool>>[] ids)
+		{
+			var keyName = _dbSet
+		}
 	}
 }

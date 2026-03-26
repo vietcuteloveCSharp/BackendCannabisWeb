@@ -64,9 +64,9 @@ namespace TestsCannabis.DataSeed
 			if (db.PowerSupplies.Any()) return;
 			db.PowerSupplies.AddRange(new List<PowerSupply>
 			{
-				new PowerSupply { Type = EPowerSypplyType.AC, Voltage = 240},
-				new PowerSupply {Type = EPowerSypplyType.AC, Voltage = 96 },
-				new PowerSupply { Type = EPowerSypplyType.TA, Voltage = 128 }
+				new PowerSupply { PowerSupplyType = EPowerSypplyType.Internal, Voltage = 240},
+				new PowerSupply {PowerSupplyType = EPowerSypplyType.External, Voltage = 96 },
+				new PowerSupply { PowerSupplyType = EPowerSypplyType.Driverless, Voltage = 128 }
 
 			});
 		}
@@ -76,8 +76,8 @@ namespace TestsCannabis.DataSeed
 			if (db.CoolingSystems.Any()) return;
 			db.CoolingSystems.AddRange(new List<CoolingSystem>
 			{
-					new CoolingSystem {  Type = ECoolingType.Active,Description="test" },
-					new CoolingSystem {  Type = ECoolingType.Passive,Description="test" },
+					new CoolingSystem {  Type = ECoolingType.Fan,Description="test" },
+					new CoolingSystem {  Type = ECoolingType.WaterCooling,Description="test" },
 			});
 		}
 		private static void  SeedRoles(CannabisAccessoriesDBContext db)
@@ -250,7 +250,6 @@ namespace TestsCannabis.DataSeed
 					Country = "USA",
 					Description = "Premium cannabis accessories brand.",
 					Website = "https://www.greenleaf.com",
-					IsActive = true,
 					CreatedAt = DateTime.Now
 				},
 				new Brand
@@ -259,7 +258,6 @@ namespace TestsCannabis.DataSeed
 					Country = "Canada",
 					Description = "Natural and organic cannabis products.",
 					Website = "https://www.herbalessence.ca",
-					IsActive = true,
 					CreatedAt = DateTime.Now
 				},
 				new Brand
@@ -268,7 +266,6 @@ namespace TestsCannabis.DataSeed
 					Country = "Netherlands",
 					Description = "Innovative cannabis technology solutions.",
 					Website = "https://www.cannatech.nl",
-					IsActive = true,
 					CreatedAt = DateTime.Now
 				},
 				new Brand
@@ -277,7 +274,6 @@ namespace TestsCannabis.DataSeed
 					Country = "USA",
 					Description = "High-quality cannabis cultivation equipment.",
 					Website = "https://www.budmasters.com",
-					IsActive = true,
 					CreatedAt = DateTime.Now
 				},
 				new Brand
@@ -286,7 +282,6 @@ namespace TestsCannabis.DataSeed
 					Country = "UK",
 					Description = "Luxury cannabis lifestyle products.",
 					Website = "https://www.leafylux.co.uk",
-					IsActive = true,
 					CreatedAt = DateTime.Now
 				},new Brand
 				{
@@ -294,7 +289,6 @@ namespace TestsCannabis.DataSeed
 					Country = "China",
 					Description = "Popular LED grow light manufacturer",
 					Website = "https://marshydro.com",
-					IsActive = true,
 					CreatedAt = DateTime.UtcNow
 				}
 			};
@@ -314,7 +308,7 @@ namespace TestsCannabis.DataSeed
 			{
 			 	new CarbonFilter
 				{
-					AirflowRate = "500 m³/h",
+					
 					BrandId = greenLeaf?.BrandId ?? 1,
 					Quantity = 20,
 					Price = 120.50m,
@@ -331,7 +325,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new CarbonFilter
 				{
-					AirflowRate = "800 m³/h",
+					
 					BrandId = herbalEssence?.BrandId ?? 2,
 					Quantity = 10,
 					Price = 180.75m,
@@ -348,7 +342,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new CarbonFilter
 				{
-					AirflowRate = "1000 CFM",
+					
 					BrandId = budMasters?.BrandId ?? 3,
 					Quantity = 8,
 					Price = 250.00m,
@@ -375,8 +369,6 @@ namespace TestsCannabis.DataSeed
 			new Classification
 			{
 				ClassificationId = 1,
-				ClassificationName = "Indica",
-				Quantity = 120,
 				Description = "Dòng cannabis thân thấp, hiệu ứng thư giãn.",
 				IsActive = true,
 				CreatedAt = DateTime.UtcNow
@@ -384,8 +376,6 @@ namespace TestsCannabis.DataSeed
 			new Classification
 			{
 				ClassificationId = 2,
-				ClassificationName = "Sativa",
-				Quantity = 90,
 				Description = "Dòng cao, hiệu ứng kích thích và tập trung.",
 				IsActive = true,
 				CreatedAt = DateTime.UtcNow
@@ -393,8 +383,6 @@ namespace TestsCannabis.DataSeed
 			new Classification
 			{
 				ClassificationId = 3,
-				ClassificationName = "Hybrid",
-				Quantity = 200,
 				Description = "Lai giữa Indica và Sativa, cân bằng hiệu ứng.",
 				IsActive = true,
 				CreatedAt = DateTime.UtcNow
@@ -402,8 +390,6 @@ namespace TestsCannabis.DataSeed
 			new Classification
 			{
 				ClassificationId = 4,
-				ClassificationName = "CBD Dominant",
-				Quantity = 60,
 				Description = "Hàm lượng CBD cao, dùng cho y tế.",
 				IsActive = false,
 				CreatedAt = DateTime.UtcNow
@@ -428,28 +414,28 @@ namespace TestsCannabis.DataSeed
 		new Spectrum
 		{
 			SpectrumId = 2,
-			Type = ESpectrumType.Veg,
+			Type = ESpectrumType.Vegetative,
 			Description = "Phổ ánh sáng xanh, thích hợp cho giai đoạn sinh trưởng (vegetative).",
 			CreatedAt = DateTime.UtcNow
 		},
 		new Spectrum
 		{
 			SpectrumId = 3,
-			Type = ESpectrumType.Bloom,
+			Type = ESpectrumType.FullSpectrum,
 			Description = "Phổ ánh sáng đỏ, tăng năng suất giai đoạn ra hoa (bloom).",
 			CreatedAt = DateTime.UtcNow
 		},
 		new Spectrum
 		{
 			SpectrumId = 4,
-			Type = ESpectrumType.UV,
+			Type = ESpectrumType.FullSpectrum,
 			Description = "Ánh sáng tia cực tím giúp tăng sản xuất trichome.",
 			CreatedAt = DateTime.UtcNow
 		},
 		new Spectrum
 		{
 			SpectrumId = 5,
-			Type = ESpectrumType.IR,
+			Type = ESpectrumType.FullSpectrum,
 			Description = "Ánh sáng hồng ngoại giúp cây kéo dài thân và kích thích ra hoa nhanh hơn.",
 			CreatedAt = DateTime.UtcNow
 		}

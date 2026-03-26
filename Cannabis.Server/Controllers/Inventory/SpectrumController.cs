@@ -6,6 +6,7 @@ namespace Cannabis.Server.Controllers.Inventory
 	[ApiVersion("1.0")]
 	[Route("api/v{version:apiVersion}/[controller]")]
 	[ApiController]
+	
 	public class SpectrumController : ControllerBase
 	{
 		private readonly ISpectrumService _spectrumService;
@@ -64,15 +65,11 @@ namespace Cannabis.Server.Controllers.Inventory
 		[HttpPost]
 		[ProducesResponseType(typeof(ApiResponse<SpectrumDTO>), StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<IActionResult> CreateAsync([FromBody] SpectrumCreateDTO dto)
+		public async Task<IActionResult> CreateAsync([FromForm] SpectrumCreateDTO dto , ApiVersion version)
 		{
 			var created = await _spectrumService.AddAsync(dto);
 
-			return CreatedAtAction(
-				nameof(GetByIdAsync),
-				new { id = created.SpectrumId },
-				ApiResponse<SpectrumDTO>.Ok(created, "Spectrum created successfully.")
-			);
+			return Ok(ApiResponse<SpectrumDTO>.Ok(created, "Spectrum created successfully."));
 		}
 
 		/// <summary>
@@ -84,7 +81,7 @@ namespace Cannabis.Server.Controllers.Inventory
 		[HttpPut("{id:int}")]
 		[ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<IActionResult> UpdateAsync(int id, [FromBody] SpectrumUpdateDTO dto)
+		public async Task<IActionResult> UpdateAsync(int id, [FromForm] SpectrumUpdateDTO dto)
 		{
 			
 			var updated = await _spectrumService.UpdateAsync(id, dto);

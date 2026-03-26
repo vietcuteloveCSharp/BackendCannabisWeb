@@ -4,12 +4,8 @@
     {
         
         [Key] 
-        public int ProductId { get; set; }
-        [Required(ErrorMessage ="Product name is required.")]
-        [StringLength(255, ErrorMessage = "Product name no more than 255 characters.")]
+        public int Id { get; set; }
         public string ProductName { get; set; } = string.Empty;
-
-		[Required(ErrorMessage ="Id category is required.")]
         public int CategoryId { get; set; } 
         public bool IsActive { get; set; } =true;
         public int BrandId { get; set; }

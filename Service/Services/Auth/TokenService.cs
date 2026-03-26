@@ -12,35 +12,27 @@
 		// Generate JWT token
 		public string GenerateAccessToken(IEnumerable<Claim> claims)
 		{
+
+			// Kiểm tra an toàn: Nếu Key trống thì báo lỗi rõ ràng thay vì crash
+			if (string.IsNullOrEmpty(_jwtSettings.Key))
+			{
+				throw new InvalidOperationException("JWT Key is not configured in appsettings.json or JwtSettings class.");
+			}
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
 			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-			//var claims = new List<Claim>
-			//{
-			//	new Claim(JwtRegisteredClaimNames.Sub, payload.UserId.ToString()),
-			//	new Claim(JwtRegisteredClaimNames.UniqueName,payload.UserName),
-			//	new Claim(ClaimTypes.Name, payload.UserName),
-			//	new Claim(ClaimTypes.Role, payload.Role),
-			//	new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-			//	new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString())
-			//};
-			var expires = _jwtSettings.AccessTokenLifetimeSeconds;
-			// Bảo vệ trường hợp lifetime âm hoặc bằng 0
-			if (expires <= 0)
-			{
-				// Giúp token có hiệu lực hợp lệ trong 1 giây (để tránh IDX12401)
-				expires = 1;
 			
-			}
+			var expires = _jwtSettings.AccessTokenLifetimeMinutes ;
+		
 			// Tạo token
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
 				Subject = new ClaimsIdentity(claims),
-				Expires = DateTime.UtcNow.AddSeconds(_jwtSettings.AccessTokenLifetimeSeconds),
+				Expires = DateTime.UtcNow.AddMinutes(expires),
 				Issuer = _jwtSettings.Issuer,
 				Audience = _jwtSettings.Audience,
 				SigningCredentials = creds,
-				NotBefore = DateTime.UtcNow
+				NotBefore = DateTime.UtcNow.AddSeconds(-5)
 			};
 
 			var tokenHandler = new JwtSecurityTokenHandler();

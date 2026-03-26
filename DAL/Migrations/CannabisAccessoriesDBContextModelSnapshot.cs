@@ -187,13 +187,13 @@ namespace DAL.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("IsPremium")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -281,13 +281,15 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarbonFilterId"));
 
-                    b.Property<string>("AirflowRate")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                    b.Property<int>("AirflowRateCFM")
+                        .HasColumnType("int");
 
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("CarbonBedThicknessMm")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -300,31 +302,39 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(1000)");
 
                     b.Property<decimal>("Diameter")
-                        .HasColumnType("decimal(4,2)");
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
 
                     b.Property<string>("FilterMaterial")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("FlangeSizeInch")
+                        .HasPrecision(4, 1)
+                        .HasColumnType("decimal(4,1)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Length")
-                        .HasColumnType("decimal(4,2)");
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
 
                     b.Property<int>("Lifespan")
                         .HasColumnType("int");
 
                     b.Property<decimal>("MaxTemperature")
-                        .HasColumnType("decimal(3,2)");
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<decimal>("MinTemperature")
-                        .HasColumnType("decimal(3,2)");
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<string>("ModelNumber")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(10, 2)
@@ -344,8 +354,14 @@ namespace DAL.Migrations
 
                     b.HasKey("CarbonFilterId");
 
+                    b.HasIndex("AirflowRateCFM")
+                        .HasDatabaseName("IX_CarbonFilter_Airflow");
+
                     b.HasIndex("BrandId")
                         .HasDatabaseName("IX_CarbonFilters_BrandId");
+
+                    b.HasIndex("FlangeSizeInch")
+                        .HasDatabaseName("IX_CarbonFilter_FlangeSize");
 
                     b.HasIndex("ProductId")
                         .IsUnique()
@@ -528,6 +544,11 @@ namespace DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("ModelName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -537,6 +558,63 @@ namespace DAL.Migrations
                         .HasDatabaseName("IX_ChipModels_ModelChip");
 
                     b.ToTable("ChipModels", "Inventory");
+
+                    b.HasData(
+                        new
+                        {
+                            ChipModelId = 1,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(1798),
+                            Description = "Top tier for horticulture",
+                            Efficiency = 3.10m,
+                            IsDeleted = false,
+                            Manufacturer = "Samsung",
+                            ModelChip = "LM301H",
+                            ModelName = "Evo"
+                        },
+                        new
+                        {
+                            ChipModelId = 2,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(1806),
+                            Description = "Hyper Red 660nm",
+                            Efficiency = 4.00m,
+                            IsDeleted = false,
+                            Manufacturer = "Osram",
+                            ModelChip = "GH CSSRM4.24",
+                            ModelName = "Oslon Square"
+                        },
+                        new
+                        {
+                            ChipModelId = 3,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(1807),
+                            Description = "Cost-effective solution",
+                            Efficiency = 2.80m,
+                            IsDeleted = false,
+                            Manufacturer = "Cree",
+                            ModelChip = "JK2835",
+                            ModelName = "J Series"
+                        },
+                        new
+                        {
+                            ChipModelId = 4,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(1809),
+                            Description = "High power COB",
+                            Efficiency = 2.60m,
+                            IsDeleted = false,
+                            Manufacturer = "Bridgelux",
+                            ModelChip = "BXEB-L0340",
+                            ModelName = "Vero 29"
+                        },
+                        new
+                        {
+                            ChipModelId = 5,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(1810),
+                            Description = "Full spectrum natural light",
+                            Efficiency = 2.75m,
+                            IsDeleted = false,
+                            Manufacturer = "Seoul",
+                            ModelChip = "MJT-3030",
+                            ModelName = "SunLike"
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Classification", b =>
@@ -546,11 +624,6 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassificationId"));
-
-                    b.Property<string>("ClassificationName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -570,17 +643,14 @@ namespace DAL.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("ClassificationId");
-
-                    b.HasIndex("ClassificationName")
-                        .IsUnique()
-                        .HasDatabaseName("UX_Classifications_ClassificationName");
 
                     b.ToTable("Classifications", "Products");
                 });
@@ -617,6 +687,48 @@ namespace DAL.Migrations
                     b.HasKey("CoolingSystemId");
 
                     b.ToTable("CoolingSystems", "Inventory");
+
+                    b.HasData(
+                        new
+                        {
+                            CoolingSystemId = 1,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(1995),
+                            Description = "Aluminium Heatsink",
+                            IsDeleted = false,
+                            Type = "Fan"
+                        },
+                        new
+                        {
+                            CoolingSystemId = 2,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(1999),
+                            Description = "Dual Ball Bearing Fan",
+                            IsDeleted = false,
+                            Type = "WaterCooling"
+                        },
+                        new
+                        {
+                            CoolingSystemId = 3,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2000),
+                            Description = "Water cooling block",
+                            IsDeleted = false,
+                            Type = "AirConditioning"
+                        },
+                        new
+                        {
+                            CoolingSystemId = 4,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2001),
+                            Description = "Smart PWM Fan",
+                            IsDeleted = false,
+                            Type = "Fan"
+                        },
+                        new
+                        {
+                            CoolingSystemId = 5,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2002),
+                            Description = "Graphene Coating",
+                            IsDeleted = false,
+                            Type = "AirConditioning"
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Dehumidifier", b =>
@@ -648,6 +760,16 @@ namespace DAL.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<bool>("HasAutoHumidistat")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("HasContinuousDrainage")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -664,12 +786,22 @@ namespace DAL.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("TankCapacityLiters")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("DehumidifierId");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("DehumidificationCapacity")
+                        .HasDatabaseName("IX_Dehumidifier_Capacity");
+
+                    b.HasIndex("PowerConsumption")
+                        .HasDatabaseName("IX_Dehumidifier_Power");
 
                     b.HasIndex("ProductId")
                         .IsUnique()
@@ -709,8 +841,17 @@ namespace DAL.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<decimal?>("Efficacy")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("IsDimmable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<int>("Lifespan")
                         .HasColumnType("int");
@@ -719,6 +860,10 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal?>("PPF")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("PowerSupplyId")
                         .HasColumnType("int");
@@ -759,12 +904,18 @@ namespace DAL.Migrations
                     b.HasIndex("PowerSupplyId")
                         .HasDatabaseName("IX_GrowLights_PowerSupplyId");
 
+                    b.HasIndex("Price")
+                        .HasDatabaseName("IX_GrowLights_Price");
+
                     b.HasIndex("ProductId")
                         .IsUnique()
                         .HasDatabaseName("IX_Growlight_ProductId");
 
                     b.HasIndex("SpectrumId")
                         .HasDatabaseName("IX_GrowLights_SpectrumId");
+
+                    b.HasIndex("Wattage")
+                        .HasDatabaseName("IX_GrowLights_Wattage");
 
                     b.ToTable("GrowLights", "Inventory");
                 });
@@ -779,6 +930,9 @@ namespace DAL.Migrations
 
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
+
+                    b.Property<int?>("CanvasDensity")
+                        .HasColumnType("INT");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -800,8 +954,14 @@ namespace DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int>("HeightCm")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<int>("LengthCm")
+                        .HasColumnType("int");
 
                     b.Property<string>("Material")
                         .IsRequired()
@@ -818,6 +978,11 @@ namespace DAL.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("ReflectiveMaterial")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -829,14 +994,27 @@ namespace DAL.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<int>("WidthCm")
+                        .HasMaxLength(255)
+                        .HasColumnType("int");
+
                     b.HasKey("GrowtentId");
 
                     b.HasIndex("BrandId")
                         .HasDatabaseName("IX_GrowTents_BrandId");
 
+                    b.HasIndex("HeightCm")
+                        .HasDatabaseName("IX_GrowTents_Height");
+
+                    b.HasIndex("Price")
+                        .HasDatabaseName("IX_GrowTents_Price");
+
                     b.HasIndex("ProductId")
                         .IsUnique()
                         .HasDatabaseName("IX_Growtent_ProductId");
+
+                    b.HasIndex("WidthCm")
+                        .HasDatabaseName("IX_GrowTents_Width");
 
                     b.ToTable("GrowTents", "Inventory");
                 });
@@ -848,6 +1026,11 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NutrientId"));
+
+                    b.Property<string>("ApplicationStage")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
@@ -862,6 +1045,11 @@ namespace DAL.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<string>("DilutionRate")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("datetime2");
 
@@ -874,6 +1062,11 @@ namespace DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsOrganic")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsPhBuffered")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
@@ -909,11 +1102,20 @@ namespace DAL.Migrations
 
                     b.HasKey("NutrientId");
 
+                    b.HasIndex("ApplicationStage")
+                        .HasDatabaseName("IX_Nutrient_Stage");
+
                     b.HasIndex("BrandId")
                         .HasDatabaseName("IX_Nutrient_BrandId");
 
+                    b.HasIndex("IsOrganic")
+                        .HasDatabaseName("IX_Nutrient_Organic");
+
                     b.HasIndex("NutrientTypeId")
                         .HasDatabaseName("IX_Nutrient_NutrientTypeId");
+
+                    b.HasIndex("Price")
+                        .HasDatabaseName("IX_Nutrient_Price");
 
                     b.HasIndex("ProductId")
                         .IsUnique()
@@ -954,6 +1156,48 @@ namespace DAL.Migrations
                     b.HasKey("NutrientTypeId");
 
                     b.ToTable("NutrientTypes", "Inventory");
+
+                    b.HasData(
+                        new
+                        {
+                            NutrientTypeId = 1,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2145),
+                            Description = "Essential N-P-K foundation for all plant stages.",
+                            IsDeleted = false,
+                            NutrientName = "Base Nutrients"
+                        },
+                        new
+                        {
+                            NutrientTypeId = 2,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2146),
+                            Description = "Enhances root development and nutrient uptake efficiency.",
+                            IsDeleted = false,
+                            NutrientName = "Root Stimulators"
+                        },
+                        new
+                        {
+                            NutrientTypeId = 3,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2147),
+                            Description = "High Phosphorus and Potassium for massive flower production.",
+                            IsDeleted = false,
+                            NutrientName = "Bloom Boosters"
+                        },
+                        new
+                        {
+                            NutrientTypeId = 4,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2148),
+                            Description = "Prevents common deficiencies in Coco Coir or RO water.",
+                            IsDeleted = false,
+                            NutrientName = "Cal-Mag Supplements"
+                        },
+                        new
+                        {
+                            NutrientTypeId = 5,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2149),
+                            Description = "Solutions to maintain optimal pH levels (5.5 - 6.5).",
+                            IsDeleted = false,
+                            NutrientName = "pH Adjusters"
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Order", b =>
@@ -1117,7 +1361,7 @@ namespace DAL.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("PowerSupplyType")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)");
 
@@ -1130,6 +1374,40 @@ namespace DAL.Migrations
                     b.HasKey("PowerSupplyId");
 
                     b.ToTable("PowerSupplies", "Inventory");
+
+                    b.HasData(
+                        new
+                        {
+                            PowerSupplyId = 1,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2111),
+                            IsDeleted = false,
+                            PowerSupplyType = "Internal",
+                            Voltage = 48
+                        },
+                        new
+                        {
+                            PowerSupplyId = 2,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2114),
+                            IsDeleted = false,
+                            PowerSupplyType = "Driverless",
+                            Voltage = 24
+                        },
+                        new
+                        {
+                            PowerSupplyId = 3,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2114),
+                            IsDeleted = false,
+                            PowerSupplyType = "External",
+                            Voltage = 36
+                        },
+                        new
+                        {
+                            PowerSupplyId = 4,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2115),
+                            IsDeleted = false,
+                            PowerSupplyType = "Removable",
+                            Voltage = 54
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Product", b =>
@@ -1461,10 +1739,9 @@ namespace DAL.Migrations
                     b.Property<int>("BreederId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CBDContent")
-                        .IsRequired()
+                    b.Property<decimal>("CBDContent")
                         .HasPrecision(5, 2)
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<int>("ClassifyId")
                         .HasColumnType("int");
@@ -1482,14 +1759,22 @@ namespace DAL.Migrations
 
                     b.Property<string>("Difficulty")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FloweringTimeDays")
                         .HasColumnType("INT");
 
+                    b.Property<string>("Genetics")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<decimal>("IndicaPercentage")
                         .HasPrecision(5, 2)
                         .HasColumnType("decimal(5,2)");
+
+                    b.Property<int?>("IndoorHeightCm")
+                        .HasColumnType("INT");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -1507,12 +1792,11 @@ namespace DAL.Migrations
 
                     b.Property<string>("StrainType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("THCContent")
-                        .IsRequired()
+                    b.Property<decimal>("THCContent")
                         .HasPrecision(5, 2)
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<int>("TotalQuantity")
                         .HasColumnType("INT");
@@ -1522,7 +1806,7 @@ namespace DAL.Migrations
 
                     b.Property<decimal>("Yield")
                         .HasPrecision(10, 2)
-                        .HasColumnType("decimal(5,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("SeedId");
 
@@ -1530,8 +1814,18 @@ namespace DAL.Migrations
 
                     b.HasIndex("ClassifyId");
 
+                    b.HasIndex("Price")
+                        .HasDatabaseName("IX_SEEDS_PRICE");
+
                     b.HasIndex("ProductId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_SEED_PRODUCTID");
+
+                    b.HasIndex("StrainType")
+                        .HasDatabaseName("IX_SEEDS_STRAINTYPE");
+
+                    b.HasIndex("THCContent")
+                        .HasDatabaseName("IX_SEEDS_THC");
 
                     b.ToTable("Seeds", "Inventory");
                 });
@@ -1593,6 +1887,17 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SpectrumId"));
 
+                    b.Property<int?>("CRI")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ColorHexCode")
+                        .HasMaxLength(10)
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength();
+
+                    b.Property<int?>("ColorTemperatureK")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -1606,6 +1911,11 @@ namespace DAL.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("SpectrumChartUrl")
+                        .HasMaxLength(500)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(500)");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)");
@@ -1616,6 +1926,41 @@ namespace DAL.Migrations
                     b.HasKey("SpectrumId");
 
                     b.ToTable("Spectrums", "Inventory");
+
+                    b.HasData(
+                        new
+                        {
+                            SpectrumId = 1,
+                            CRI = 90,
+                            ColorHexCode = "#FDF4E3",
+                            ColorTemperatureK = 3500,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2084),
+                            IsDeleted = false,
+                            SpectrumChartUrl = "/images/spectrums/full-spectrum.jpg",
+                            Type = "FullSpectrum"
+                        },
+                        new
+                        {
+                            SpectrumId = 2,
+                            CRI = 85,
+                            ColorHexCode = "#1E90FF",
+                            ColorTemperatureK = 6500,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2089),
+                            IsDeleted = false,
+                            SpectrumChartUrl = "/images/spectrums/veg-spectrum.jpg",
+                            Type = "Vegetative"
+                        },
+                        new
+                        {
+                            SpectrumId = 3,
+                            CRI = 88,
+                            ColorHexCode = "#FF4500",
+                            ColorTemperatureK = 2700,
+                            CreatedAt = new DateTime(2026, 3, 26, 8, 41, 10, 23, DateTimeKind.Utc).AddTicks(2091),
+                            IsDeleted = false,
+                            SpectrumChartUrl = "/images/spectrums/bloom-spectrum.jpg",
+                            Type = "Flowering"
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.User", b =>

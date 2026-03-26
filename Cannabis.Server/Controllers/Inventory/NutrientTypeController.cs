@@ -59,9 +59,7 @@ namespace Cannabis.Server.Controllers.Inventory
 		{
 			var created = await _nutrientTypeService.CreateAsync(dto);
 
-			return CreatedAtAction(
-				nameof(GetById),
-				new { id = created.NutrientTypeId },
+			return Ok(
 				ApiResponse<NutrientTypeDTO>.Ok(created, "Created successfully.")
 			);
 		}

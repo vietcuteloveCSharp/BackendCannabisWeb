@@ -7,7 +7,7 @@
 		public string Audience { get; set; } = default!;
 
 		// Dùng int để nhận giá trị 3600 từ config
-		public int AccessTokenLifetimeSeconds { get; set; }
+		public int AccessTokenLifetimeMinutes { get; set; }
 		public int RefreshTokenExpiryDays { get; set; }
 	}
 }

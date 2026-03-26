@@ -3,7 +3,7 @@
     public class Role :BaseEntity
     {
         [Key]
-        public int RoleId { get; set; }
+        public int Id { get; set; }
         [Required(ErrorMessage ="Role name is required.")]
         public ERoleName RoleName { get; set; }
         public string? Description { get; set; }

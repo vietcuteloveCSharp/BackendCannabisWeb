@@ -3,7 +3,7 @@
     public class ProductImage : BaseEntity
     {
         [Key]
-        public int ProductImageId { get; set; }
+        public int Id { get; set; }
         [Required(ErrorMessage = "Id product is required.")]
         public int ProductId { get; set; } // Foreign Key
         public string ImageUrl { get; set; } = string.Empty;  //link Cloudinary

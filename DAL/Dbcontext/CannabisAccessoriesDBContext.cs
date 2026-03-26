@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using DAl.Data;
+using System.Linq.Expressions;
+
 
 namespace DAL.Dbcontext
 {
@@ -66,6 +68,8 @@ namespace DAL.Dbcontext
 					entityType.SetQueryFilter(lambda);
 				}
 			}
+
+			DbInitializer.Seed(modelBuilder);
 
 		}
 

@@ -12,14 +12,9 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Classification> builder)
 		{
 			builder.ToTable("Classifications", "Products");
-			builder.HasKey(c => c.ClassificationId);
-
-			builder.Property(c => c.ClassificationName)
-				  .HasMaxLength(150)
-				  .IsRequired();
-
-			builder.Property(c => c.Quantity)
-				  .IsRequired();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
+			builder.Property(c => c.Type).HasConversion<string>().IsRequired();
 
 			builder.Property(c => c.Description)
 				  .HasMaxLength(1000); // tránh nvarchar(max)
@@ -27,10 +22,7 @@ namespace DAL.Dbcontext.Configurations
 			builder.Property(c => c.IsActive)
 				  .HasDefaultValue(true);
 
-			// ✅ Index để tìm nhanh theo tên
-			builder.HasIndex(c => c.ClassificationName)
-				  .IsUnique()
-				  .HasDatabaseName("UX_Classifications_ClassificationName");
+			
 		}
 	}
 }
