@@ -12,7 +12,7 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<GrowTent> builder)
 		{
 			builder.ToTable("GrowTents", "Inventory");
-			builder.HasKey(gt => gt.GrowtentId);
+			builder.HasKey(gt => gt.Id);
 			builder.Property(gt => gt.BrandId).IsRequired();
 
 			builder.Property(gt => gt.Dimensions).HasMaxLength(100).IsRequired();

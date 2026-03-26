@@ -15,5 +15,6 @@ namespace Repository.BaseRepository
 		Task<T> AddAsync(T entity);
 		bool Update(T entity);
 		Task<bool> DeleteAsync(int id);
+		Task<T?> DeleteRangeAsync(Expression<Func<T,bool>>[] ids);
 	}
 }

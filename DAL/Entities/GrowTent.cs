@@ -3,14 +3,10 @@
     public class GrowTent :BaseEntity
     {
         [Key]
-        public int GrowtentId { get; set; }
-		[Required(ErrorMessage = "Id product is required.")]
+        public int Id { get; set; }
 		public int ProductId { get; set; }
-		[Required(ErrorMessage ="Id brand is required.")]
         public int BrandId { get; set; }
-        [StringLength(100,ErrorMessage = "Dimensions no more than 100 characters.")]
         public string Dimensions { get; set; } = string.Empty;
-		[StringLength(255, ErrorMessage = "Material no more than 255 characters.")]
 		public int WidthCm { get; set; }  // Rộng
 		public int LengthCm { get; set; } // Dài
 		public int HeightCm { get; set; } // Cao
@@ -21,7 +17,6 @@
         public int Quantity { get; set; }
         
         public decimal Price { get; set; }
-        [StringLength(255, ErrorMessage = "Frame material no more than 255 characters.")]
         public string FrameMaterial { get; set; } = string.Empty;
 		public int WarrantyPeriod { get; set; }
         public string? Description { get; set; }

@@ -65,11 +65,7 @@ namespace Cannabis.Server.Controllers.Inventory
 		{
 			var created = await _powerSupplyService.AddAsync(dto);
 
-			return CreatedAtAction(
-				nameof(GetById),
-				new { id = created.PowerSupplyId },
-				ApiResponse<PowerSupplyDTO>.Ok(created, "Created successfully.")
-			);
+			return Ok(ApiResponse<PowerSupplyDTO>.Ok(created, "Created successfully."));
 		}
 
 		/// <summary>

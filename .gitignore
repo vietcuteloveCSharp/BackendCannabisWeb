@@ -15,6 +15,7 @@
 .vscode/
 dockerfile
 render.yml
+Cannabis.Server/Uploads/
 
 WebCannabisAccessorries.sln
 appsettings.Development.json

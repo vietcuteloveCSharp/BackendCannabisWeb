@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<ChipModel> builder)
 		{
 			builder.ToTable("ChipModels", "Inventory");
-			builder.HasKey(c => c.ChipModelId);
-
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.Manufacturer)
 				  .HasMaxLength(100)
 				  .IsRequired();

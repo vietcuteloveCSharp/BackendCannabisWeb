@@ -3,7 +3,7 @@
     public class PowerSupply : BaseEntity
     {
         [Key]
-        public int PowerSupplyId { get; set; }
+        public int Id { get; set; }
         [Column(TypeName = "nvarchar(20)")]
         public EPowerSypplyType PowerSupplyType { get; set; } 
         public int Voltage { get; set; }

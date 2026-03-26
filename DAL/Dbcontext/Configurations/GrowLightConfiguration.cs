@@ -12,7 +12,7 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<GrowLight> builder)
 		{
 			builder.ToTable("GrowLights", "Inventory");
-			builder.HasKey(gl => gl.GrowLightId);
+			builder.HasKey(gl => gl.Id);
 
 			builder.Property(gl => gl.BrandId).IsRequired();
 			builder.Property(gl => gl.Quantity).IsRequired();

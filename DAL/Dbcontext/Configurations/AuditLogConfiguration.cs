@@ -12,7 +12,7 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<AuditLog> builder)
 		{
 			builder.ToTable("AuditLogs", "Users");
-			builder.HasKey(e => e.AuditLogId);
+			builder.HasKey(e => e.Id);
 
 			builder.Property(e => e.TableName)
 				  .HasMaxLength(150)

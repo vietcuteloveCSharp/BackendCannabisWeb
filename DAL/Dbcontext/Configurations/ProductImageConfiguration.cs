@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<ProductImage> builder)
 		{
 			builder.ToTable("ProductImages", "Products");
-			builder.HasKey(c => c.ProductImageId);
-			builder.Property(c => c.ProductImageId).ValueGeneratedOnAdd();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property<string>(c => c.ImageUrl).IsRequired();
 			builder.Property(c => c.IsMainImage).HasDefaultValue(false);
 

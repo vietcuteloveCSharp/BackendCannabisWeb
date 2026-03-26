@@ -12,7 +12,7 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Breeder> builder)
 		{
 			builder.ToTable("Breeds", "Products");
-			builder.HasKey(b => b.BreederId);
+			builder.HasKey(b => b.Id);
 
 			builder.Property(b => b.BreederName)
 				  .HasMaxLength(255)

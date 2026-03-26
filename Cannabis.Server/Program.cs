@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 
 namespace Cannabis.Server
@@ -79,6 +80,7 @@ namespace Cannabis.Server
 			builder.Services.AddApplicationRepositories();
 			builder.Services.AddApplicationServices();
 			builder.Services.AddInfrastructureServices(builder.Configuration);
+			builder.Services.AddFileConfiguration(builder.Environment);
 			//cấu hình cors
 			builder.Services.AddCors(options =>
 			{
@@ -108,11 +110,23 @@ namespace Cannabis.Server
 			//	 options.SubstituteApiVersionInUrl = true; // Cái này cực kỳ quan trọng để resolve {version:apiVersion}
 			// });
 			var app = builder.Build();
-			app.UseCors("AllowAngularApp");
+		
 
 			// 1. Xử lý lỗi toàn cục - Phải nằm trên cùng để bắt mọi lỗi của các Middleware sau
 			app.UseMiddleware<GlobalExceptionMiddleware>();
+			// 2. HTTPS Redirection
+			app.UseHttpsRedirection();
+			app.UseStaticFiles(); // Cho wwwroot
+			// 3. Cấu hình File tĩnh (Phải đặt TRƯỚC Routing để truy cập ảnh nhanh nhất)
+			
+			var uploadPath = Path.Combine(app.Environment.ContentRootPath, "Uploads");
+			if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
 
+			app.UseStaticFiles(new StaticFileOptions
+			{
+				FileProvider = new PhysicalFileProvider(uploadPath),
+				RequestPath = "/uploads"
+			});
 			// 2. Swagger - Chỉ dùng trong môi trường Phát triển
 			if (app.Environment.IsDevelopment())
 			{
@@ -120,15 +134,12 @@ namespace Cannabis.Server
 				app.UseSwaggerUI();
 			}
 
-			// 3. Chuyển hướng HTTPS
-			app.UseHttpsRedirection();
-
 			// 4. Routing - Định tuyến (Bắt buộc phải đứng trước CORS và Auth)
 			app.UseRouting();
 
 			// 5. CORS - Chỉ dùng DUY NHẤT một dòng này. 
 			// Đừng dùng cái 'if Development' kèm 'AllowAnyOrigin' ở đây nữa vì nó sẽ gây lỗi Wildcard '*'
-			
+			app.UseCors("AllowAngularApp");
 
 			// 6. Xác thực & Phân quyền
 			app.UseAuthentication();

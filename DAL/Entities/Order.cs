@@ -3,20 +3,14 @@
     public class Order : BaseEntity
     {
         [Key]
-        public int  OrderId { get; set; }
-        [Required(ErrorMessage ="Id customer is required.")]
+        public int  Id { get; set; }
         public int BuyerId { get; set; }
-        [Required(ErrorMessage = "Id seller is required.")]
 
         public int SellerId {  get; set; }
-        [Column(TypeName ="nvarchar(20)")]
         public EOrderStatus OrderStatus {  get; set; }
-        [Column(TypeName ="decimal(10,2)")]
         public decimal TotalAmount {  get; set; }
         public string ShippingAddress {  get; set; } = string.Empty;
-        [Column(TypeName = "decimal(10,2)")]
         public decimal ShippingFee {  get; set; }
-        [Column(TypeName = "varchar(50)")]
         public string TrackingNumber {  get; set; } =string.Empty;
         //navigation
         public virtual User Buyer { get; set; } =default!;

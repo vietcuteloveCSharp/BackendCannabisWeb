@@ -3,9 +3,7 @@
     public class NutrientType :BaseEntity
     {
         [Key]
-        public int NutrientTypeId { get; set; }
-        [Required(ErrorMessage = "Nutrient name is required.")]
-        [StringLength(150,ErrorMessage = "Nutrient name no more than 150 characters.")]
+        public int Id { get; set; }
         public string NutrientName { get; set; } = string.Empty; // Name of the nutrient type
 		public string? Description { get; set; }
         //navigation 

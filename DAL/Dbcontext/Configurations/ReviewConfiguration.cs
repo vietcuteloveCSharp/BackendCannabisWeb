@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Review> builder)
 		{
 			builder.ToTable("Reviews", "Reviews");
-			builder.HasKey(c => c.ReviewId);
-			builder.Property(c => c.ReviewId).ValueGeneratedOnAdd();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
 			builder.HasOne(c => c.User)
 				.WithMany(c => c.Reviews)

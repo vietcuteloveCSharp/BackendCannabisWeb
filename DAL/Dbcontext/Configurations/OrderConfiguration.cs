@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Order> builder)
 		{
 			builder.ToTable("Orders", "Orders");
-			builder.HasKey(c => c.OrderId);
-			builder.Property(c => c.OrderId).ValueGeneratedOnAdd();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
 			builder.HasOne(c => c.Buyer).WithMany(c => c.OrdersAsBuyer).HasForeignKey(c => c.BuyerId).HasConstraintName("FK_ORDER_BUYER_BUYERID").OnDelete(DeleteBehavior.Restrict).IsRequired();
 			builder.HasOne(c => c.Seller).WithMany(c => c.OrdersAsSeller).HasForeignKey(c => c.SellerId).HasConstraintName("FK_ORDER_SELLER_SELLERID").OnDelete(DeleteBehavior.Restrict).IsRequired();

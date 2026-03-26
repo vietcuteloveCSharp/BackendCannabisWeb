@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Seed> builder)
 		{
 			builder.ToTable("Seeds", "Inventory");
-			builder.HasKey(c => c.SeedId);
-			builder.Property(c => c.SeedId).ValueGeneratedOnAdd();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.THCContent).HasPrecision(5, 2).IsRequired();
 			builder.Property(c => c.CBDContent).HasPrecision(5, 2).IsRequired();
 			builder.Property(c => c.StrainType).HasConversion<string>();

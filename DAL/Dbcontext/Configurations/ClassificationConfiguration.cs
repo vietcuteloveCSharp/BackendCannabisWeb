@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Classification> builder)
 		{
 			builder.ToTable("Classifications", "Products");
-			builder.HasKey(c => c.ClassificationId);
-
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.Type).HasConversion<string>().IsRequired();
 
 			builder.Property(c => c.Description)

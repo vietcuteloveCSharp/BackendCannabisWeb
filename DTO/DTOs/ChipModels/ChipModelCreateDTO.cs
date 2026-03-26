@@ -7,6 +7,8 @@
 
 		[StringLength(100, ErrorMessage = "ModelChip must not exceed 100 characters.")]
 		public string ModelChip { get; set; } = string.Empty;
+		[StringLength(100)]
+		public string ModelName { get; set; }=string.Empty;
 
 		[StringLength(50, ErrorMessage = "Generation must not exceed 50 characters.")]
 		public string? Generation { get; set; }

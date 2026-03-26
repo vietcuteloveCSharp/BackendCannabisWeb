@@ -3,7 +3,7 @@
     public class ChipModel : BaseEntity
     {
         [Key]
-        public int ChipModelId { get; set; }
+        public int Id { get; set; }
         public string Manufacturer { get; set; } = string.Empty; // Nhà sản xuất (ví dụ: "Samsung", "Osram")
 		public string ModelName { get; set; } = string.Empty;
 		public string ModelChip { get; set; } = string.Empty; // Tên model chip (ví dụ: "301H", "301L")

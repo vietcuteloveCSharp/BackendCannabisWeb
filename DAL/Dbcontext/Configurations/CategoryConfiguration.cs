@@ -13,7 +13,7 @@ namespace DAL.Dbcontext.Configurations
 		{
 			builder.ToTable("Categories", "Products");
 
-			builder.HasKey(c => c.CategoryId);
+			builder.HasKey(c => c.Id);
 
 			builder.Property(c => c.CategoryName).HasMaxLength(100).IsRequired();
 

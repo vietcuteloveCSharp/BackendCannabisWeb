@@ -3,7 +3,7 @@
     public class Dehumidifier :BaseEntity
     {
         [Key]
-        public int DehumidifierId { get; set; }
+        public int Id { get; set; }
 		public int ProductId { get; set; }
         public decimal DehumidificationCapacity { get; set; } // Capacity in liters/day or similar
         public decimal TankCapacityLiters { get; set; }

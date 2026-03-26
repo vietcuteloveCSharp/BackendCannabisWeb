@@ -12,8 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Nutrient> builder)
 		{
 			builder.ToTable("Nutrients", "Inventory");
-			builder.HasKey(c => c.NutrientId);
-			builder.Property(c => c.NutrientId).ValueGeneratedOnAdd();
+			builder.HasKey(c => c.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
 			builder.HasOne(c => c.Brand)
 				.WithMany(c => c.Nutrients)

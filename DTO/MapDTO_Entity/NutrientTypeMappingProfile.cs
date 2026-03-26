@@ -7,8 +7,7 @@ namespace DTO.MapDTO_Entity
 		public NutrientTypeMappingProfile()
 		{
 			#region Map NutrientType
-			CreateMap<NutrientType, NutrientTypeDTO>(MemberList.None);
-			CreateMap<NutrientTypeDTO, NutrientType>(MemberList.None);
+			CreateMap<NutrientType, NutrientTypeDTO>(MemberList.None).ReverseMap();	
 			CreateMap<NutrientTypeCreateDTO, NutrientType>(MemberList.None);
 			CreateMap<NutrientTypeUpdateDTO, NutrientType>(MemberList.None);
 			#endregion

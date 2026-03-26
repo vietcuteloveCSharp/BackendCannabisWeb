@@ -12,7 +12,8 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<Dehumidifier> builder)
 		{
 			builder.ToTable("Dehumidifiers", "Inventory");
-			builder.HasKey(d => d.DehumidifierId);
+			builder.HasKey(d => d.Id);
+			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(d => d.DehumidificationCapacity).HasColumnType("decimal(5,2)");
 			builder.Property(d => d.TankCapacityLiters).HasPrecision(5, 2);
 			builder.Property(d => d.HasContinuousDrainage).HasDefaultValue(false);

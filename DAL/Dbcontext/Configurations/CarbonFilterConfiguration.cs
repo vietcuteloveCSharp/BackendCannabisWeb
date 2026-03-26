@@ -12,7 +12,7 @@ namespace DAL.Dbcontext.Configurations
 		public void Configure(EntityTypeBuilder<CarbonFilter> builder)
 		{
 			builder.ToTable("CarbonFilters", "Inventory");
-			builder.HasKey(cf => cf.CarbonFilterId);
+			builder.HasKey(cf => cf.Id);
 
 			// --- Cấu hình thông số kỹ thuật (Kỹ thuật số hóa) ---
 			builder.Property(cf => cf.AirflowRateCFM).IsRequired();

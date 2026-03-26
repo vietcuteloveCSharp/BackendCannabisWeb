@@ -3,7 +3,7 @@
     public class CarbonFilter :BaseEntity
     {
         [Key]
-        public int CarbonFilterId { get; set; }
+        public int Id { get; set; }
 		public int ProductId { get; set; }
 		public int BrandId { get; set; } // Mã thương hiệu
         // TỐI ƯU: Chuyển sang số để lọc (Ví dụ: 400 CFM)

@@ -3,7 +3,7 @@
     public class Nutrient :BaseEntity
     {
         [Key]
-        public int NutrientId { get; set; }
+        public int Id { get; set; }
 		public int ProductId { get; set; }
         public int BrandId {  get; set; }
         public int NutrientTypeId { get; set; }

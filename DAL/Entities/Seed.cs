@@ -3,7 +3,7 @@
     public class Seed :BaseEntity
     {
 		[Key]
-		public int SeedId { get; set; }
+		public int Id { get; set; }
 		public int ProductId { get; set; }
 		public int BreederId { get; set; }
 

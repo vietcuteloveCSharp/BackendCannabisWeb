@@ -3,7 +3,7 @@
     public class ShippingMethod :BaseEntity
     {
         [Key]
-        public int ShippingId {  get; set; }
+        public int Id {  get; set; }
         [Required(ErrorMessage ="Id Order is required.")]
         public int OrderId {  get; set; }
         [Required(ErrorMessage ="Name is required.")]

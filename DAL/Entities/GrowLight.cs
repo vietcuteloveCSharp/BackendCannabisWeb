@@ -3,10 +3,8 @@
     public class GrowLight : BaseEntity
     {
         [Key]
-        public int GrowLightId {  get; set; }
-		[Required(ErrorMessage = "Id product is required.")]
+        public int Id {  get; set; }
 		public int ProductId { get; set; }
-		[Required(ErrorMessage = "Id brand is required.")]
         public int BrandId { get; set; }
         public int Quantity { get; set; }
         public int Wattage {  get; set; }
@@ -16,13 +14,9 @@
 		public bool IsDimmable { get; set; }
 		public int CoverageArea { get; set; } // Unit: m²
         public int WarrantyPeriod { get; set; } // Unit: months
-        [Required(ErrorMessage = "Id powerSupply is required.")]
         public int PowerSupplyId { get; set; }
-        [Required(ErrorMessage = "Id chipmodel is required.")]
         public int ChipModelId { get; set; }
-        [Required(ErrorMessage = "Id cooling system is required.")]
         public int CoolingSystemId { get; set; }
-        [Required(ErrorMessage = "Id spectrum is required.")]
         public int SpectrumId { get; set; }
         public int Lifespan { get; set; } // Unit: hours
         public string ModelNumber { get; set; } = string.Empty; // Số model
