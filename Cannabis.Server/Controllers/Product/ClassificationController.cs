@@ -56,7 +56,7 @@ namespace Cannabis.Server.Controllers.Product
 
 			return CreatedAtAction(
 				nameof(GetByIdAsync),
-				new { id = created.ClassificationId },
+				new { id = created.Id },
 				ApiResponse<ClassificationDTO>.Ok(created, "Classification created successfully.")
 			);
 		}
