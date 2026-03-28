@@ -15,11 +15,11 @@
 
 			// 2. Seed CoolingSystem
 			modelBuilder.Entity<CoolingSystem>().HasData(
-				new CoolingSystem { CoolingSystemId = 1, Type = ECoolingType.Fan, Description = "Aluminium Heatsink" },
-				new CoolingSystem { CoolingSystemId = 2, Type = ECoolingType.WaterCooling, Description = "Dual Ball Bearing Fan" },
-				new CoolingSystem { CoolingSystemId = 3, Type = ECoolingType.AirConditioning, Description = "Water cooling block" },
-				new CoolingSystem { CoolingSystemId = 4, Type = ECoolingType.Fan, Description = "Smart PWM Fan" },
-				new CoolingSystem { CoolingSystemId = 5, Type = ECoolingType.AirConditioning, Description = "Graphene Coating" }
+				new CoolingSystem { Id = 1, Type = ECoolingType.Fan, Description = "Aluminium Heatsink" },
+				new CoolingSystem { Id = 2, Type = ECoolingType.WaterCooling, Description = "Dual Ball Bearing Fan" },
+				new CoolingSystem { Id = 3, Type = ECoolingType.AirConditioning, Description = "Water cooling block" },
+				new CoolingSystem { Id = 4, Type = ECoolingType.Fan, Description = "Smart PWM Fan" },
+				new CoolingSystem { Id = 5, Type = ECoolingType.AirConditioning, Description = "Graphene Coating" }
 			);
 
 			// 3. Seed Spectrum
@@ -31,7 +31,7 @@
 					ColorHexCode = "#FDF4E3", // Trắng nắng (Sun-like)
 					ColorTemperatureK = 3500,
 					CRI = 90,
-					SpectrumChartUrl = "/images/spectrums/full-spectrum.jpg"
+					SpectrumChartUrl = "/uploads/spectrum/0a88efb6-c367-4c4b-9e1c-d82360525015_photo_2022-08-05_21-42-54.jpg"
 				},
 				new Spectrum
 				{
@@ -40,7 +40,7 @@
 					ColorHexCode = "#1E90FF", // Dodger Blue
 					ColorTemperatureK = 6500,
 					CRI = 85,
-					SpectrumChartUrl = "/images/spectrums/veg-spectrum.jpg"
+					SpectrumChartUrl = "/images/spectrum/0a88efb6-c367-4c4b-9e1c-d82360525015_photo_2022-08-05_21-42-54.jpg"
 				},
 				new Spectrum
 				{
@@ -49,7 +49,7 @@
 					ColorHexCode = "#FF4500", // Orange Red (Kích thích hoa)
 					ColorTemperatureK = 2700,
 					CRI = 88,
-					SpectrumChartUrl = "/images/spectrums/bloom-spectrum.jpg"
+					SpectrumChartUrl = "/images/spectrum/10b7a55d-d9b8-4efb-9aae-0d55df35217d_purple-punch-og__F5En01ifOQzxnY3W.jpg"
 				}
 			);
 
@@ -61,6 +61,7 @@
 				new PowerSupply { Id = 4, PowerSupplyType = EPowerSypplyType.Removable, Voltage = 54 }
 
 			);
+			// 5 seed NutrientType
 			modelBuilder.Entity<NutrientType>().HasData(
 			new NutrientType
 			{
@@ -92,6 +93,30 @@
 				NutrientName = "pH Adjusters",
 				Description = "Solutions to maintain optimal pH levels (5.5 - 6.5)."
 			});
+
+			//6 seed Role
+			modelBuilder.Entity<Role>().HasData(
+			new Role
+			{
+				Id = 1,
+				RoleName = ERoleName.Admin,
+				Description = "Quản trị viên hệ thống - Toàn quyền cấu hình"
+			},
+			new Role
+			{
+				Id = 2,
+				RoleName =ERoleName.User ,
+				Description = "Người dùng"
+			},
+			new Role
+			{
+				Id = 3,
+				RoleName = ERoleName.Employee,
+				Description = "Nhân viên - Nhập liệu và vận hành kho"
+			}
+			);
+
+
 		}
 	}
 }

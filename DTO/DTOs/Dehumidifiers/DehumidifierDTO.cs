@@ -2,7 +2,7 @@
 {
 	public class DehumidifierDTO
 	{
-		public int DehumidifierId { get; set; }
+		public int Id { get; set; }
 		public decimal DehumidificationCapacity { get; set; }
 		public int Quantity { get; set; }
 		public int BrandId { get; set; }

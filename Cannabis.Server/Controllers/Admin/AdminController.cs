@@ -3,7 +3,7 @@
 	[ApiVersion("1.0")]
 	[Route("api/v{version:apiVersion}/[controller]")]
 	[ApiController]
-	[Authorize(Roles = "Admin")]
+	//[Authorize(Roles = "Admin")]
 	public class AdminController : ControllerBase
 	{
 		private readonly IAdminService _adminService;
@@ -22,7 +22,7 @@
 		/// <response code="201">User registered successfully.</response>
 		/// <response code="400">Invalid input data.</response>
 		[HttpPost("create-admin")]
-		[Authorize(Roles = "Admin")]
+		//[Authorize(Roles = "Admin")]
 		[ProducesResponseType(typeof(ApiResponse<UserDTO>), 201)]
 		[ProducesResponseType(typeof(ApiResponse<object>), 400)]
 		public async Task<IActionResult> CreateAdminAsync([FromBody] AdminCreateDTO createAdminDTO)
@@ -33,21 +33,12 @@
 			return CreatedAtAction(
 				actionName: "GetUserById",
 				controllerName: "User",
-				routeValues: new { version = "1.0", id = result.UserId },
+				routeValues: new { version = "1.0", id = result.Id },
 				value: ApiResponse<object>.Ok(result, "Admin account created successfully")
 				);
 		}
 
-		/// <summary>
-		/// Lấy danh sách người dùng có phân trang, lọc theo tên, role hoặc trạng thái.
-		/// </summary>
-		[HttpGet("users")]
-		[ProducesResponseType(typeof(ApiResponse<PagedResult<UserDTO>>), StatusCodes.Status200OK)]
-		public async Task<IActionResult> GetUsers([FromQuery] UserFilterDTO filter)
-		{
-			var result = await _adminService.GetAllUsersAsync(filter);
-			return Ok(ApiResponse<PagedResult<UserDTO>>.Ok(result, "Lấy danh sách người dùng thành công"));
-		}
+		
 
 		/// <summary>
 		/// Cập nhật trạng thái người dùng (Active/Blocked).

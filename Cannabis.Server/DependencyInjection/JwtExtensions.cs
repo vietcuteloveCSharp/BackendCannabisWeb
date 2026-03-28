@@ -75,7 +75,7 @@ namespace Cannabis.Server.DependencyInjection
 						// 3. Kiểm tra trạng thái thực tế trong DB
 						var user = await dbContext.Users
 							.AsNoTracking()
-							.Where(u => u.UserId == userId)
+							.Where(u => u.Id == userId)
 							.Select(u => new { u.Status })
 							.FirstOrDefaultAsync();
 						// 4. Nếu User không tồn tại hoặc bị khóa, chặn ngay lập tức
@@ -83,7 +83,7 @@ namespace Cannabis.Server.DependencyInjection
 						{
 							context.Fail("Tài khoản đã bị khóa hoặc không tồn tại.");
 						}
-						if ((int)user.Status != (int)EUserStatus.Active)
+						if ((int)user!.Status != (int)EUserStatus.Active)
 						{
 							context.Fail("Tài khoản của bạn đang bị khóa hoặc chưa kích hoạt.");
 						}

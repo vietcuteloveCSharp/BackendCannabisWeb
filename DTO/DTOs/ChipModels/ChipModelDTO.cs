@@ -2,7 +2,7 @@
 {
 	public class ChipModelDTO
 	{
-		public int ChipModelId { get; set; }
+		public int Id { get; set; }
 		public string Manufacturer { get; set; } = string.Empty;
 		public string ModelChip { get; set; } = string.Empty;
 		public string? Generation { get; set; }

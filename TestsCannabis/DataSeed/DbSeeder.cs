@@ -39,10 +39,10 @@ namespace TestsCannabis.DataSeed
 			if (db.Categories.Any()) return;
 			db.Categories.AddRange(new List<Category>
 				{
-					new Category { CategoryId = 1, CategoryName = "Grow Lights", Description = "Đèn quang hợp" },
-					new Category { CategoryId = 2, CategoryName = "Ventilation", Description = "Hệ thống thông gió" },
-					new Category { CategoryId = 3, CategoryName = "Nutrients", Description = "Dinh dưỡng" },
-					new Category { CategoryId = 4, CategoryName = "Tents", Description = "Lều trồng" }
+					new Category { Id = 1, CategoryName = "Grow Lights", Description = "Đèn quang hợp" },
+					new Category { Id = 2, CategoryName = "Ventilation", Description = "Hệ thống thông gió" },
+					new Category { Id = 3, CategoryName = "Nutrients", Description = "Dinh dưỡng" },
+					new Category { Id = 4, CategoryName = "Tents", Description = "Lều trồng" }
 				}
 			);
 		}
@@ -52,9 +52,9 @@ namespace TestsCannabis.DataSeed
 			if (db.Breeders.Any()) return;
 			db.Breeders.AddRange(new List<Breeder>
 				{
-					new Breeder { BreederId = 1, BreederName = "Barney's Farm", Country = "Netherlands" },
-					new Breeder { BreederId = 2, BreederName = "FastBuds", Country = "USA" },
-					new Breeder { BreederId = 3, BreederName = "Dutch Passion", Country = "Netherlands" }
+					new Breeder { Id = 1, BreederName = "Barney's Farm", Country = "Netherlands" },
+					new Breeder { Id = 2, BreederName = "FastBuds", Country = "USA" },
+					new Breeder { Id = 3, BreederName = "Dutch Passion", Country = "Netherlands" }
 				}
 			);
 		}
@@ -86,7 +86,7 @@ namespace TestsCannabis.DataSeed
 			{
 				new Role
 				{
-					RoleId = (int)ERoleName.Admin,
+					Id = (int)ERoleName.Admin,
 					RoleName = ERoleName.Admin,
 					Description = "Admin",
 					CreatedAt = DateTime.Now,
@@ -94,7 +94,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new Role
 				{
-					RoleId =(int)ERoleName.Employee,
+					Id =(int)ERoleName.Employee,
 					RoleName =ERoleName.Employee,
 					Description  ="Employee",
 					CreatedAt= DateTime.Now,
@@ -102,7 +102,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new Role
 				{
-					RoleId =(int)ERoleName.User,
+					Id =(int)ERoleName.User,
 					RoleName =ERoleName.User,
 					Description  ="User",
 					CreatedAt= DateTime.Now,
@@ -121,7 +121,7 @@ namespace TestsCannabis.DataSeed
 			{
 				new User
 				{
-					UserId = 1,
+					Id = 1,
 					Username = "testadmin01",
 					Name = "Nguyễn Văn A",
 					Email = "admin01@example.com",
@@ -132,7 +132,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new User
 				{
-					UserId =3,
+					Id =3,
 					Username = "testemployee01",
 					Name = "Trần Thị B",
 					Email = "employee01@example.com",
@@ -143,7 +143,7 @@ namespace TestsCannabis.DataSeed
 					
 				},
 				new User
-				{	UserId = 2,
+				{	Id = 2,
 					Username = "testuser01",
 					Name = "Lê Văn C",
 					Email = "user01@example.com",
@@ -172,7 +172,7 @@ namespace TestsCannabis.DataSeed
 			{
 				new Address
 				{
-					UserId = 1,
+					Id = 1,
 					Country = "Vietnam",
 					Province = "Hanoi",
 					District = "Ba Dinh",
@@ -185,7 +185,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new Address
 				{
-					UserId = 2,
+					Id = 2,
 					Country = "Vietnam",
 					Province = "Ho Chi Minh",
 					District = "District 1",
@@ -198,7 +198,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new Address
 				{
-					UserId = 3,
+					Id = 3,
 					Country = "Vietnam",
 					Province = "Da Nang",
 					District = "Hai Chau",
@@ -211,7 +211,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new Address
 				{
-					UserId = 4,
+					Id = 4,
 					Country = "Vietnam",
 					Province = "Hai Phong",
 					District = "Le Chan",
@@ -224,7 +224,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new Address
 				{
-					UserId = 5,
+					Id = 5,
 					Country = "Vietnam",
 					Province = "Can Tho",
 					District = "Ninh Kieu",
@@ -309,7 +309,7 @@ namespace TestsCannabis.DataSeed
 			 	new CarbonFilter
 				{
 					
-					BrandId = greenLeaf?.BrandId ?? 1,
+					Id = greenLeaf?.Id ?? 1,
 					Quantity = 20,
 					Price = 120.50m,
 					FilterMaterial = "Activated Carbon",
@@ -326,7 +326,7 @@ namespace TestsCannabis.DataSeed
 				new CarbonFilter
 				{
 					
-					BrandId = herbalEssence?.BrandId ?? 2,
+					Id = herbalEssence?.Id ?? 2,
 					Quantity = 10,
 					Price = 180.75m,
 					FilterMaterial = "Virgin Carbon",
@@ -343,7 +343,7 @@ namespace TestsCannabis.DataSeed
 				new CarbonFilter
 				{
 					
-					BrandId = budMasters?.BrandId ?? 3,
+					Id = budMasters?.Id ?? 3,
 					Quantity = 8,
 					Price = 250.00m,
 					FilterMaterial = "Activated Carbon",
@@ -368,28 +368,28 @@ namespace TestsCannabis.DataSeed
 		{
 			new Classification
 			{
-				ClassificationId = 1,
+				Id = 1,
 				Description = "Dòng cannabis thân thấp, hiệu ứng thư giãn.",
 				IsActive = true,
 				CreatedAt = DateTime.UtcNow
 			},
 			new Classification
 			{
-				ClassificationId = 2,
+				Id = 2,
 				Description = "Dòng cao, hiệu ứng kích thích và tập trung.",
 				IsActive = true,
 				CreatedAt = DateTime.UtcNow
 			},
 			new Classification
 			{
-				ClassificationId = 3,
+				Id = 3,
 				Description = "Lai giữa Indica và Sativa, cân bằng hiệu ứng.",
 				IsActive = true,
 				CreatedAt = DateTime.UtcNow
 			},
 			new Classification
 			{
-				ClassificationId = 4,
+				Id = 4,
 				Description = "Hàm lượng CBD cao, dùng cho y tế.",
 				IsActive = false,
 				CreatedAt = DateTime.UtcNow
@@ -406,35 +406,35 @@ namespace TestsCannabis.DataSeed
 	{
 		new Spectrum
 		{
-			SpectrumId = 1,
+			Id = 1,
 			Type = ESpectrumType.FullSpectrum,
 			Description = "Phổ ánh sáng toàn dải, dùng cho cả giai đoạn Veg và Bloom.",
 			CreatedAt = DateTime.UtcNow
 		},
 		new Spectrum
 		{
-			SpectrumId = 2,
+			Id = 2,
 			Type = ESpectrumType.Vegetative,
 			Description = "Phổ ánh sáng xanh, thích hợp cho giai đoạn sinh trưởng (vegetative).",
 			CreatedAt = DateTime.UtcNow
 		},
 		new Spectrum
 		{
-			SpectrumId = 3,
+			Id = 3,
 			Type = ESpectrumType.FullSpectrum,
 			Description = "Phổ ánh sáng đỏ, tăng năng suất giai đoạn ra hoa (bloom).",
 			CreatedAt = DateTime.UtcNow
 		},
 		new Spectrum
 		{
-			SpectrumId = 4,
+			Id = 4,
 			Type = ESpectrumType.FullSpectrum,
 			Description = "Ánh sáng tia cực tím giúp tăng sản xuất trichome.",
 			CreatedAt = DateTime.UtcNow
 		},
 		new Spectrum
 		{
-			SpectrumId = 5,
+			Id = 5,
 			Type = ESpectrumType.FullSpectrum,
 			Description = "Ánh sáng hồng ngoại giúp cây kéo dài thân và kích thích ra hoa nhanh hơn.",
 			CreatedAt = DateTime.UtcNow
@@ -451,7 +451,7 @@ namespace TestsCannabis.DataSeed
 	{
 		new ChipModel
 		{
-			ChipModelId = 1,
+			Id = 1,
 			Manufacturer = "Samsung",
 			ModelChip = "LM301H",
 			Generation = "Gen 2",
@@ -461,7 +461,7 @@ namespace TestsCannabis.DataSeed
 		},
 		new ChipModel
 		{
-			ChipModelId = 2,
+			Id = 2,
 			Manufacturer = "Samsung",
 			ModelChip = "LM301B",
 			Generation = "Gen 1",
@@ -471,7 +471,7 @@ namespace TestsCannabis.DataSeed
 		},
 		new ChipModel
 		{
-			ChipModelId = 3,
+			Id = 3,
 			Manufacturer = "Osram",
 			ModelChip = "Oslon SSL 80",
 			Generation = "Gen 3",
@@ -481,7 +481,7 @@ namespace TestsCannabis.DataSeed
 		},
 		new ChipModel
 		{
-			ChipModelId = 4,
+			Id = 4,
 			Manufacturer = "Cree",
 			ModelChip = "XP-G3",
 			Generation = "Gen 2",
@@ -491,7 +491,7 @@ namespace TestsCannabis.DataSeed
 		},
 		new ChipModel
 		{
-			ChipModelId = 5,
+			Id = 5,
 			Manufacturer = "Bridgelux",
 			ModelChip = "EB Gen 3",
 			Generation = "Gen 3",
@@ -512,7 +512,7 @@ namespace TestsCannabis.DataSeed
 				// Product 1
 				new ProductImage
 				{
-					ProductImageId = 1,
+					Id = 1,
 					ProductId = 1,
 					ImageUrl = "https://res.cloudinary.com/demo/image/upload/v1/products/growlight_1_main.jpg",
 					IsMainImage = true,
@@ -520,7 +520,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new ProductImage
 				{
-					ProductImageId = 2,
+					Id = 2,
 					ProductId = 1,
 					ImageUrl = "https://res.cloudinary.com/demo/image/upload/v1/products/growlight_1_side.jpg",
 					IsMainImage = false,
@@ -530,7 +530,7 @@ namespace TestsCannabis.DataSeed
 				// Product 2
 				new ProductImage
 				{
-					ProductImageId = 3,
+					Id = 3,
 					ProductId = 2,
 					ImageUrl = "https://res.cloudinary.com/demo/image/upload/v1/products/filter_2_main.jpg",
 					IsMainImage = true,
@@ -538,7 +538,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new ProductImage
 				{
-				ProductImageId = 4,
+				Id = 4,
 				ProductId = 2,
 				ImageUrl = "https://res.cloudinary.com/demo/image/upload/v1/products/filter_2_detail.jpg",
 				IsMainImage = false,
@@ -548,7 +548,7 @@ namespace TestsCannabis.DataSeed
 				// Product 3
 				new ProductImage
 				{
-					ProductImageId = 5,
+					Id = 5,
 					ProductId = 3,
 					ImageUrl = "https://res.cloudinary.com/demo/image/upload/v1/products/tent_3_main.jpg",
 					IsMainImage = true,
@@ -556,7 +556,7 @@ namespace TestsCannabis.DataSeed
 				},
 				new ProductImage
 				{
-					ProductImageId = 6,
+					Id = 6,
 					ProductId = 3,
 					ImageUrl = "https://res.cloudinary.com/demo/image/upload/v1/products/tent_3_inside.jpg",
 					IsMainImage = false,
@@ -574,7 +574,7 @@ namespace TestsCannabis.DataSeed
 	{
 		new Nutrient
 		{
-			NutrientId = 1,
+			Id = 1,
 			ProductId = 1,
 			BrandId = 1,
 			NutrientTypeId = 1, // Grow
@@ -591,10 +591,10 @@ namespace TestsCannabis.DataSeed
 		},
 		new Nutrient
 		{
-			NutrientId = 2,
+			Id = 2,
 			ProductId = 2,
-			BrandId = 1,
-			NutrientTypeId = 2, // Bloom
+			NutrientTypeId = 1,
+			BrandId = 2, // Bloom
             Quantity = 40,
 			Price = 420000m,
 			VolumeMl = 1000,
@@ -608,10 +608,10 @@ namespace TestsCannabis.DataSeed
 		},
 		new Nutrient
 		{
-			NutrientId = 3,
+			Id = 3,
 			ProductId = 3,
-			BrandId = 2,
-			NutrientTypeId = 3, // Micro
+			NutrientTypeId = 2,
+			BrandId = 3, // Micro
             Quantity = 30,
 			Price = 280000m,
 			VolumeMl = 500,
@@ -635,35 +635,35 @@ namespace TestsCannabis.DataSeed
 	{
 		new NutrientType
 		{
-			NutrientTypeId = 1,
+			Id = 1,
 			NutrientName = "Grow",
 			Description = "Dinh dưỡng cho giai đoạn sinh trưởng (vegetative).",
 			CreatedAt = DateTime.UtcNow
 		},
 		new NutrientType
 		{
-			NutrientTypeId = 2,
+			Id = 2,
 			NutrientName = "Bloom",
 			Description = "Dinh dưỡng cho giai đoạn ra hoa (flowering).",
 			CreatedAt = DateTime.UtcNow
 		},
 		new NutrientType
 		{
-			NutrientTypeId = 3,
+			Id = 3,
 			NutrientName = "Micro",
 			Description = "Dung dịch vi lượng hỗ trợ tăng cường hấp thụ.",
 			CreatedAt = DateTime.UtcNow
 		},
 		new NutrientType
 		{
-			NutrientTypeId = 4,
+			Id = 4,
 			NutrientName = "Cal-Mag",
 			Description = "Bổ sung Canxi và Magie cho cây.",
 			CreatedAt = DateTime.UtcNow
 		},
 		new NutrientType
 		{
-			NutrientTypeId = 5,
+			Id = 5,
 			NutrientName = "Additives",
 			Description = "Các phụ gia hỗ trợ như enzyme, carbohydrate, booster,...",
 			CreatedAt = DateTime.UtcNow

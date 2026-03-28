@@ -29,16 +29,7 @@ namespace Cannabis.Server.Controllers.Product
 			return Ok(ApiResponse<IEnumerable<ProductDTO>>.Ok(products));
 		}
 
-		/// <summary>
-		/// Lấy danh sách sản phẩm đang hoạt động kinh doanh.
-		/// </summary>
-		[HttpGet("active")]
-		[ProducesResponseType(typeof(ApiResponse<IEnumerable<ProductDTO>>), StatusCodes.Status200OK)]
-		public async Task<IActionResult> GetAllActive()
-		{
-			var products = await _productService.GetAllActiveAsync();
-			return Ok(ApiResponse<IEnumerable<ProductDTO>>.Ok(products));
-		}
+		
 
 		/// <summary>
 		/// Lấy chi tiết một sản phẩm theo ID.
@@ -72,7 +63,7 @@ namespace Cannabis.Server.Controllers.Product
 				return BadRequest(ApiResponse<string>.Fail("Invalid data."));
 
 			var result = await _productService.CreateAsync(dto);
-			return CreatedAtAction(nameof(GetById), new { id = result.ProductId },
+			return CreatedAtAction(nameof(GetById), new { id = result.Id },
 				ApiResponse<ProductDTO>.Ok(result, "Product created successfully."));
 		}
 

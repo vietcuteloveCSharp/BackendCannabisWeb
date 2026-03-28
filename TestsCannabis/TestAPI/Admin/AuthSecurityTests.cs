@@ -22,7 +22,7 @@ namespace TestsCannabis.TestAPI.Admin
 			using (var scope = _factory.Services.CreateScope())
 			{
 				var db = scope.ServiceProvider.GetRequiredService<CannabisAccessoriesDBContext>();
-				var user = await db.Users.FirstOrDefaultAsync(u => u.UserId == 2);
+				var user = await db.Users.FirstOrDefaultAsync(u => u.Id == 2);
 				user!.Status = EUserStatus.Inactive;
 				await db.SaveChangesAsync();
 			}

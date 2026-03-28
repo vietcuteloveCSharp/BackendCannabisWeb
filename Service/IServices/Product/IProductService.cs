@@ -7,14 +7,8 @@ using System.Threading.Tasks;
 
 namespace Service.IServices.Product
 {
-	public interface IProductService
+	public interface IProductService : IBaseService<DAL.Entities.Product,ProductDTO,ProductCreateDTO,ProductUpdateDTO>
 	{
-		Task<ProductDTO?> GetByIdAsync(int id);
-		Task<IEnumerable<ProductDTO>> GetAllAsync();
-		Task<IEnumerable<ProductDTO>> GetAllActiveAsync();
-		Task<ProductDTO> CreateAsync(ProductCreateDTO dto);
-		Task<bool> UpdateAsync(int id, ProductUpdateDTO dto);
-		Task<bool> ToggleActiveAsync(int productId, bool isActive);
-		Task<bool> DeleteAsync(int id);
+		
 	}
 }

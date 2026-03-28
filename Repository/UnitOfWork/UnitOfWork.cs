@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using DAL.Entities;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Repository.UnitOfWork
 {
@@ -7,68 +8,77 @@ namespace Repository.UnitOfWork
 		private IDbContextTransaction? _transaction;
 
 		private readonly CannabisAccessoriesDBContext _context;
-		public IProductRepository Products { get; private set; }
+		private Dictionary<string, object>? _repositories;
 
-		public IGrowLightRepository GrowLights { get; private set; }
+		private IProductRepository? _productsRepository;
 
-		public IGrowTentRepository GrowTents { get; private set; }
+		private IGrowLightRepository? _growLightRepository;
 
-		public ICarbonFilterRepository CarbonFilters { get; private set; }
+		private IGrowTentRepository? _growTentRepository;
 
-		public IDehumidifierRepository Dehumidifiers { get; private set; }
+		private ICarbonFilterRepository? _carbonFilterRepository;
 
-		public ISeedRepository Seeds { get; private set; }
+		private IDehumidifierRepository? _dehumidifierRepository;
 
-		public INutrientRepository Nutrients { get; private set; }
+		public ISeedRepository? _seedRepository;
 
-		public IAddressRepository Addresses { get; private set; }
-		public IUserRepository Users { get; private set; }
+		private INutrientRepository? _nutrientRepository;
 
-		public IBrandRepository Brands { get; private set; }
-		public IBreederRepository Breeders { get; private set; }
-		public IChipModelRepository ChipModels { get; private set; }
-		public IClassificationRepository Classifications { get; private set; }
-		public ICoolingSystemRepository CoolingSystems { get; private set; }
+		private IAddressRepository? _addressRepository;
 
-		public INutrientTypeRepository NutrientTypes { get; private set; }
-		public IPowerSupplyRepository PowerSupplies { get; private set; }
+		private IUserRepository? _userRepository;
 
-		public IRefreshTokenRepository RefreshTokens { get; private set; }
+		private IBrandRepository? _brandRepository;
 
-		public IRoleRepository Roles { get; private set; }
+		private IBreederRepository? _breederRepository;
 
-		public ISpectrumRepository Spectrums { get; private set; }
+		private IChipModelRepository? _chipModelRepository;
 
-		public IAuditLogRepository AuditLogs { get; private set; }
+		private IClassificationRepository? _classificationRepository;
 
-		public ICategoryRepository Categories { get; private set; }
+		private ICoolingSystemRepository? _coolingSystemRepository;
+
+		private INutrientTypeRepository? _nutrientTypeRepository;
+
+		private IPowerSupplyRepository? _powerSupplyRepository;
+
+		private IRefreshTokenRepository? _refreshTokenRepository;
+
+		private IRoleRepository? _roleRepository;
+
+		private ISpectrumRepository? _spectrumRepository;
+
+
+		private ICategoryRepository? _categoryRepository;
 
 		public UnitOfWork(CannabisAccessoriesDBContext context, IAuditLogRepository auditLogger)
 		{
 			_context = context;
-			Products = new ProductRepository(_context);
-			CarbonFilters = new CarbonFilterRepository(_context);
-			Dehumidifiers = new DehumidifierRepository(_context);
-			GrowLights = new GrowLightRepository(_context);
-			Nutrients = new NutrientRepository(_context);
-			GrowTents = new GrowTentRepository(_context);
-			Seeds = new SeedRepository(_context);
-			Addresses = new AddressRepository(_context);
-			Users = new UserRepository(_context);
-			Brands = new BrandRepository(_context);
-			ChipModels = new ChipModelRepository(_context);
-			Breeders = new BreederRepository(_context);
-			Classifications = new ClassificationRepository(_context);
-			CoolingSystems = new CoolingSystemRepository(_context);
-			NutrientTypes = new NutrientTypeRepository(_context);
-			PowerSupplies = new PowerSupplyRepository(_context);
-			RefreshTokens = new RefreshTokenRepository(_context);
-			Roles = new RoleRepository(_context);
-			Spectrums = new SpectrumRepository(_context);
-			Categories = new CategoryRepository(_context);
 			AuditLogs = auditLogger;
 
 		}
+		public IProductRepository Products => _productsRepository ??= new ProductRepository(_context);
+		public ICategoryRepository Categories => _categoryRepository ??= new CategoryRepository(_context);
+		public ISpectrumRepository Spectrums => _spectrumRepository ??= new SpectrumRepository(_context);
+		public IUserRepository Users => _userRepository ??= new UserRepository(_context);
+		public IAddressRepository Addresses => _addressRepository ??= new AddressRepository(_context);
+		public IGrowLightRepository GrowLights => _growLightRepository ??= new GrowLightRepository(_context);
+		public IGrowTentRepository GrowTents => _growTentRepository ??= new GrowTentRepository(_context);
+		public ICarbonFilterRepository CarbonFilters => _carbonFilterRepository ??= new CarbonFilterRepository(_context);
+		public IDehumidifierRepository Dehumidifiers => _dehumidifierRepository ??= new DehumidifierRepository(_context);
+		public ISeedRepository Seeds => _seedRepository ??= new SeedRepository(_context);
+		public INutrientRepository Nutrients => _nutrientRepository ??= new NutrientRepository(_context);
+		public IBrandRepository Brands => _brandRepository ??= new BrandRepository(_context);
+		public IBreederRepository Breeders => _breederRepository ??= new BreederRepository(_context);
+		public IChipModelRepository ChipModels => _chipModelRepository ??= new ChipModelRepository(_context);
+		public IClassificationRepository Classifications => _classificationRepository ??= new ClassificationRepository(_context);
+		public ICoolingSystemRepository CoolingSystems => _coolingSystemRepository ??= new CoolingSystemRepository(_context);
+		public INutrientTypeRepository NutrientTypes => _nutrientTypeRepository ??= new NutrientTypeRepository(_context);
+		public IPowerSupplyRepository PowerSupplies => _powerSupplyRepository ??= new PowerSupplyRepository(_context);
+		public IRefreshTokenRepository RefreshTokens => _refreshTokenRepository ??= new RefreshTokenRepository(_context);
+		public IRoleRepository Roles => _roleRepository ??= new RoleRepository(_context);
+
+		public IAuditLogRepository AuditLogs { get; }
 
 		// Cập nhật hàm Dispose chung của UnitOfWork
 		public void Dispose()
@@ -84,13 +94,9 @@ namespace Repository.UnitOfWork
 		}
 
 		//bắt đầu 1 transaction với database
-		public async Task BeginTransactionAsync()
+		public async Task<IDbContextTransaction> BeginTransactionAsync()
 		{
-			// Kiểm tra nếu đã có transaction rồi thì không tạo mới (Nested transaction handling)
-			if (_transaction == null)
-			{
-				_transaction = await _context.Database.BeginTransactionAsync();
-			}
+			return await _context.Database.BeginTransactionAsync();
 		}
 		// Xác nhận và Lưu
 		public async Task CommitTransactionAsync()
@@ -133,7 +139,23 @@ namespace Repository.UnitOfWork
 				_transaction = null;
 			}
 		}
-		// Cập nhật hàm Dispose chung của UnitOfWork
+
+		public IBaseRepository<TEntity> Repository<TEntity>() where TEntity : class
+		{
+			_repositories ??= new Dictionary<string, object>();
+
+			var type = typeof(TEntity).Name;
+
+			if (!_repositories.ContainsKey(type))
+			{
+				// Khởi tạo BaseRepository cho Entity tương ứng
+				var repositoryInstance = new BaseRepository<TEntity>(_context);
+				_repositories.Add(type, repositoryInstance);
+			}
+
+			return (IBaseRepository<TEntity>)_repositories[type]!;
+		}
 		
+
 	}
 }

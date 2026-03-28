@@ -4,7 +4,7 @@ namespace DTO.DTOs.User.Users
 {
 	public class UserDTO
 	{
-		public int UserId { get; set; }
+		public int Id { get; set; }
 		public string Username { get; set; } = string.Empty;
 
 		[JsonIgnore] // Không nên trả Password về client dù là rỗng

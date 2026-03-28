@@ -8,7 +8,7 @@ namespace DTO.DTOs.Addresses
 {
 	public class AddressDTO
 	{
-		public int AddressId { get; set; }
+		public int Id { get; set; }
 		public int UserId { get; set; }
 		public string Country { get; set; } = string.Empty;
 

@@ -2,7 +2,7 @@
 {
 	public class SeedDTO
 	{
-		public int SeedId { get; set; }
+		public int Id { get; set; }
 
 		// --- THÔNG TIN LIÊN KẾT PRODUCT ---
 		public int ProductId { get; set; } // Phải có để biết nó thuộc Product nào

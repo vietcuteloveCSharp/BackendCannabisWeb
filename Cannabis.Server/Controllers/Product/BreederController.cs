@@ -6,13 +6,14 @@ using Service.IServices.Product;
 namespace Cannabis.Server.Controllers.Product
 {
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/[controller]")]
-	[ApiController]
 	[Authorize] // Yêu cầu đăng nhập cho tất cả các thao tác xem
-	public class BreederController(IBreederService breederService) : ControllerBase
+	public class BreederController : BaseApiController<Breeder,BreederDTO,BreederCreateDTO,BreederUpdateDTO>
 	{
-		private readonly IBreederService _breederService = breederService;
+		private readonly IBreederService _breederService;
+		public BreederController(IBreederService breederService) : base(breederService)
+		{
 
+		}
 		/// <summary>
 		/// Lấy danh sách toàn bộ nhà nhân giống.
 		/// </summary>
@@ -27,16 +28,7 @@ namespace Cannabis.Server.Controllers.Product
 			var breeders = await _breederService.GetAllAsync();
 			return Ok(ApiResponse<IEnumerable<BreederDTO>>.Ok(breeders, "Get all breeders successfully."));
 		}
-		/// <summary>
-		/// Lấy danh sách toàn bộ nhà nhân giống active.
-		/// </summary>
-		[HttpGet("active")]
-		[ProducesResponseType(typeof(ApiResponse<IEnumerable<BreederDTO>>), StatusCodes.Status200OK)]
-		public async Task<IActionResult> GetAllActive()
-		{
-			var breeders = await _breederService.GetAllActiveAsync();
-			return Ok(ApiResponse<IEnumerable<BreederDTO>>.Ok(breeders, "Get all breeders successfully."));
-		}
+		
 
 		/// <summary>
 		/// Lấy thông tin chi tiết nhà nhân giống theo ID.
@@ -75,7 +67,7 @@ namespace Cannabis.Server.Controllers.Product
 			if (created == null) return BadRequest(ApiResponse<string>.Fail("Failed to create breeder."));
 
 			return CreatedAtAction(nameof(GetById),
-				new { id = created.BreederId },
+				new { id = created.Id },
 				ApiResponse<BreederDTO>.Ok(created, "Breeder created successfully."));
 		}
 

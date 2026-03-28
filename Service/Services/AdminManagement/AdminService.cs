@@ -4,61 +4,23 @@ using DTO.Response;
 using Enum.Domain;
 using Microsoft.EntityFrameworkCore;
 using Service.IServices.AdminManagement;
+using Service.Services.BaseService;
 using System;
 using static Enum.Domain.System_User;
 
 namespace Service.Services.AdminManagement
 {
-	public class AdminService : IAdminService
+	public class AdminService : BaseService<User,UserDTO>, IAdminService 
 	{
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly IMapper _mapper;
+		
 		private readonly IPasswordHasher<User> _passwordHasher;
-		public AdminService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordHasher<User> passwordHasher)
+		public AdminService(IUnitOfWork unitOfWork, IMapper mapper, IPasswordHasher<User> passwordHasher) :base(unitOfWork,mapper)
 		{
-			this._mapper = mapper;
+			
 			this._passwordHasher = passwordHasher;
-			this._unitOfWork = unitOfWork;
+			
 		}
-		//get all user có kèm lọc 
-		public async Task<PagedResult<UserDTO>> GetAllUsersAsync(UserFilterDTO filter)
-		{
-			// Lấy query từ Repository (Chưa thực thi xuống DB)
-			var query = _unitOfWork.Users.GetQueryable();
-			// Lọc theo search term (Name, Username, Email)
-			if (!string.IsNullOrWhiteSpace(filter.SearchTerm))
-			{
-				var search = filter.SearchTerm.ToLower();
-				query = query.Where(u => u.Username!.ToLower().Contains(search)
-									  || u.Name!.ToLower().Contains(search)
-									  || u.Email!.ToLower().Contains(search));
-			}
-			// Lọc theo RoleId và Status
-			if (filter.RoleId.HasValue)
-				query = query.Where(u => u.RoleId == filter.RoleId.Value);
-
-			if (filter.Status.HasValue)
-				query = query.Where(u => u.Status == filter.Status.Value);
-
-			// Đếm tổng số bản ghi trước khi phân trang
-			var totalItems = await query.CountAsync();
-
-			// Thực hiện phân trang và Include Role để tránh null RoleName
-			var items = await query
-				.Include(u => u.Role)
-				.OrderByDescending(u => u.UserId)
-				.Skip((filter.PageNumber - 1) * filter.PageSize)
-				.Take(filter.PageSize)
-				.ToListAsync();
-
-			return new PagedResult<UserDTO>
-			{
-				Items = _mapper.Map<IEnumerable<UserDTO>>(items),
-				TotalItems = totalItems,
-				CurrentPage = filter.PageNumber,
-				PageSize = filter.PageSize
-			};
-		}
+		
 
 		public async Task<UserDTO> RegisterAdminAsync(AdminCreateDTO createAdminDTO)
 		{
@@ -92,7 +54,7 @@ namespace Service.Services.AdminManagement
 			var result = await _unitOfWork.Users.AddAsync(userEntity);
 			// 6. Ghi Audit Log (Vì trong UnitOfWork bạn đã có AuditLogs)
 			 await _unitOfWork.AuditLogs.AddAsync(new AuditLog { Action = "Đăng kí admin",
-				 UserId = userEntity.UserId, // Giờ đã có ID sau khi SaveChanges
+				 UserId = userEntity.Id, // Giờ đã có ID sau khi SaveChanges
 				 CreatedAt = DateTime.UtcNow
 			 });
 			await _unitOfWork.SaveChangesAsync();

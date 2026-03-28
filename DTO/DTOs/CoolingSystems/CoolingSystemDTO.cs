@@ -2,7 +2,7 @@
 {
 	public class CoolingSystemDTO
 	{
-		public int CoolingSystemId { get; set; }
+		public int Id { get; set; }
 		public ECoolingType Type { get; set; }
 		public string? Description { get; set; }
 		public DateTime CreatedAt { get; set; }

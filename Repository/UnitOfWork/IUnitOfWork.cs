@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.EntityFrameworkCore.Storage;
+
 namespace Repository.UnitOfWork
 {
 	public interface IUnitOfWork : IDisposable
@@ -24,8 +26,9 @@ namespace Repository.UnitOfWork
 		public IRoleRepository Roles { get; }
 		public ISpectrumRepository Spectrums { get; }
 		public IAuditLogRepository AuditLogs { get; }
+		IBaseRepository<TEntity> Repository<TEntity>() where TEntity : class;
 		Task<int> SaveChangesAsync();
-		Task BeginTransactionAsync();
+		Task<IDbContextTransaction> BeginTransactionAsync();
 		Task CommitTransactionAsync();
 		Task RollbackTransactionAsync();
 		Task DisposeTransactionAsync();

@@ -51,7 +51,7 @@ namespace TestsCannabis.TestAPI.Inventory.ChipModel
 			var result = await GetContentAsync<ApiResponse<ChipModelDTO>>(response);
 
 			result!.Success.Should().BeTrue();
-			result.Data!.ChipModelId.Should().Be(existingId);
+			result.Data!.Id.Should().Be(existingId);
 			result.Data.Manufacturer.Should().Be("Samsung");
 			result.Data.ModelChip.Should().Be("LM301H");
 		}
