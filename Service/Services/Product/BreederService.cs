@@ -1,96 +1,42 @@
 ﻿using DAL.Entities;
 using DTO.DTOs.Breeders;
+using DTO.Response;
 using Service.IServices.Product;
+using Service.Services.BaseService;
 
 namespace Service.Services.Product
 {
-	public class BreederService(IUnitOfWork unitOfWork, IMapper mapper) : IBreederService
+	public class BreederService : BaseService<Breeder,BreederDTO,BreederCreateDTO,BreederUpdateDTO>, IBreederService
 	{
 
-		private readonly IUnitOfWork _unitOfWork = unitOfWork;
-		private readonly IMapper _mapper = mapper;
-
-		// them 1 breeder moi
-		public async Task<BreederDTO?> AddAsync(BreederCreateDTO breederCreateDTO)
+		public BreederService(IUnitOfWork unitOfWork, IMapper mapper) :base(unitOfWork,mapper)
 		{
-			if (await NameExistsAsync(breederCreateDTO.BreederName))
-				throw new InvalidOperationException("Breeder name already exists.");
-			var breeder = _mapper.Map<Breeder>(breederCreateDTO);
-			breeder.CreatedAt = DateTime.UtcNow;
-			await _unitOfWork.Breeders.AddAsync(breeder);
-			await _unitOfWork.SaveChangesAsync();
-			return _mapper.Map<BreederDTO>(breeder);
+				
 		}
 
-		public async Task<bool> NameExistsAsync(string breederName)
-		{
-			var breeder = await _unitOfWork.Breeders.FindAsync(
-				x => x.BreederName.ToLower() == breederName.ToLower() && !x.IsDeleted
-			);
-			return breeder != null;
-
-		}
-
-		public async Task<bool> DeleteAsync(int id)
-		{
-			var entity = await _unitOfWork.Breeders.GetByIdAsync(id);
-
-			if (entity == null || entity.IsDeleted)
-				return false;
-
-			entity.IsDeleted = true;
-			entity.DeletedAt = DateTime.UtcNow;
-
-			_unitOfWork.Breeders.Update(entity);
-			await _unitOfWork.SaveChangesAsync();
-
-			return true;
-		}
-
-		public Task<IEnumerable<BreederDTO>> GetAllActiveAsync()
-		{
-			throw new NotImplementedException();
-		}
-
-		//tat ca breeder
-		public async Task<IEnumerable<BreederDTO>> GetAllAsync()
-		{
-			var breeders = await _unitOfWork.Breeders.GetAllAsync();
-			if (breeders == null || !breeders.Any())
-			{
-				return new List<BreederDTO>();
-			}
-			return _mapper.Map<IEnumerable<BreederDTO>>(breeders);
-		}
-		//get by id
-		public async Task<BreederDTO?> GetByIdAsync(int id)
-		{
-			var breeder = await _unitOfWork.Breeders.GetByIdAsync(id) ?? throw new NotFoundException($"Breeder with Id:{id} not found");
-			return _mapper.Map<BreederDTO>(breeder);
-		}
-		//get by name
-		public async Task<BreederDTO?> GetByNameAsync(string breederName)
-		{
-			var breeder = await _unitOfWork.Breeders.FindAsync(n => n.BreederName == breederName) ?? throw new NotFoundException($"BreederName with name {breederName} not found");
-			return _mapper.Map<BreederDTO>(breeder);
-
-		}
 		//update
-		public async Task<bool> UpdateAsync(int id, BreederUpdateDTO breederUpdateDTO)
+		public override async Task<ApiResult> UpdateAsync(int id, BreederUpdateDTO breederUpdateDTO)
 		{
-			var breeder = await _unitOfWork.Breeders.GetByIdAsync(id) ?? throw new NotFoundException($"Breeder with Id:{id} not found");
+			var breeder = await _repository.GetByIdAsync(id) ?? throw new NotFoundException($"Breeder with Id:{id} not found");
 			_mapper.Map(breederUpdateDTO, breeder);
-			breeder.UpdatedAt = DateTime.Now;
-			if (await NameExistsAsync(breederUpdateDTO.BreederName))
-				throw new InvalidOperationException("Breeder name already exists.");
-			_unitOfWork.Breeders.Update(breeder);
-			await _unitOfWork.SaveChangesAsync();
-			return true;
-		}
 
-		public Task<bool> ExistAsync(int id)
-		{
-			throw new NotImplementedException();
+			breeder.UpdatedAt = DateTime.Now;
+
+			var isDuplicate = await _repository.AnyAsync(x =>
+			x.BreederName.ToLower() == breederUpdateDTO.BreederName.ToLower() && x.Id != id);
+
+			if (isDuplicate)
+			{
+				return ApiResult.Fail("Tên nhà nhân giống này đã tồn tại.");
+			}
+				
+			_unitOfWork.Breeders.Update(breeder);
+			var result = await _unitOfWork.SaveChangesAsync();
+
+			// 5. Trả về kết quả - KHÔNG gọi base nữa
+			return result > 0
+				? ApiResult.Ok("Cập nhật thành công.")
+				: ApiResult.Fail("Không có thay đổi nào được thực hiện.");
 		}
 	}
 }

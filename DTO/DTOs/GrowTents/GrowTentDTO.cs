@@ -2,7 +2,7 @@
 {
 	public class GrowTentDTO
 	{
-		public int GrowtentId { get; set; }
+		public int Id { get; set; }
 		public int BrandId { get; set; }
 		public string Dimensions { get; set; } = string.Empty;
 		public string Material { get; set; } = string.Empty;

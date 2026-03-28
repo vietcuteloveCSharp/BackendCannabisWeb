@@ -16,7 +16,7 @@
 
 		public async Task<bool> ExistsAsync(int brandId)
 		{
-			return await _context.Brands.AnyAsync(b => b.BrandId == brandId);
+			return await _context.Brands.AnyAsync(b => b.Id == brandId);
 		}
 	}
 }

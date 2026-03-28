@@ -51,6 +51,8 @@ namespace Service.Services.Shared
 		//upload ảnh 
 		public async Task<string> UploadFileAsync(IFormFile file, string folderName)
 		{
+			if (file == null || file.Length == 0) return null;
+
 			// _basePath bây giờ chính là "D:\Projects\...\Uploads" hoặc "E:\..."
 			var uploadsFolder = Path.Combine(_basePath, folderName);
 

@@ -2,7 +2,7 @@
 {
 	public class BreederDTO
 	{
-		public int BreederId { get; set; }
+		public int Id { get; set; }
 		public string BreederName { get; set; } = string.Empty;
 		public string Country { get; set; } = string.Empty;
 		public string? Description { get; set; }

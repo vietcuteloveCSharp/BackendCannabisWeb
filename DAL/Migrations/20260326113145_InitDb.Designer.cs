@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(CannabisAccessoriesDBContext))]
-    [Migration("20260325102514_Edit_entity")]
-    partial class Edit_entity
+    [Migration("20260326113145_InitDb")]
+    partial class InitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Address", b =>
                 {
-                    b.Property<int>("AddressId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Commune")
                         .IsRequired()
@@ -88,7 +88,7 @@ namespace DAL.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("AddressId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -97,11 +97,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.AuditLog", b =>
                 {
-                    b.Property<int>("AuditLogId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuditLogId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Action")
                         .IsRequired()
@@ -147,7 +147,7 @@ namespace DAL.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("AuditLogId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Action");
 
@@ -164,11 +164,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Brand", b =>
                 {
-                    b.Property<int>("BrandId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BrandId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BrandName")
                         .IsRequired()
@@ -205,7 +205,7 @@ namespace DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("BrandId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BrandName")
                         .IsUnique()
@@ -216,11 +216,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Breeder", b =>
                 {
-                    b.Property<int>("BreederId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BreederId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BreederName")
                         .IsRequired()
@@ -267,7 +267,7 @@ namespace DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("BreederId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique()
@@ -278,11 +278,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.CarbonFilter", b =>
                 {
-                    b.Property<int>("CarbonFilterId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarbonFilterId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AirflowRateCFM")
                         .HasColumnType("int");
@@ -355,7 +355,7 @@ namespace DAL.Migrations
                     b.Property<int>("WarrantyPeriod")
                         .HasColumnType("int");
 
-                    b.HasKey("CarbonFilterId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AirflowRateCFM")
                         .HasDatabaseName("IX_CarbonFilter_Airflow");
@@ -375,11 +375,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Cart", b =>
                 {
-                    b.Property<int>("CartId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -409,7 +409,7 @@ namespace DAL.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("CartId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Session_Id")
                         .IsUnique()
@@ -429,11 +429,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.CartDetails", b =>
                 {
-                    b.Property<int>("CartDetailsId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartDetailsId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CartId")
                         .HasColumnType("int");
@@ -460,7 +460,7 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CartDetailsId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CartId")
                         .HasDatabaseName("IX_CartDetails_CartId");
@@ -473,11 +473,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Category", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
@@ -499,7 +499,7 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryName")
                         .IsUnique()
@@ -510,11 +510,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.ChipModel", b =>
                 {
-                    b.Property<int>("ChipModelId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChipModelId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -555,21 +555,78 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ChipModelId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ModelChip")
                         .HasDatabaseName("IX_ChipModels_ModelChip");
 
                     b.ToTable("ChipModels", "Inventory");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8733),
+                            Description = "Top tier for horticulture",
+                            Efficiency = 3.10m,
+                            IsDeleted = false,
+                            Manufacturer = "Samsung",
+                            ModelChip = "LM301H",
+                            ModelName = "Evo"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8742),
+                            Description = "Hyper Red 660nm",
+                            Efficiency = 4.00m,
+                            IsDeleted = false,
+                            Manufacturer = "Osram",
+                            ModelChip = "GH CSSRM4.24",
+                            ModelName = "Oslon Square"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8744),
+                            Description = "Cost-effective solution",
+                            Efficiency = 2.80m,
+                            IsDeleted = false,
+                            Manufacturer = "Cree",
+                            ModelChip = "JK2835",
+                            ModelName = "J Series"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8745),
+                            Description = "High power COB",
+                            Efficiency = 2.60m,
+                            IsDeleted = false,
+                            Manufacturer = "Bridgelux",
+                            ModelChip = "BXEB-L0340",
+                            ModelName = "Vero 29"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8746),
+                            Description = "Full spectrum natural light",
+                            Efficiency = 2.75m,
+                            IsDeleted = false,
+                            Manufacturer = "Seoul",
+                            ModelChip = "MJT-3030",
+                            ModelName = "SunLike"
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Classification", b =>
                 {
-                    b.Property<int>("ClassificationId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassificationId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -596,18 +653,18 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ClassificationId");
+                    b.HasKey("Id");
 
                     b.ToTable("Classifications", "Products");
                 });
 
             modelBuilder.Entity("DAL.Entities.CoolingSystem", b =>
                 {
-                    b.Property<int>("CoolingSystemId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CoolingSystemId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -630,18 +687,60 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CoolingSystemId");
+                    b.HasKey("Id");
 
                     b.ToTable("CoolingSystems", "Inventory");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8935),
+                            Description = "Aluminium Heatsink",
+                            IsDeleted = false,
+                            Type = "Fan"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8938),
+                            Description = "Dual Ball Bearing Fan",
+                            IsDeleted = false,
+                            Type = "WaterCooling"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8940),
+                            Description = "Water cooling block",
+                            IsDeleted = false,
+                            Type = "AirConditioning"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8941),
+                            Description = "Smart PWM Fan",
+                            IsDeleted = false,
+                            Type = "Fan"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8942),
+                            Description = "Graphene Coating",
+                            IsDeleted = false,
+                            Type = "AirConditioning"
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Dehumidifier", b =>
                 {
-                    b.Property<int>("DehumidifierId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DehumidifierId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
@@ -697,7 +796,7 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("DehumidifierId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
@@ -716,11 +815,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.GrowLight", b =>
                 {
-                    b.Property<int>("GrowLightId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GrowLightId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
@@ -794,7 +893,7 @@ namespace DAL.Migrations
                     b.Property<int>("Wattage")
                         .HasColumnType("int");
 
-                    b.HasKey("GrowLightId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BrandId")
                         .HasDatabaseName("IX_GrowLights_BrandId");
@@ -826,11 +925,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.GrowTent", b =>
                 {
-                    b.Property<int>("GrowtentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GrowtentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
@@ -899,10 +998,9 @@ namespace DAL.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<int>("WidthCm")
-                        .HasMaxLength(255)
                         .HasColumnType("int");
 
-                    b.HasKey("GrowtentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BrandId")
                         .HasDatabaseName("IX_GrowTents_BrandId");
@@ -925,11 +1023,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Nutrient", b =>
                 {
-                    b.Property<int>("NutrientId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NutrientId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ApplicationStage")
                         .IsRequired()
@@ -1004,7 +1102,7 @@ namespace DAL.Migrations
                     b.Property<int>("VolumeMl")
                         .HasColumnType("int");
 
-                    b.HasKey("NutrientId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ApplicationStage")
                         .HasDatabaseName("IX_Nutrient_Stage");
@@ -1030,11 +1128,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.NutrientType", b =>
                 {
-                    b.Property<int>("NutrientTypeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NutrientTypeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -1057,18 +1155,60 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("NutrientTypeId");
+                    b.HasKey("Id");
 
                     b.ToTable("NutrientTypes", "Inventory");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9033),
+                            Description = "Essential N-P-K foundation for all plant stages.",
+                            IsDeleted = false,
+                            NutrientName = "Base Nutrients"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9035),
+                            Description = "Enhances root development and nutrient uptake efficiency.",
+                            IsDeleted = false,
+                            NutrientName = "Root Stimulators"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9036),
+                            Description = "High Phosphorus and Potassium for massive flower production.",
+                            IsDeleted = false,
+                            NutrientName = "Bloom Boosters"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9037),
+                            Description = "Prevents common deficiencies in Coco Coir or RO water.",
+                            IsDeleted = false,
+                            NutrientName = "Cal-Mag Supplements"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9038),
+                            Description = "Solutions to maintain optimal pH levels (5.5 - 6.5).",
+                            IsDeleted = false,
+                            NutrientName = "pH Adjusters"
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Order", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BuyerId")
                         .HasColumnType("int");
@@ -1084,7 +1224,7 @@ namespace DAL.Migrations
 
                     b.Property<string>("OrderStatus")
                         .IsRequired()
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SellerId")
                         .HasColumnType("int");
@@ -1105,12 +1245,12 @@ namespace DAL.Migrations
                     b.Property<string>("TrackingNumber")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BuyerId");
 
@@ -1121,11 +1261,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.OrderItem", b =>
                 {
-                    b.Property<int>("OrderItemId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -1152,7 +1292,7 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("OrderItemId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
@@ -1163,11 +1303,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Payment", b =>
                 {
-                    b.Property<int>("PaymentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -1194,7 +1334,7 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("PaymentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId")
                         .IsUnique()
@@ -1208,11 +1348,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.PowerSupply", b =>
                 {
-                    b.Property<int>("PowerSupplyId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PowerSupplyId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -1233,18 +1373,52 @@ namespace DAL.Migrations
                     b.Property<int>("Voltage")
                         .HasColumnType("int");
 
-                    b.HasKey("PowerSupplyId");
+                    b.HasKey("Id");
 
                     b.ToTable("PowerSupplies", "Inventory");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9003),
+                            IsDeleted = false,
+                            PowerSupplyType = "Internal",
+                            Voltage = 48
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9006),
+                            IsDeleted = false,
+                            PowerSupplyType = "Driverless",
+                            Voltage = 24
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9007),
+                            IsDeleted = false,
+                            PowerSupplyType = "External",
+                            Voltage = 36
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9008),
+                            IsDeleted = false,
+                            PowerSupplyType = "Removable",
+                            Voltage = 54
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Product", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
@@ -1278,7 +1452,7 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
@@ -1293,11 +1467,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.ProductImage", b =>
                 {
-                    b.Property<int>("ProductImageId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductImageId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -1323,7 +1497,7 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ProductImageId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
@@ -1332,11 +1506,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Promotion", b =>
                 {
-                    b.Property<int>("PromotionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PromotionId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -1382,7 +1556,6 @@ namespace DAL.Migrations
 
                     b.Property<string>("PromotionName")
                         .IsRequired()
-                        .HasMaxLength(150)
                         .HasColumnType("NVARCHAR(255)");
 
                     b.Property<DateTime>("StartDate")
@@ -1393,7 +1566,7 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("PromotionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PromotionName")
                         .HasDatabaseName("IX_Promotion_PromotionName");
@@ -1469,11 +1642,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Review", b =>
                 {
-                    b.Property<int>("ReviewId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comments")
                         .IsRequired()
@@ -1509,7 +1682,7 @@ namespace DAL.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("ReviewId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
@@ -1525,11 +1698,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Role", b =>
                 {
-                    b.Property<int>("RoleId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -1551,18 +1724,18 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("RoleId");
+                    b.HasKey("Id");
 
                     b.ToTable("Roles", "Users");
                 });
 
             modelBuilder.Entity("DAL.Entities.Seed", b =>
                 {
-                    b.Property<int>("SeedId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SeedId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BreederId")
                         .HasColumnType("int");
@@ -1636,7 +1809,7 @@ namespace DAL.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
-                    b.HasKey("SeedId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BreederId");
 
@@ -1660,11 +1833,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.ShippingMethod", b =>
                 {
-                    b.Property<int>("ShippingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShippingId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Carrier")
                         .IsRequired()
@@ -1699,7 +1872,7 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ShippingId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId")
                         .IsUnique();
@@ -1709,16 +1882,22 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Spectrum", b =>
                 {
-                    b.Property<int>("SpectrumId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SpectrumId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CRI")
+                        .HasColumnType("int");
 
                     b.Property<string>("ColorHexCode")
                         .HasMaxLength(10)
                         .HasColumnType("nchar(10)")
                         .IsFixedLength();
+
+                    b.Property<int?>("ColorTemperatureK")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -1745,18 +1924,53 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("SpectrumId");
+                    b.HasKey("Id");
 
                     b.ToTable("Spectrums", "Inventory");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CRI = 90,
+                            ColorHexCode = "#FDF4E3",
+                            ColorTemperatureK = 3500,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8971),
+                            IsDeleted = false,
+                            SpectrumChartUrl = "/uploads/spectrum/0a88efb6-c367-4c4b-9e1c-d82360525015_photo_2022-08-05_21-42-54.jpg",
+                            Type = "FullSpectrum"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CRI = 85,
+                            ColorHexCode = "#1E90FF",
+                            ColorTemperatureK = 6500,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8977),
+                            IsDeleted = false,
+                            SpectrumChartUrl = "/images/spectrum/0a88efb6-c367-4c4b-9e1c-d82360525015_photo_2022-08-05_21-42-54.jpg",
+                            Type = "Vegetative"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CRI = 88,
+                            ColorHexCode = "#FF4500",
+                            ColorTemperatureK = 2700,
+                            CreatedAt = new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8978),
+                            IsDeleted = false,
+                            SpectrumChartUrl = "/images/spectrum/10b7a55d-d9b8-4efb-9aae-0d55df35217d_purple-punch-og__F5En01ifOQzxnY3W.jpg",
+                            Type = "Flowering"
+                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -1800,7 +2014,7 @@ namespace DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();

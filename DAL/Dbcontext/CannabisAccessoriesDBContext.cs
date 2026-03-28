@@ -54,9 +54,9 @@ namespace DAL.Dbcontext
 				if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
 				{
 					var method = typeof(ModelBuilder)
-			.GetMethods()
-			.First(m => m.Name == "Entity" && m.IsGenericMethod)
-			.MakeGenericMethod(entityType.ClrType);
+					.GetMethods()
+					.First(m => m.Name == "Entity" && m.IsGenericMethod)
+					.MakeGenericMethod(entityType.ClrType);
 
 					var entityBuilder = method.Invoke(modelBuilder, null);
 
@@ -78,6 +78,8 @@ namespace DAL.Dbcontext
 		{
 
 		}
+
+		// lưu theo entity state 
 		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
 		{
 			var entries = ChangeTracker.Entries<BaseEntity>();
@@ -88,6 +90,7 @@ namespace DAL.Dbcontext
 				{
 					case EntityState.Added:
 						entry.Entity.CreatedAt = DateTime.UtcNow;
+						entry.Entity.IsDeleted = false;
 						break;
 
 					case EntityState.Modified:

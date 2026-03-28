@@ -36,7 +36,7 @@ namespace Service.Services.ServicesAuth
 			user.HashPassword = hashedPassword;
 			var updateUserDto = _mapper.Map<UpdateUserDTO>(user);
 			// 3. Cập nhật mật khẩu trong DB
-			var result= await _userService.UpdateAsync(user.UserId,updateUserDto);
+			var result= await _userService.UpdateAsync(user.Id,updateUserDto);
 			if (result==null)
 			{
 				throw new InvalidOperationException("Failed to update password.");

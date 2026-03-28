@@ -64,7 +64,7 @@ namespace Cannabis.Server.Controllers.User
 			return CreatedAtAction(
 				actionName: "GetUserById",
 				controllerName: "User",
-				routeValues: new { version = "1.0",id = result.UserId },
+				routeValues: new { version = "1.0",id = result.Id },
 				value: ApiResponse<object>.Ok(result, "User registered successfully")
 				);
 		}

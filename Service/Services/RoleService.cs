@@ -53,16 +53,5 @@ namespace Service.Services
 			
 			return _mapper.Map<RoleDTO>(existingRole) ?? throw new Exception("Failed to map updated role."); 
 		}
-		//get role active
-		public async Task<IEnumerable<RoleDTO>> GetAllRolesActiveAsync()
-		{
-			var roles = await _unitOfWork.Roles.GetAllActiveAsync();
-			if (roles == null || !roles.Any())
-			{
-				return new List<RoleDTO>();
-			}
-			var rolesDTO = _mapper.Map<IEnumerable<RoleDTO>>(roles);
-			return rolesDTO;
-		}
 	}
 }

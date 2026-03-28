@@ -32,7 +32,7 @@ namespace Cannabis.Server.Controllers.User
 			var locationUrl = Url.Action(
 				nameof(GetRoleByIdAsync),
 					"Role",
-				new { version, id = createdRole.RoleId },
+				new { version, id = createdRole.Id },
 				Request.Scheme);
 			return Created(locationUrl!, ApiResponse<object>.Ok(createdRole, "Role created successfully."));
 		}
@@ -64,19 +64,7 @@ namespace Cannabis.Server.Controllers.User
 			var roles = await _roleService.GetAllRolesAsync();
 			return Ok(ApiResponse<object>.Ok(roles, "Roles retrieved successfully."));
 		}
-		/// <summary>
-		/// Retrieves all roles active.
-		/// </summary>
-		/// <returns>An ApiResponse containing a list of roles.</returns>
-		/// <response code="200">Successfully retrieved all roles.</response>
-		/// 
-		[HttpGet("active")]
-		[ProducesResponseType(typeof(ApiResponse<object>), 200)]
-		public async Task<IActionResult> GetAllRolesActiveAsync()
-		{
-			var roles = await _roleService.GetAllRolesActiveAsync();
-			return Ok(ApiResponse<object>.Ok(roles, "Roles retrieved successfully."));
-		}
+		
 		// <summary>
 		/// Updates an existing role by ID.
 		/// </summary>

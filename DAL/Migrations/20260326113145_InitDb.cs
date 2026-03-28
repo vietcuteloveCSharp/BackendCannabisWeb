@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Initdb : Migration
+    public partial class InitDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,13 +36,13 @@ namespace DAL.Migrations
                 schema: "Products",
                 columns: table => new
                 {
-                    BrandId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BrandName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Country = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Website = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    IsPremium = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -48,7 +50,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Brands", x => x.BrandId);
+                    table.PrimaryKey("PK_Brands", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,7 +58,7 @@ namespace DAL.Migrations
                 schema: "Products",
                 columns: table => new
                 {
-                    BreederId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BreederName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Country = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
@@ -72,7 +74,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Breeds", x => x.BreederId);
+                    table.PrimaryKey("PK_Breeds", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,7 +82,7 @@ namespace DAL.Migrations
                 schema: "Products",
                 columns: table => new
                 {
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -91,7 +93,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -99,9 +101,10 @@ namespace DAL.Migrations
                 schema: "Inventory",
                 columns: table => new
                 {
-                    ChipModelId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Manufacturer = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ModelName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ModelChip = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Generation = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Efficiency = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
@@ -113,7 +116,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChipModels", x => x.ChipModelId);
+                    table.PrimaryKey("PK_ChipModels", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,10 +124,9 @@ namespace DAL.Migrations
                 schema: "Products",
                 columns: table => new
                 {
-                    ClassificationId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ClassificationName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -134,7 +136,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classifications", x => x.ClassificationId);
+                    table.PrimaryKey("PK_Classifications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -142,7 +144,7 @@ namespace DAL.Migrations
                 schema: "Inventory",
                 columns: table => new
                 {
-                    CoolingSystemId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
@@ -153,7 +155,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CoolingSystems", x => x.CoolingSystemId);
+                    table.PrimaryKey("PK_CoolingSystems", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -161,7 +163,7 @@ namespace DAL.Migrations
                 schema: "Inventory",
                 columns: table => new
                 {
-                    NutrientTypeId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NutrientName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
@@ -172,7 +174,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NutrientTypes", x => x.NutrientTypeId);
+                    table.PrimaryKey("PK_NutrientTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -180,9 +182,9 @@ namespace DAL.Migrations
                 schema: "Inventory",
                 columns: table => new
                 {
-                    PowerSupplyId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    PowerSupplyType = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     Voltage = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -191,7 +193,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PowerSupplies", x => x.PowerSupplyId);
+                    table.PrimaryKey("PK_PowerSupplies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,9 +201,9 @@ namespace DAL.Migrations
                 schema: "Promotions",
                 columns: table => new
                 {
-                    PromotionId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PromotionName = table.Column<string>(type: "NVARCHAR(255)", maxLength: 150, nullable: false),
+                    PromotionName = table.Column<string>(type: "NVARCHAR(255)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     DiscountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DiscountValue = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
@@ -218,7 +220,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Promotions", x => x.PromotionId);
+                    table.PrimaryKey("PK_Promotions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -226,7 +228,7 @@ namespace DAL.Migrations
                 schema: "Users",
                 columns: table => new
                 {
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -237,7 +239,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.RoleId);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -245,9 +247,13 @@ namespace DAL.Migrations
                 schema: "Inventory",
                 columns: table => new
                 {
-                    SpectrumId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    ColorHexCode = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: true),
+                    SpectrumChartUrl = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
+                    ColorTemperatureK = table.Column<int>(type: "int", nullable: true),
+                    CRI = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -256,7 +262,7 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Spectrums", x => x.SpectrumId);
+                    table.PrimaryKey("PK_Spectrums", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -264,7 +270,7 @@ namespace DAL.Migrations
                 schema: "Products",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
@@ -278,20 +284,20 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ProductId);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PRODUCT_BRAND_BRANDID",
                         column: x => x.BrandId,
                         principalSchema: "Products",
                         principalTable: "Brands",
-                        principalColumn: "BrandId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PRODUCT_CATEGORY_CATEGORYID",
                         column: x => x.CategoryId,
                         principalSchema: "Products",
                         principalTable: "Categories",
-                        principalColumn: "CategoryId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -311,14 +317,14 @@ namespace DAL.Migrations
                         column: x => x.CategoryId,
                         principalSchema: "Products",
                         principalTable: "Categories",
-                        principalColumn: "CategoryId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PROMOTIONCATEGORY_PROMOTION_PROMOTIONID",
                         column: x => x.PromotionId,
                         principalSchema: "Promotions",
                         principalTable: "Promotions",
-                        principalColumn: "PromotionId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -327,7 +333,7 @@ namespace DAL.Migrations
                 schema: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     HashPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -343,13 +349,13 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
                         name: "FK_USER_ROLE_ROLEID",
                         column: x => x.RoleId,
                         principalSchema: "Users",
                         principalTable: "Roles",
-                        principalColumn: "RoleId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -358,22 +364,24 @@ namespace DAL.Migrations
                 schema: "Inventory",
                 columns: table => new
                 {
-                    CarbonFilterId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    AirflowRate = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
+                    AirflowRateCFM = table.Column<int>(type: "int", nullable: false),
+                    FlangeSizeInch = table.Column<decimal>(type: "decimal(4,1)", precision: 4, scale: 1, nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     FilterMaterial = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Diameter = table.Column<decimal>(type: "decimal(4,2)", nullable: false),
-                    Length = table.Column<decimal>(type: "decimal(4,2)", nullable: false),
+                    CarbonBedThicknessMm = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    Diameter = table.Column<decimal>(type: "decimal(6,2)", precision: 6, scale: 2, nullable: false),
+                    Length = table.Column<decimal>(type: "decimal(6,2)", precision: 6, scale: 2, nullable: false),
                     Lifespan = table.Column<int>(type: "int", nullable: false),
-                    MinTemperature = table.Column<decimal>(type: "decimal(3,2)", nullable: false),
-                    MaxTemperature = table.Column<decimal>(type: "decimal(3,2)", nullable: false),
+                    MinTemperature = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    MaxTemperature = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     WarrantyPeriod = table.Column<int>(type: "int", nullable: false),
-                    ModelNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ModelNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -381,20 +389,20 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CarbonFilters", x => x.CarbonFilterId);
+                    table.PrimaryKey("PK_CarbonFilters", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CARBONFILTER_BRAND_BRANDID",
                         column: x => x.BrandId,
                         principalSchema: "Products",
                         principalTable: "Brands",
-                        principalColumn: "BrandId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CARBONFILTER_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -403,10 +411,13 @@ namespace DAL.Migrations
                 schema: "Inventory",
                 columns: table => new
                 {
-                    DehumidifierId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     DehumidificationCapacity = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
+                    TankCapacityLiters = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    HasContinuousDrainage = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    HasAutoHumidistat = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
                     CoverageArea = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
@@ -420,20 +431,20 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Dehumidifiers", x => x.DehumidifierId);
+                    table.PrimaryKey("PK_Dehumidifiers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_DEHUMIDIFIERS_BRAND_BRANDID",
                         column: x => x.BrandId,
                         principalSchema: "Products",
                         principalTable: "Brands",
-                        principalColumn: "BrandId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DEHUMIDIFIERS_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -442,13 +453,16 @@ namespace DAL.Migrations
                 schema: "Inventory",
                 columns: table => new
                 {
-                    GrowLightId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Wattage = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    PPF = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: true),
+                    Efficacy = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: true),
+                    IsDimmable = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     CoverageArea = table.Column<int>(type: "int", nullable: false),
                     WarrantyPeriod = table.Column<int>(type: "int", nullable: false),
                     PowerSupplyId = table.Column<int>(type: "int", nullable: false),
@@ -465,48 +479,48 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GrowLights", x => x.GrowLightId);
+                    table.PrimaryKey("PK_GrowLights", x => x.Id);
                     table.ForeignKey(
                         name: "FK_GROWLIGHT_BRAND",
                         column: x => x.BrandId,
                         principalSchema: "Products",
                         principalTable: "Brands",
-                        principalColumn: "BrandId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_GROWLIGHT_CHIPMODEL",
                         column: x => x.ChipModelId,
                         principalSchema: "Inventory",
                         principalTable: "ChipModels",
-                        principalColumn: "ChipModelId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_GROWLIGHT_COOLINGSYSTEM",
                         column: x => x.CoolingSystemId,
                         principalSchema: "Inventory",
                         principalTable: "CoolingSystems",
-                        principalColumn: "CoolingSystemId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_GROWLIGHT_POWERSUPPLY",
                         column: x => x.PowerSupplyId,
                         principalSchema: "Inventory",
                         principalTable: "PowerSupplies",
-                        principalColumn: "PowerSupplyId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_GROWLIGHT_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_GROWLIGHT_SPECTRUM",
                         column: x => x.SpectrumId,
                         principalSchema: "Inventory",
                         principalTable: "Spectrums",
-                        principalColumn: "SpectrumId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -515,12 +529,17 @@ namespace DAL.Migrations
                 schema: "Inventory",
                 columns: table => new
                 {
-                    GrowtentId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
                     Dimensions = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    WidthCm = table.Column<int>(type: "int", nullable: false),
+                    LengthCm = table.Column<int>(type: "int", nullable: false),
+                    HeightCm = table.Column<int>(type: "int", nullable: false),
                     Material = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    CanvasDensity = table.Column<int>(type: "INT", nullable: true),
+                    ReflectiveMaterial = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Waterproof = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
@@ -534,20 +553,20 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GrowTents", x => x.GrowtentId);
+                    table.PrimaryKey("PK_GrowTents", x => x.Id);
                     table.ForeignKey(
                         name: "FK_GROWTENT_BRAND_BRANDID",
                         column: x => x.BrandId,
                         principalSchema: "Products",
                         principalTable: "Brands",
-                        principalColumn: "BrandId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_GROWTENT_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -556,11 +575,14 @@ namespace DAL.Migrations
                 schema: "Inventory",
                 columns: table => new
                 {
-                    NutrientId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
                     NutrientTypeId = table.Column<int>(type: "int", nullable: false),
+                    ApplicationStage = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    IsPhBuffered = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    DilutionRate = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     VolumeMl = table.Column<int>(type: "int", nullable: false),
@@ -577,27 +599,27 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Nutrients", x => x.NutrientId);
+                    table.PrimaryKey("PK_Nutrients", x => x.Id);
                     table.ForeignKey(
                         name: "FK_NUTRIENT_BRAND_BRANDID",
                         column: x => x.BrandId,
                         principalSchema: "Products",
                         principalTable: "Brands",
-                        principalColumn: "BrandId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_NUTRIENT_NUTRIENTTYPE_NUTRIENTTYPEID",
                         column: x => x.NutrientTypeId,
                         principalSchema: "Inventory",
                         principalTable: "NutrientTypes",
-                        principalColumn: "NutrientTypeId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_NUTRIENT_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -606,7 +628,7 @@ namespace DAL.Migrations
                 schema: "Products",
                 columns: table => new
                 {
-                    ProductImageId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -618,13 +640,13 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductImages", x => x.ProductImageId);
+                    table.PrimaryKey("PK_ProductImages", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PRODUCTIMAGE_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -644,14 +666,14 @@ namespace DAL.Migrations
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PROMOTIONPRODUCT_PROMOTION_PROMOTIONID",
                         column: x => x.PromotionId,
                         principalSchema: "Promotions",
                         principalTable: "Promotions",
-                        principalColumn: "PromotionId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -660,18 +682,20 @@ namespace DAL.Migrations
                 schema: "Inventory",
                 columns: table => new
                 {
-                    SeedId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     BreederId = table.Column<int>(type: "int", nullable: false),
-                    THCContent = table.Column<string>(type: "varchar(30)", precision: 5, scale: 2, nullable: false),
-                    CBDContent = table.Column<string>(type: "varchar(30)", precision: 5, scale: 2, nullable: false),
-                    StrainType = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    THCContent = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    CBDContent = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    StrainType = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClassifyId = table.Column<int>(type: "int", nullable: false),
                     FloweringTimeDays = table.Column<int>(type: "INT", nullable: false),
-                    Yield = table.Column<decimal>(type: "decimal(5,2)", precision: 10, scale: 2, nullable: false),
-                    Difficulty = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    Yield = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    Difficulty = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    IndoorHeightCm = table.Column<int>(type: "INT", nullable: true),
+                    Genetics = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     IndicaPercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
                     SativaPercentage = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
                     TotalQuantity = table.Column<int>(type: "INT", nullable: false),
@@ -683,27 +707,27 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Seeds", x => x.SeedId);
+                    table.PrimaryKey("PK_Seeds", x => x.Id);
                     table.ForeignKey(
                         name: "FK_SEED_CLASSIFICATION_CLASSIFYID",
                         column: x => x.ClassifyId,
                         principalSchema: "Products",
                         principalTable: "Classifications",
-                        principalColumn: "ClassificationId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SEED_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Seeds_Breeds_BreederId",
                         column: x => x.BreederId,
                         principalSchema: "Products",
                         principalTable: "Breeds",
-                        principalColumn: "BreederId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -712,7 +736,7 @@ namespace DAL.Migrations
                 schema: "Users",
                 columns: table => new
                 {
-                    AddressId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
@@ -730,13 +754,13 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ADDRESS_USER_USERID",
                         column: x => x.UserId,
                         principalSchema: "Users",
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -745,7 +769,7 @@ namespace DAL.Migrations
                 schema: "Users",
                 columns: table => new
                 {
-                    AuditLogId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TableName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     RecordId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -761,20 +785,20 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AuditLogs", x => x.AuditLogId);
+                    table.PrimaryKey("PK_AuditLogs", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AuditLog_Role_RoleId",
                         column: x => x.RoleId,
                         principalSchema: "Users",
                         principalTable: "Roles",
-                        principalColumn: "RoleId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_AuditLogs_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Users",
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                 });
 
@@ -783,7 +807,7 @@ namespace DAL.Migrations
                 schema: "Orders",
                 columns: table => new
                 {
-                    CartId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Session_Id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
@@ -796,14 +820,14 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Carts", x => x.CartId);
+                    table.PrimaryKey("PK_Carts", x => x.Id);
                     table.CheckConstraint("CK_Carts_UserOrSession", "(UserId IS NOT NULL AND Session_Id IS NULL) OR (UserId IS NULL AND Session_Id IS NOT NULL)");
                     table.ForeignKey(
                         name: "FK_Carts_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Users",
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -812,15 +836,15 @@ namespace DAL.Migrations
                 schema: "Orders",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BuyerId = table.Column<int>(type: "int", nullable: false),
                     SellerId = table.Column<int>(type: "int", nullable: false),
-                    OrderStatus = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    OrderStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     ShippingAddress = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     ShippingFee = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
-                    TrackingNumber = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    TrackingNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -828,20 +852,20 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ORDER_BUYER_BUYERID",
                         column: x => x.BuyerId,
                         principalSchema: "Users",
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ORDER_SELLER_SELLERID",
                         column: x => x.SellerId,
                         principalSchema: "Users",
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -866,7 +890,7 @@ namespace DAL.Migrations
                         column: x => x.UserId,
                         principalSchema: "Users",
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -875,7 +899,7 @@ namespace DAL.Migrations
                 schema: "Orders",
                 columns: table => new
                 {
-                    CartDetailsId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CartId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
@@ -888,20 +912,20 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartDetails", x => x.CartDetailsId);
+                    table.PrimaryKey("PK_CartDetails", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CARTDETAILS_CART_CARTID",
                         column: x => x.CartId,
                         principalSchema: "Orders",
                         principalTable: "Carts",
-                        principalColumn: "CartId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CARTDETAILS_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -910,7 +934,7 @@ namespace DAL.Migrations
                 schema: "Orders",
                 columns: table => new
                 {
-                    OrderItemId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
@@ -923,20 +947,20 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItems", x => x.OrderItemId);
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ORDERITEM_ORDER",
                         column: x => x.OrderId,
                         principalSchema: "Orders",
                         principalTable: "Orders",
-                        principalColumn: "OrderId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ORDERITEM_PRODUCT",
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -945,7 +969,7 @@ namespace DAL.Migrations
                 schema: "Orders",
                 columns: table => new
                 {
-                    PaymentId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     PaymentName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
@@ -957,13 +981,13 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payments", x => x.PaymentId);
+                    table.PrimaryKey("PK_Payments", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PAYMENT_ORDER_ORDERID",
                         column: x => x.OrderId,
                         principalSchema: "Orders",
                         principalTable: "Orders",
-                        principalColumn: "OrderId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -972,7 +996,7 @@ namespace DAL.Migrations
                 schema: "Reviews",
                 columns: table => new
                 {
-                    ReviewId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
@@ -987,28 +1011,28 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reviews", x => x.ReviewId);
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.CheckConstraint("CK_Review_Rating", "Rating BETWEEN 1 AND 5");
                     table.ForeignKey(
                         name: "FK_REVIEW_ORDER_ORDERID",
                         column: x => x.OrderId,
                         principalSchema: "Orders",
                         principalTable: "Orders",
-                        principalColumn: "OrderId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_REVIEW_PRODUCT_PRODUCTID",
                         column: x => x.ProductId,
                         principalSchema: "Products",
                         principalTable: "Products",
-                        principalColumn: "ProductId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_REVIEW_USER_USERID",
                         column: x => x.UserId,
                         principalSchema: "Users",
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1017,7 +1041,7 @@ namespace DAL.Migrations
                 schema: "Orders",
                 columns: table => new
                 {
-                    ShippingId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
@@ -1031,14 +1055,76 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShippingMethods", x => x.ShippingId);
+                    table.PrimaryKey("PK_ShippingMethods", x => x.Id);
                     table.ForeignKey(
                         name: "FK_SHIPPINGMETHOD_ORDER_ORDERID",
                         column: x => x.OrderId,
                         principalSchema: "Orders",
                         principalTable: "Orders",
-                        principalColumn: "OrderId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Inventory",
+                table: "ChipModels",
+                columns: new[] { "Id", "CreatedAt", "DeletedAt", "Description", "Efficiency", "Generation", "IsDeleted", "Manufacturer", "ModelChip", "ModelName", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8733), null, "Top tier for horticulture", 3.10m, null, false, "Samsung", "LM301H", "Evo", null },
+                    { 2, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8742), null, "Hyper Red 660nm", 4.00m, null, false, "Osram", "GH CSSRM4.24", "Oslon Square", null },
+                    { 3, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8744), null, "Cost-effective solution", 2.80m, null, false, "Cree", "JK2835", "J Series", null },
+                    { 4, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8745), null, "High power COB", 2.60m, null, false, "Bridgelux", "BXEB-L0340", "Vero 29", null },
+                    { 5, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8746), null, "Full spectrum natural light", 2.75m, null, false, "Seoul", "MJT-3030", "SunLike", null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Inventory",
+                table: "CoolingSystems",
+                columns: new[] { "Id", "CreatedAt", "DeletedAt", "Description", "IsDeleted", "Type", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8935), null, "Aluminium Heatsink", false, "Fan", null },
+                    { 2, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8938), null, "Dual Ball Bearing Fan", false, "WaterCooling", null },
+                    { 3, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8940), null, "Water cooling block", false, "AirConditioning", null },
+                    { 4, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8941), null, "Smart PWM Fan", false, "Fan", null },
+                    { 5, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8942), null, "Graphene Coating", false, "AirConditioning", null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Inventory",
+                table: "NutrientTypes",
+                columns: new[] { "Id", "CreatedAt", "DeletedAt", "Description", "IsDeleted", "NutrientName", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9033), null, "Essential N-P-K foundation for all plant stages.", false, "Base Nutrients", null },
+                    { 2, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9035), null, "Enhances root development and nutrient uptake efficiency.", false, "Root Stimulators", null },
+                    { 3, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9036), null, "High Phosphorus and Potassium for massive flower production.", false, "Bloom Boosters", null },
+                    { 4, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9037), null, "Prevents common deficiencies in Coco Coir or RO water.", false, "Cal-Mag Supplements", null },
+                    { 5, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9038), null, "Solutions to maintain optimal pH levels (5.5 - 6.5).", false, "pH Adjusters", null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Inventory",
+                table: "PowerSupplies",
+                columns: new[] { "Id", "CreatedAt", "DeletedAt", "IsDeleted", "PowerSupplyType", "UpdatedAt", "Voltage" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9003), null, false, "Internal", null, 48 },
+                    { 2, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9006), null, false, "Driverless", null, 24 },
+                    { 3, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9007), null, false, "External", null, 36 },
+                    { 4, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(9008), null, false, "Removable", null, 54 }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Inventory",
+                table: "Spectrums",
+                columns: new[] { "Id", "CRI", "ColorHexCode", "ColorTemperatureK", "CreatedAt", "DeletedAt", "Description", "IsDeleted", "SpectrumChartUrl", "Type", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, 90, "#FDF4E3", 3500, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8971), null, null, false, "/uploads/spectrum/0a88efb6-c367-4c4b-9e1c-d82360525015_photo_2022-08-05_21-42-54.jpg", "FullSpectrum", null },
+                    { 2, 85, "#1E90FF", 6500, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8977), null, null, false, "/images/spectrum/0a88efb6-c367-4c4b-9e1c-d82360525015_photo_2022-08-05_21-42-54.jpg", "Vegetative", null },
+                    { 3, 88, "#FF4500", 2700, new DateTime(2026, 3, 26, 11, 31, 45, 482, DateTimeKind.Utc).AddTicks(8978), null, null, false, "/images/spectrum/10b7a55d-d9b8-4efb-9aae-0d55df35217d_purple-punch-og__F5En01ifOQzxnY3W.jpg", "Flowering", null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -1090,6 +1176,18 @@ namespace DAL.Migrations
                 table: "Breeds",
                 column: "Email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarbonFilter_Airflow",
+                schema: "Inventory",
+                table: "CarbonFilters",
+                column: "AirflowRateCFM");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarbonFilter_FlangeSize",
+                schema: "Inventory",
+                table: "CarbonFilters",
+                column: "FlangeSizeInch");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CarbonFilter_ProductId",
@@ -1146,11 +1244,16 @@ namespace DAL.Migrations
                 column: "ModelChip");
 
             migrationBuilder.CreateIndex(
-                name: "UX_Classifications_ClassificationName",
-                schema: "Products",
-                table: "Classifications",
-                column: "ClassificationName",
-                unique: true);
+                name: "IX_Dehumidifier_Capacity",
+                schema: "Inventory",
+                table: "Dehumidifiers",
+                column: "DehumidificationCapacity");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Dehumidifier_Power",
+                schema: "Inventory",
+                table: "Dehumidifiers",
+                column: "PowerConsumption");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Dehumidifier_ProductId",
@@ -1197,10 +1300,22 @@ namespace DAL.Migrations
                 column: "PowerSupplyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GrowLights_Price",
+                schema: "Inventory",
+                table: "GrowLights",
+                column: "Price");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GrowLights_SpectrumId",
                 schema: "Inventory",
                 table: "GrowLights",
                 column: "SpectrumId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GrowLights_Wattage",
+                schema: "Inventory",
+                table: "GrowLights",
+                column: "Wattage");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Growtent_ProductId",
@@ -1216,6 +1331,24 @@ namespace DAL.Migrations
                 column: "BrandId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GrowTents_Height",
+                schema: "Inventory",
+                table: "GrowTents",
+                column: "HeightCm");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GrowTents_Price",
+                schema: "Inventory",
+                table: "GrowTents",
+                column: "Price");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GrowTents_Width",
+                schema: "Inventory",
+                table: "GrowTents",
+                column: "WidthCm");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Nutrient_BrandId",
                 schema: "Inventory",
                 table: "Nutrients",
@@ -1228,11 +1361,29 @@ namespace DAL.Migrations
                 column: "NutrientTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Nutrient_Organic",
+                schema: "Inventory",
+                table: "Nutrients",
+                column: "IsOrganic");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Nutrient_Price",
+                schema: "Inventory",
+                table: "Nutrients",
+                column: "Price");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Nutrient_ProductId",
                 schema: "Inventory",
                 table: "Nutrients",
                 column: "ProductId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Nutrient_Stage",
+                schema: "Inventory",
+                table: "Nutrients",
+                column: "ApplicationStage");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderId",
@@ -1339,6 +1490,13 @@ namespace DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SEED_PRODUCTID",
+                schema: "Inventory",
+                table: "Seeds",
+                column: "ProductId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Seeds_BreederId",
                 schema: "Inventory",
                 table: "Seeds",
@@ -1351,11 +1509,22 @@ namespace DAL.Migrations
                 column: "ClassifyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Seeds_ProductId",
+                name: "IX_SEEDS_PRICE",
                 schema: "Inventory",
                 table: "Seeds",
-                column: "ProductId",
-                unique: true);
+                column: "Price");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SEEDS_STRAINTYPE",
+                schema: "Inventory",
+                table: "Seeds",
+                column: "StrainType");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SEEDS_THC",
+                schema: "Inventory",
+                table: "Seeds",
+                column: "THCContent");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShippingMethods_OrderId",

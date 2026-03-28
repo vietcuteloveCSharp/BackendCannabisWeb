@@ -80,7 +80,7 @@ namespace Service.Services.UserManagement
 			// Encryption password
 			userEntity.HashPassword = _passwordHasher.HashPassword(userEntity, createUserDTO.Password);
 			//gán role mặc định user
-			userEntity.RoleId = userRole.RoleId;
+			userEntity.RoleId = userRole.Id;
 			var result = await _unitOfWork.Users.AddAsync(userEntity);
 			await _unitOfWork.SaveChangesAsync();
 			return _mapper.Map<UserDTO>(result);

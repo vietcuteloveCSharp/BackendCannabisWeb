@@ -3,18 +3,10 @@ using System.Threading.Tasks;
 
 namespace Service.IServices.Product
 {
-	public interface IBreederService
+	public interface IBreederService : IBaseService<Breeder,BreederDTO,BreederCreateDTO,BreederUpdateDTO>
 	{
-		Task<IEnumerable<BreederDTO>> GetAllAsync();
-		Task<IEnumerable<BreederDTO>> GetAllActiveAsync();
-		Task<BreederDTO?> GetByIdAsync(int id);
-		Task<BreederDTO?> GetByNameAsync(string breederName);
-
-		Task<BreederDTO?> AddAsync(BreederCreateDTO breederCreateDTO);
-
-		Task<bool> UpdateAsync(int id, BreederUpdateDTO breederUpdateDTO);
-		Task<bool> DeleteAsync(int id);
-		Task<bool> NameExistsAsync(string breederName);
-		Task<bool> ExistAsync(int id);
+		
+		
+		
 	}
 }

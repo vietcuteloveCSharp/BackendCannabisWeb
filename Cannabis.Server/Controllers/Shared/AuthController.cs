@@ -95,7 +95,7 @@ namespace Cannabis.Server.Controllers.Shared
 			// Lấy UserId từ HttpContext (do JwtMiddleware của bạn gán vào)
 			var user = HttpContext.Items["User"] as DAL.Entities.User;
 
-			await _userService.ChangePasswordAsync(user!.UserId, dto);
+			await _userService.ChangePasswordAsync(user!.Id, dto);
 
 			return Ok(ApiResponse<string>.Ok("Đổi mật khẩu thành công."));
 		}

@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DAL.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Principal;
 
 namespace Repository.BaseRepository
 {
@@ -18,20 +21,18 @@ namespace Repository.BaseRepository
 		public async Task<T> AddAsync(T entity)
 		{
 			await _dbSet.AddAsync(entity);
-			await _context.SaveChangesAsync();
 			return entity;
 		}
 
 		public async Task<bool> DeleteAsync(int id)
 		{
-			var entity = await _dbSet.FindAsync(id);
+			var entity = await GetByIdAsync(id);
 			if (entity == null) { return false; }
-			var property = entity.GetType().GetProperty("IsDeleted");
-			if (property != null)
+			if (entity is BaseEntity softDeleteEntity)
 			{
-				property.SetValue(entity, true);
+				softDeleteEntity.IsDeleted = true;
+				softDeleteEntity.DeletedAt = DateTime.UtcNow;
 				_dbSet.Update(entity);
-
 			}
 			else
 			{
@@ -40,47 +41,7 @@ namespace Repository.BaseRepository
 			return true;
 
 		}
-
-		public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
-		{
-			var query = _dbSet.AsQueryable();
-			var property = typeof(T).GetProperty("IsDeleted");
-
-			if (property != null)
-				query = query.Where(e => EF.Property<bool>(e, "IsDeleted") == false);
-
-			return await query.Where(predicate).ToListAsync();
-		}
-
-		public async Task<T?> FindAsync(Expression<Func<T, bool>> predicate)
-		{
-			var query = _dbSet.AsQueryable();
-			var property = typeof(T).GetProperty("IsDeleted");
-
-			if (property != null)
-				query = query.Where(e => EF.Property<bool>(e, "IsDeleted") == false);
-
-			return await query.FirstOrDefaultAsync(predicate);
-		}
-
-		public async Task<IEnumerable<T>> GetAllActiveAsync()
-		{
-			var property = typeof(T).GetProperty("IsDeleted");
-			if (property != null)
-			{
-				return await _dbSet
-					.Where(e => EF.Property<bool>(e, "IsDeleted") == false)
-					.ToListAsync();
-			}
-			return await _dbSet.ToListAsync();
-		}
-
-		// base get all method for all repositories
-		public async Task<IEnumerable<T>> GetAllAsync()
-		{
-			return await _dbSet.ToListAsync();
-		}
-
+		// tìm với any
 		public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
 		{
 			return await _dbSet.AnyAsync(predicate);
@@ -92,11 +53,11 @@ namespace Repository.BaseRepository
 			return await _dbSet.FindAsync(id);
 		}
 
-		public IQueryable<T> GetQueryable()
+		public IQueryable<T> GetQueryable(bool trackChanges = false)
 		{
 			// Trả về Queryable để cho phép xây dựng câu lệnh SQL ở tầng Service
 			// Sử dụng AsNoTracking() nếu bạn chỉ muốn đọc dữ liệu để tăng hiệu năng
-			return _dbSet.AsQueryable();
+			return trackChanges?  _dbSet.AsQueryable() :_dbSet.AsNoTracking();
 		}
 
 		// base update method for all repositories
@@ -106,22 +67,70 @@ namespace Repository.BaseRepository
 			return true;
 		}
 
-		public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+		public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate, bool trackChanges = false, params Expression<Func<T, object>>[] includes)
 		{
-			IQueryable<T> query = _dbSet;
+			var query = GetQueryable(trackChanges);
 
-			// Load các bảng liên quan nếu có
-			foreach (var include in includes)
+			if (includes.Any())
 			{
-				query = query.Include(include);
+				query = includes.Aggregate(query, (current, include) => current.Include(include));
 			}
-
 			return await query.FirstOrDefaultAsync(predicate);
 		}
 
-		public async Task<T?> DeleteRangeAsync(Expression<Func<T, bool>>[] ids)
+		public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? predicate = null, bool trackChanges = false, params Expression<Func<T, object>>[] includes)
 		{
-			var keyName = _dbSet
+			var query = GetQueryable(trackChanges);
+			if (includes.Any())
+			{
+				query = includes.Aggregate(query, (current, include) => current.Include(include));
+			}
+			if (predicate != null) query = query.Where(predicate);
+			return await query.ToListAsync();
+		}
+
+
+		public async Task AddRangeAsync(IEnumerable<T> entities)
+		{
+			await _dbSet.AddRangeAsync(entities);
+			return;
+		}
+
+		public bool  UpdateRange(IEnumerable<T> entities)
+		{
+			_dbSet.UpdateRange(entities);
+			return true;
+		}
+
+		public async Task<int> ExecuteDeleteBatchAsync(Expression<Func<T, bool>> predicate)
+			=> await _dbSet.Where(predicate).ExecuteDeleteAsync();
+		
+
+		public async Task<int> ExecuteUpdateBatchAsync(Expression<Func<T, bool>> predicate, Expression<Func<SetPropertyCalls<T>, SetPropertyCalls<T>>> updateExpression)
+		=> await _dbSet.Where(predicate).ExecuteUpdateAsync(updateExpression);
+		//phân trang
+		public async Task<PagedResult<T>> GetPagedAsync(int pageNumber, int pageSize,Expression<Func<T, bool>>? predicate = null, bool trackChanges = false, params Expression<Func<T, object>>[] includes)
+		{
+			var query = GetQueryable(trackChanges);
+			// 1. Eager Loading (Include)
+			if (includes.Any())
+			{
+				query = includes.Aggregate(query, (current, include) => current.Include(include));
+			}
+			// 2. Filter (Where)
+			if (predicate != null)
+			{
+				query = query.Where(predicate);
+			}
+			
+			// 3. Đếm tổng số bản ghi TRƯỚC khi phân trang
+			var totalCount = await query.CountAsync();
+			var items = await query
+				.Skip((pageNumber - 1) * pageSize)
+				.Take(pageSize)
+				.ToListAsync();
+
+			return new PagedResult<T>(items, totalCount, pageNumber, pageSize);
 		}
 	}
 }

@@ -33,12 +33,16 @@ namespace Service.Services
 		// get list of addresses by user id
 		public async Task<IEnumerable<AddressDTO>> GetAddressByUserIdAsync(int userId)
 		{
-			var addresses = await _unitOfWork.Users.FindAsync(a => a.UserId == userId);
-			if (addresses == null)
+			var user = await _unitOfWork.Users.GetFirstOrDefaultAsync(
+				a => a.Id == userId,
+				trackChanges:false,
+				includes: u=>u.Addresses!
+			);
+			if (user == null|| user.Addresses == null)
 			{
-				return new List<AddressDTO>();
+				return [];
 			}
-			return _mapper.Map<IEnumerable<AddressDTO>>(addresses);
+			return _mapper.Map<IEnumerable<AddressDTO>>(user.Addresses);
 		}
 		// set default address for user
 		public async Task<bool> SetDefaultAddressAsync(int userId, int addressId)
@@ -47,12 +51,12 @@ namespace Service.Services
 			ArgumentOutOfRangeException.ThrowIfNegativeOrZero(addressId, nameof(addressId));
 			// Lấy address mới cần đặt làm mặc định
 			var target = await _unitOfWork.Addresses
-				.FindAsync(a => a.UserId == userId && a.AddressId == addressId)?? throw new NotFoundException("Address not found or does not belong to the user.");
+				.GetFirstOrDefaultAsync(a => a.UserId == userId && a.Id == addressId)?? throw new NotFoundException("Address not found or does not belong to the user.");
 			if (target.IsDefault) return true; //đã là mặc định, không làm gì cả
 
 			// Lấy địa chỉ hiện tại đang là mặc định (nếu có)
 			var current = await  _unitOfWork.Addresses
-				.FindAsync(a => a.UserId == userId && a.IsDefault);
+				.GetFirstOrDefaultAsync(a => a.UserId == userId && a.IsDefault);
 
 			if (current != null)
 			{

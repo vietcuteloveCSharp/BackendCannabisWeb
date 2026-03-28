@@ -2,7 +2,7 @@
 {
 	public class GrowLightDTO
 	{
-		public int GrowLightId { get; set; }
+		public int Id { get; set; }
 		public string? ModelNumber { get; set; }
 		public decimal Price { get; set; }
 		public int Wattage { get; set; }
