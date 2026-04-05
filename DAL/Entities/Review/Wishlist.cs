@@ -1,6 +1,7 @@
-﻿namespace DAL.Entities.Review
+﻿
+namespace DAL.Entities.Review
 {
-	public class Wishlist :BaseEntity
+	public class Wishlist :BaseEntity ,ISoftDelete
 	{
 		public int Id { get; set; }
 		public int UserId { get; set; } // FK User
@@ -9,5 +10,8 @@
 		// Navigation
 		public User.User User { get; set; } = default!;
 		public Product.Product Product { get; set; } = default!;
+		public bool IsDeleted { get ; set ; }
+		public DateTime? DeletedAt { get; set; }
+		public int? DeletedBy { get; set; }
 	}
 }

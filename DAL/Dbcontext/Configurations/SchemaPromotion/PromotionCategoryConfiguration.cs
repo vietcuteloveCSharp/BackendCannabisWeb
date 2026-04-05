@@ -23,6 +23,7 @@ namespace DAL.Dbcontext.Configurations.SchemaPromotion
 				.WithMany(c => c.Promotions)
 				.HasForeignKey(c => c.CategoryId)
 				.IsRequired();
+			builder.HasQueryFilter(oi => !oi.IsDeleted);
 		}
 	}
 }

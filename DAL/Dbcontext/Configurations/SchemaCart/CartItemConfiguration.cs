@@ -20,6 +20,7 @@ namespace DAL.Dbcontext.Configurations.SchemaCart
 				   .OnDelete(DeleteBehavior.Restrict);
 			builder.HasIndex(cd => cd.CartId)
 				  .HasDatabaseName("IX_CartDetails_CartId");
+
 			builder.HasIndex(cd => cd.ProductVariantId)
 				.HasDatabaseName("IX_CartDetails_ProductVariantId");
 		}

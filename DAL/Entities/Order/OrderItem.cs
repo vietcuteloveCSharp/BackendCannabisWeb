@@ -2,7 +2,7 @@
 
 namespace DAL.Entities.Order
 {
-    public class OrderItem :BaseEntity
+    public class OrderItem :BaseEntity,ISoftDelete
     {
         [Key]
         public int Id { get; set; }
@@ -10,7 +10,10 @@ namespace DAL.Entities.Order
         public int ProductVariantId {  get; set; }
         public int Quantity { get; set; }
 		public decimal UnitPrice { get; set; }
+		public bool IsDeleted { get; set ; }
+		public DateTime? DeletedAt { get ; set ; }
+		public int? DeletedBy { get ; set ; }
 		public virtual Order Order { get; set; } = default!;
         public virtual ProductVariant ProductVariant { get; set; } = default!;
-    }
+	}
 }

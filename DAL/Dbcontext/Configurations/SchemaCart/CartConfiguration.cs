@@ -12,19 +12,19 @@
 				   .WithOne(u => u.Cart)
 				   .HasForeignKey<Cart>(c => c.UserId)
 				   .OnDelete(DeleteBehavior.Cascade);
-
+			builder.Property(c => c.Price).HasPrecision(14, 2);
 			builder.HasQueryFilter(c => !c.IsDeleted);
 			// ✅ Unique index: chỉ một giỏ hàng active / user
 			builder.HasIndex(e => e.UserId)
 				.HasDatabaseName("UX_Cart_User")
 				.IsUnique()
-				.HasFilter("[Status] = 'Active' AND [UserId] IS NOT NULL");
+				.HasFilter("[IsDeleted] = 0");
 
 			// ✅ Unique index: chỉ một giỏ hàng active / session
 			builder.HasIndex(e => e.Session_Id)
 				.HasDatabaseName("UX_Cart_Session")
 				.IsUnique()
-				.HasFilter("[Status] = 'Active' AND [Session_Id] IS NOT NULL");
+				.HasFilter("[IsDeleted] = 0 AND [Session_Id] IS NOT NULL");
 
 		}
 	}

@@ -22,6 +22,7 @@
 				   .WithMany()
 				   .HasForeignKey(cu => cu.OrderId)
 				   .OnDelete(DeleteBehavior.Restrict);
+			builder.HasQueryFilter(oi => !oi.IsDeleted);
 		}
 	}
 }

@@ -23,7 +23,6 @@ namespace DAL.Entities.Product
 		public virtual ICollection<PromotionProduct> PromotionProducts { get; set; } = new HashSet<PromotionProduct>();
         public virtual ICollection<ProductTag> ProductTags { get; set; } = new HashSet<ProductTag>();
 		public ICollection<ProductVariant> Variants { get; set; } = new HashSet<ProductVariant>();
-		public ICollection<ProductImage> Images { get; set; } = new HashSet<ProductImage>();
         public ICollection<Wishlist> Wishlists { get; set; } = new HashSet<Wishlist>();
         public ICollection<Promotion.Promotion> promotions { get; set; }=new HashSet<Promotion.Promotion>();    
 		public virtual Category Category { get; set; } = default!;

@@ -9,6 +9,9 @@ namespace DAL.Dbcontext.Configurations.SchemaOrder
 			builder.HasKey(c => c.Id);
 			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.Quantity);
+			builder.Property(c => c.UnitPrice).HasPrecision(10, 2);
+
+			builder.HasQueryFilter(oi => !oi.IsDeleted);
 
 			builder.HasOne(c => c.Order)
 				   .WithMany(c => c.OrderItems)
@@ -20,7 +23,7 @@ namespace DAL.Dbcontext.Configurations.SchemaOrder
 				.WithMany(c=>c.OrderItems)
 				.HasForeignKey(oi => oi.ProductVariantId)
 				.OnDelete(DeleteBehavior.Restrict);
-
+			
 		}
 	}
 }

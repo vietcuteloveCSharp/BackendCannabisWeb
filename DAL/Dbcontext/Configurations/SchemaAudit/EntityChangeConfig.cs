@@ -11,10 +11,12 @@ namespace DAL.Dbcontext.Configurations.SchemaAudit
 			builder.Property(c => c.PropertyName);
 			builder.Property(c => c.NewValue);
 			builder.Property(c => c.OldValue);
+
+			builder.HasQueryFilter(ec => !ec.AuditLog.IsDeleted);
 			builder.HasOne(ec => ec.AuditLog)
 				   .WithMany(a => a.EntityChanges)
 				   .HasForeignKey(ec => ec.AuditLogId)
-				   .OnDelete(DeleteBehavior.Cascade);
+					.IsRequired();
 		}
 	}
 }

@@ -20,6 +20,7 @@ namespace DAL.Dbcontext.Configurations.SchemaUser
 			   .WithMany(p => p.Wishlists)
 			   .HasForeignKey(w => w.ProductId)
 			   .OnDelete(DeleteBehavior.Cascade);
+			builder.HasQueryFilter(oi => !oi.IsDeleted);
 		}
 	}
 

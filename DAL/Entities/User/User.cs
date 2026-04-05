@@ -1,6 +1,4 @@
-﻿using DAL.Entities.Audit;
-using DAL.Entities.Review;
-
+﻿
 namespace DAL.Entities.User
 {
     public class User :BaseEntity ,ISoftDelete

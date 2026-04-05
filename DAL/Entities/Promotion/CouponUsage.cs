@@ -1,8 +1,9 @@
 ﻿
+
 namespace DAL.Entities.Promotion
 {
 
-    public class CouponUsage : BaseEntity
+    public class CouponUsage : BaseEntity ,ISoftDelete
     {
        
         public int Id { get; set; }
@@ -13,6 +14,9 @@ namespace DAL.Entities.Promotion
 
         public int OrderId { get; set; } // nếu áp dụng cho 1 đơn hàng
 
+		public bool IsDeleted { get ; set ; }
+		public DateTime? DeletedAt { get; set ; }
+		public int? DeletedBy { get; set; }
         // Navigation
         public Coupon Coupon { get; set; } = default!;
         public User.User User { get; set; } = default!;
