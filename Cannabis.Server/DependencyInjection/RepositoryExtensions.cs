@@ -13,6 +13,7 @@
 			services.AddScoped<IProductRepository, ProductRepository>();
 			services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 			services.AddScoped<IUserRepository, UserRepository>();
+			services.AddScoped<IRoleRepository, RoleRepository>();
 			return services;
 		}
 	}

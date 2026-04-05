@@ -16,6 +16,7 @@ namespace Cannabis.Server.DependencyInjection{
 			services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
 			services.AddScoped<IAdminService, AdminService>();
 			services.AddScoped<IUserService ,UserService>();
+			services.AddScoped<IRoleService, RoleService>();
 			return services;
 		}
 	}
