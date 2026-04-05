@@ -1,4 +1,6 @@
-﻿namespace Repository.IRepository
+﻿using DAL.Entities.Product;
+
+namespace Repository.IRepository
 {
 	public interface IBrandRepository : IBaseRepository<Brand>
 	{

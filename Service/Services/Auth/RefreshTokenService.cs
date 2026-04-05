@@ -1,4 +1,5 @@
 ﻿
+using DAL.Entities.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace Service.Services.ServicesAuth
@@ -34,7 +35,7 @@ namespace Service.Services.ServicesAuth
 			}
 		}
 
-		public async Task<RefreshToken> GenerateRefreshTokenAsync(int userId)
+		public async Task<UserRefreshToken> GenerateRefreshTokenAsync(int userId)
 		{
 			// Tạo chuỗi refresh token ngẫu nhiên, bảo mật
 			var randomBytes = new byte[64];
@@ -44,10 +45,10 @@ namespace Service.Services.ServicesAuth
 			}
 			string refreshTokenValue = Convert.ToBase64String(randomBytes);
 			// Tạo object RefreshToken
-			var refreshToken = new RefreshToken
+			var refreshToken = new UserRefreshToken
 			{
 				UserId = userId,
-				RefreshTokenValue = refreshTokenValue,
+				TokenHash = refreshTokenValue,
 				CreatedAt = DateTime.UtcNow,
 				ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays), // thời gian sống 30 ngày, có thể config
 				IsRevoked = false
@@ -72,7 +73,7 @@ namespace Service.Services.ServicesAuth
 			return tokenDto;
 		}
 
-		public async Task<RefreshToken> ReplaceRefreshTokenAsync(int userId, string oldRefreshTokenValue)
+		public async Task<UserRefreshToken> ReplaceRefreshTokenAsync(int userId, string oldRefreshTokenValue)
 		{
 			// Lấy token cũ
 			var oldToken = await _unitOfWork.RefreshTokens
@@ -116,7 +117,7 @@ namespace Service.Services.ServicesAuth
 		public async Task StoreTokenAsync(RefreshTokenDTO refreshTokenDTO)
 		{
 			ArgumentNullException.ThrowIfNull(refreshTokenDTO, nameof(refreshTokenDTO));
-			var refreshToken = _mapper.Map<RefreshToken>(refreshTokenDTO);
+			var refreshToken = _mapper.Map<UserRefreshToken>(refreshTokenDTO);
 			await _unitOfWork.RefreshTokens.AddAsync(refreshToken);
 			await _unitOfWork.SaveChangesAsync();
 		}

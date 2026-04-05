@@ -38,5 +38,9 @@
     <ProjectReference Include="..\Middleware\Middleware.csproj" />
     <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Controllers\Inventory\" />
+  </ItemGroup>
 
 </Project>

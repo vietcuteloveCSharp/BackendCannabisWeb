@@ -10,7 +10,6 @@ namespace DTO.DTOs.User.Users
 	{
 		public string? SearchTerm { get; set; } // Tìm theo Name, Username, Email
 		public int? RoleId { get; set; }       // Lọc theo Role
-		public EUserStatus? Status { get; set; } // Lọc theo trạng thái (Active/Blocked)
 
 		// Pagination params
 		public int PageNumber { get; set; } = 1;

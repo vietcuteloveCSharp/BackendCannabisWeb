@@ -1,4 +1,6 @@
-﻿namespace Repository.Repository
+﻿using DAL.Entities.Product;
+
+namespace Repository.Repository
 {
 	public class BrandRepository : BaseRepository<Brand>,IBrandRepository
 	{

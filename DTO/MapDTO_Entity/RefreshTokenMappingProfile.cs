@@ -1,4 +1,4 @@
-﻿using DTO.DTOs.Shared;
+﻿using DAL.Entities.User;
 
 namespace DTO.MapDTO_Entity
 {
@@ -7,8 +7,8 @@ namespace DTO.MapDTO_Entity
 		public RefreshTokenMappingProfile()
 		{
 			#region Map RefreshToken
-			CreateMap<RefreshTokenDTO, RefreshToken>(MemberList.None).ReverseMap();
-			CreateMap<RefreshTokenCreateDTO, RefreshToken>(MemberList.None);
+			CreateMap<RefreshTokenDTO, UserRefreshToken>(MemberList.None).ReverseMap();
+			CreateMap<RefreshTokenCreateDTO, UserRefreshToken>(MemberList.None);
 			#endregion
 		}
 	}

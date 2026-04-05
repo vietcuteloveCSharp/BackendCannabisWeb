@@ -1,10 +1,7 @@
 ﻿using DAL.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Principal;
+
 
 namespace Repository.BaseRepository
 {
@@ -23,12 +20,12 @@ namespace Repository.BaseRepository
 			await _dbSet.AddAsync(entity);
 			return entity;
 		}
-
+		// soft delete 
 		public async Task<bool> DeleteAsync(int id)
 		{
 			var entity = await GetByIdAsync(id);
 			if (entity == null) { return false; }
-			if (entity is BaseEntity softDeleteEntity)
+			if (entity is ISoftDelete softDeleteEntity)
 			{
 				softDeleteEntity.IsDeleted = true;
 				softDeleteEntity.DeletedAt = DateTime.UtcNow;
@@ -52,7 +49,7 @@ namespace Repository.BaseRepository
 		{
 			return await _dbSet.FindAsync(id);
 		}
-
+		// get query
 		public IQueryable<T> GetQueryable(bool trackChanges = false)
 		{
 			// Trả về Queryable để cho phép xây dựng câu lệnh SQL ở tầng Service
@@ -66,7 +63,7 @@ namespace Repository.BaseRepository
 			_dbSet.Update(updatedEntity); // mark entity modified
 			return true;
 		}
-
+		// tìm 1 hoặc  mặc định 
 		public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate, bool trackChanges = false, params Expression<Func<T, object>>[] includes)
 		{
 			var query = GetQueryable(trackChanges);

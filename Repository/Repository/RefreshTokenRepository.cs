@@ -1,4 +1,6 @@
-﻿namespace Repository.Repository
+﻿using DAL.Entities.User;
+
+namespace Repository.Repository
 {
 	public class RefreshTokenRepository : IRefreshTokenRepository
 	{	private readonly CannabisAccessoriesDBContext _context;
@@ -7,7 +9,7 @@
 			this._context = context;
 		}
 		// add refresh token
-		public async Task AddAsync(RefreshToken refreshToken)
+		public async Task AddAsync(UserRefreshToken refreshToken)
 		{
 			await _context.RefreshTokens.AddAsync(refreshToken);
 		}
@@ -15,21 +17,21 @@
 		public async Task<bool> ExistsAsync(string refreshToken)
 		{
 			return await _context.RefreshTokens
-				.AnyAsync(t => t.RefreshTokenValue == refreshToken);
+				.AnyAsync(t => t.TokenHash == refreshToken);
 		}
 
 		// Get refresh token by token string và includeRevoked thì bỏ
-		public async Task<RefreshToken?> GetByTokenAsync(string refreshToken, bool includeRevoked = false)
+		public async Task<UserRefreshToken?> GetByTokenAsync(string refreshToken, bool includeRevoked = false)
 		{
 			var query = _context.RefreshTokens
 							 .Include(rt => rt.User)
 							 .AsQueryable();
 			if (!includeRevoked)
 				query = query.Where(rt => !rt.IsRevoked);
-			return await query.FirstOrDefaultAsync(rt => rt.RefreshTokenValue == refreshToken);
+			return await query.FirstOrDefaultAsync(rt => rt.TokenHash == refreshToken);
 		}
 		// Get list refresh token by userId
-		public async Task<List<RefreshToken>> GetByUserIdAsync(int userId, bool onlyActive = true)
+		public async Task<List<UserRefreshToken>> GetByUserIdAsync(int userId, bool onlyActive = true)
 		{
 			var query = _context.RefreshTokens.Where(rt => rt.UserId == userId);
 			if (onlyActive)
@@ -39,7 +41,7 @@
 			return await query.ToListAsync();
 		}
 		// Get latest refresh token by userId
-		public async Task<RefreshToken?> GetLatestByUserIdAsync(int userId, bool onlyActive = true)
+		public async Task<UserRefreshToken?> GetLatestByUserIdAsync(int userId, bool onlyActive = true)
 		{
 			var query = _context.RefreshTokens
 							   .Where(rt => rt.UserId == userId);
@@ -77,7 +79,7 @@
 			return true;
 		}
 
-		public  Task UpdateAsync(RefreshToken token)
+		public  Task UpdateAsync(UserRefreshToken token)
 		{
 			_context.RefreshTokens.Update(token);
 			return Task.CompletedTask;

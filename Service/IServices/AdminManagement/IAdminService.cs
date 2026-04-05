@@ -1,7 +1,6 @@
 ﻿using DTO.DTOs.Admin.Admins;
 using DTO.DTOs.User.Users;
 using DTO.Response;
-using static Enum.Domain.System_User;
 
 namespace Service.IServices.AdminManagement
 {

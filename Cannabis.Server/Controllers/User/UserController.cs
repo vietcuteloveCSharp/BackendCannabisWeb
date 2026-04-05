@@ -1,7 +1,4 @@
-﻿using DTO.DTOs.User.Users;
-using Service.IServices.UserManagement;
-
-namespace Cannabis.Server.Controllers.User
+﻿namespace Cannabis.Server.Controllers.User
 {
 	[ApiVersion("1.0")]
 	[Route("api/v{version:apiVersion}/[controller]")]

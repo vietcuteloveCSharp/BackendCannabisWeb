@@ -16,9 +16,9 @@ namespace Cannabis.Server.Controllers
 			_service = service;
 		}
 		[HttpGet]
-		public virtual async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int size = 10, [FromQuery] string? search = null)
+		public virtual async Task<IActionResult> GetAll([FromQuery] QueryParam query)
 		{
-			var result = await _service.GetPagedAsync(page, size,search);
+			var result = await _service.GetPagedAsync(query);
 			return Ok(result);
 		}
 		[HttpGet("{id:int}")]
@@ -45,7 +45,36 @@ namespace Cannabis.Server.Controllers
 		[HttpDelete("{id:int}")]
 		public virtual async Task<IActionResult> Delete(int id)
 		{
-			var result = await _service.DeleteAsync(id);
+			var result = await _service.SoftDeleteAsync(id);
+			return result.Success ? Ok(result) : BadRequest(result);
+		}
+
+		[HttpDelete("bulk")]
+		public virtual async Task<IActionResult> DeleteMany([FromBody] List<int> ids)
+		{
+			var result = await _service.DeleteManyAsync(ids);
+			return result.Success ? Ok(result) : BadRequest(result);
+		}
+
+		[HttpDelete("{id:int}/hard")]
+		[Authorize(Roles = "Admin")]
+		public virtual async Task<IActionResult> HardDelete(int id)
+		{
+			var result = await _service.HardDeleteAsync(id);
+			return result.Success ? Ok(result) : BadRequest(result);
+		}
+
+		[HttpPost("{id:int}/restore")]
+		public virtual async Task<IActionResult> Restore(int id)
+		{
+			var result = await _service.RestoreAsync(id);
+			return result.Success ? Ok(result) : BadRequest(result);
+		}
+
+		[HttpPost("restore")]
+		public virtual async Task<IActionResult> RestoreMany([FromBody] List<int> ids)
+		{
+			var result = await _service.RestoreManyAsync(ids);
 			return result.Success ? Ok(result) : BadRequest(result);
 		}
 	}

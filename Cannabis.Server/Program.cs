@@ -119,13 +119,13 @@ namespace Cannabis.Server
 			app.UseStaticFiles(); // Cho wwwroot
 			// 3. Cấu hình File tĩnh (Phải đặt TRƯỚC Routing để truy cập ảnh nhanh nhất)
 			
-			var uploadPath = Path.Combine(app.Environment.ContentRootPath, "Uploads");
+			var uploadPath = Path.Combine(app.Environment.ContentRootPath, "uploads");
 			if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
 
 			app.UseStaticFiles(new StaticFileOptions
 			{
 				FileProvider = new PhysicalFileProvider(uploadPath),
-				RequestPath = "/uploads"
+				RequestPath = "/api/uploads"
 			});
 			// 2. Swagger - Chỉ dùng trong môi trường Phát triển
 			if (app.Environment.IsDevelopment())

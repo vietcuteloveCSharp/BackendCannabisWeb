@@ -1,4 +1,5 @@
-﻿using DTO.DTOs.Addresses;
+﻿using DAL.Entities.User;
+using DTO.DTOs.Addresses;
 
 namespace DTO.MapDTO_Entity
 {

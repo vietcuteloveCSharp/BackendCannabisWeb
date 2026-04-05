@@ -1,4 +1,6 @@
-﻿namespace Repository.Repository
+﻿using DAL.Entities.Audit;
+
+namespace Repository.Repository
 {
 	public class AuditLogRepository : BaseRepository<AuditLog>, IAuditLogRepository
 	{

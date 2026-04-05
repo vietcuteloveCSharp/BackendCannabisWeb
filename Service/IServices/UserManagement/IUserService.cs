@@ -1,6 +1,4 @@
-﻿using DTO.DTOs.User.Users;
-
-namespace Service.IServices.UserManagement
+﻿namespace Service.IServices.UserManagement
 {
 	public interface IUserService
 	{

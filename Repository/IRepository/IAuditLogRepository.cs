@@ -1,4 +1,5 @@
-﻿namespace Repository.IRepository
+﻿
+namespace Repository.IRepository
 {
 	public interface IAuditLogRepository : IBaseRepository<AuditLog>	
 	{

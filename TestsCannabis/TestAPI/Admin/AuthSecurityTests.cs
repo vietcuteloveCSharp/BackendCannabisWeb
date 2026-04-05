@@ -1,4 +1,4 @@
-﻿using DTO.DTOs.Shared;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,6 @@ namespace TestsCannabis.TestAPI.Admin
 			{
 				var db = scope.ServiceProvider.GetRequiredService<CannabisAccessoriesDBContext>();
 				var user = await db.Users.FirstOrDefaultAsync(u => u.Id == 2);
-				user!.Status = EUserStatus.Inactive;
 				await db.SaveChangesAsync();
 			}
 

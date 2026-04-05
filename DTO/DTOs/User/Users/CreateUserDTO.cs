@@ -1,6 +1,4 @@
-﻿using static Enum.Domain.System_User;
-
-namespace DTO.DTOs.User.Users
+﻿namespace DTO.DTOs.User.Users
 {
 	public class CreateUserDTO
 	{
@@ -19,6 +17,5 @@ namespace DTO.DTOs.User.Users
 		[Required(ErrorMessage = "Email is required.")]
 		[EmailAddress(ErrorMessage = "Invalid email.")]
 		public string Email { get; set; } = string.Empty;
-		public EUserStatus Status { get; set; } = EUserStatus.Active;
 	}
 }

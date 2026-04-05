@@ -1,4 +1,5 @@
-﻿using Service.IServices.IServiceLogger;
+﻿using DAL.Entities.Audit;
+using Service.IServices.IServiceLogger;
 
 namespace Service.Services.ServicesLogger
 {

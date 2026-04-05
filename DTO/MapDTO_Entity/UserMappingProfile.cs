@@ -1,4 +1,5 @@
-﻿using DTO.DTOs.Admin.Admins;
+﻿using DAL.Entities.User;
+using DTO.DTOs.Admin.Admins;
 using DTO.DTOs.User.Users;
 
 namespace DTO.MapDTO_Entity
@@ -11,14 +12,14 @@ namespace DTO.MapDTO_Entity
 
 			// 1. Map từ DTO đăng ký User thường sang Entity
 			CreateMap<CreateUserDTO, User>(MemberList.Source)
-				.ForMember(dest => dest.HashPassword, opt => opt.Ignore()) // Xử lý băm mật khẩu ở Service
+				.ForMember(dest => dest.PasswordHash, opt => opt.Ignore()) // Xử lý băm mật khẩu ở Service
 				.ForMember(dest => dest.RoleId, opt => opt.Ignore())     // Gán Role mặc định ở Service
 				.ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
 
 			// 2. Map từ DTO tạo Admin sang Entity
 			CreateMap<AdminCreateDTO, User>(MemberList.Source)
-				.ForMember(dest => dest.HashPassword, opt => opt.Ignore())
-				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => EUserStatus.Active)); // Mặc định Active
+				.ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
+				 
 			
 
 			// 3. Map từ Entity sang UserDTO (Dùng cho Response API)

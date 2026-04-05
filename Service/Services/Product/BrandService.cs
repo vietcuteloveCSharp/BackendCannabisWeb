@@ -1,5 +1,4 @@
-﻿using Service.IServices.Product;
-using Service.Services.BaseService;
+﻿
 
 namespace Service.Services.Product
 {

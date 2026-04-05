@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="TestAPI\Inventory\" />
     <Folder Include="TestAPI\Share\" />
     <Folder Include="TestAPI\User\" />
     <Folder Include="TestService\AdminTests\" />

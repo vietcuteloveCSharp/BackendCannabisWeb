@@ -1,4 +1,6 @@
-﻿namespace Service.IServices.IServiceLogger
+﻿using DAL.Entities.Audit;
+
+namespace Service.IServices.IServiceLogger
 {
 	public interface IAuditLoggerService
 	{

@@ -36,8 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="IServices\Inventory\" />
     <Folder Include="IServices\Promotion\" />
     <Folder Include="IServices\Order\" />
+    <Folder Include="Services\Inventory\" />
   </ItemGroup>
 
 </Project>

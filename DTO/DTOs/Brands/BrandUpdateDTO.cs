@@ -2,7 +2,7 @@
 {
 	public class BrandUpdateDTO
 	{
-		[Required(ErrorMessage = "Brand name is required.")]
+		
 		[StringLength(255, ErrorMessage = "Brand name cannot exceed 255 characters.")]
 		public string BrandName { get; set; } = string.Empty;
 		[StringLength(150, ErrorMessage = "Country name cannot exceed 150 characters.")]
@@ -10,7 +10,8 @@
 		public string? Description { get; set; }
 		[StringLength(255, ErrorMessage = "Website link cannot exceed 255 characters.")]
 		public string? Website { get; set; }
-		public bool IsActive { get; set; } 
-	
+		public bool IsPremium { get; set; }
+
+
 	}
 }

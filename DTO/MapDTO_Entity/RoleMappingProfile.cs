@@ -1,4 +1,5 @@
-﻿using DTO.DTOs.Roles;
+﻿using DAL.Entities.User;
+using DTO.DTOs.Roles;
 
 namespace DTO.MapDTO_Entity
 {

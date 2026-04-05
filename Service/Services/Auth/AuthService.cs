@@ -1,5 +1,4 @@
-﻿
-using DAL.Entities;
+﻿using DAL.Entities.User;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Service.Services.ServicesAuth
@@ -35,7 +34,7 @@ namespace Service.Services.ServicesAuth
 			}
 
 			// 3. Kiểm tra Password
-			var result = _passwordHasher.VerifyHashedPassword(user, user.HashPassword!, loginResquestDTO.Password);
+			var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash!, loginResquestDTO.Password);
 			if (result != PasswordVerificationResult.Success)
 			{
 				throw new UnauthorizedAccessException("Tài khoản hoặc mật khẩu không chính xác.");
@@ -62,7 +61,7 @@ namespace Service.Services.ServicesAuth
 			var token = new TokenDTO
 			{
 				AccessToken = accessToken,
-				RefreshToken = refreshToken.RefreshTokenValue,
+				RefreshToken = refreshToken.TokenHash,
 				ExpiresInSeconds = expirationSeconds, // Gán số giây vào đây
 				User = _mapper.Map<UserSummaryDTO>(user)
 			};

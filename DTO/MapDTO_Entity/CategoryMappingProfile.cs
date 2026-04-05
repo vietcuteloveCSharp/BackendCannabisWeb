@@ -1,4 +1,5 @@
-﻿using DTO.DTOs.Categories;
+﻿using DAL.Entities.Product;
+using DTO.DTOs.Categories;
 
 namespace DTO.MapDTO_Entity
 {

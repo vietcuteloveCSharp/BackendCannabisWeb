@@ -1,5 +1,4 @@
-﻿
-namespace Repository.Repository
+﻿namespace Repository.Repository
 {
 	public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
 	{

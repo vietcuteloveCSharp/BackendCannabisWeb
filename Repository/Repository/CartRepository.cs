@@ -1,4 +1,6 @@
 ﻿
+using DAL.Entities.Cart;
+
 namespace Repository.Repository
 {
 	public class CartRepository : BaseRepository<Cart>

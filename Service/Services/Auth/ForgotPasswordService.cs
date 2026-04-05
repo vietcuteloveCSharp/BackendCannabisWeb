@@ -1,4 +1,5 @@
-﻿using Service.IServices.UserManagement;
+﻿using DAL.Entities.User;
+using Service.IServices.UserManagement;
 
 namespace Service.Services.ServicesAuth
 {
@@ -33,7 +34,7 @@ namespace Service.Services.ServicesAuth
 		
 			// 2. Hash mật khẩu mới
 			var hashedPassword = _passwordHasher.HashPassword(user,resetPasswordParam.NewPassword);
-			user.HashPassword = hashedPassword;
+			user.PasswordHash = hashedPassword;
 			var updateUserDto = _mapper.Map<UpdateUserDTO>(user);
 			// 3. Cập nhật mật khẩu trong DB
 			var result= await _userService.UpdateAsync(user.Id,updateUserDto);

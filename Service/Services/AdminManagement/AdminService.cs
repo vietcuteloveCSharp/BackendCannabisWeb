@@ -1,12 +1,5 @@
 ﻿using DTO.DTOs.Admin.Admins;
-using DTO.DTOs.User.Users;
-using DTO.Response;
-using Enum.Domain;
-using Microsoft.EntityFrameworkCore;
 using Service.IServices.AdminManagement;
-using Service.Services.BaseService;
-using System;
-using static Enum.Domain.System_User;
 
 namespace Service.Services.AdminManagement
 {
@@ -49,7 +42,7 @@ namespace Service.Services.AdminManagement
 			//DTO-> Entity
 			var userEntity = _mapper.Map<User>(createAdminDTO);
 			// Encryption password
-			userEntity.HashPassword = _passwordHasher.HashPassword(userEntity, createAdminDTO.Password);
+			userEntity.PasswordHash = _passwordHasher.HashPassword(userEntity, createAdminDTO.Password);
 			//lưu db
 			var result = await _unitOfWork.Users.AddAsync(userEntity);
 			// 6. Ghi Audit Log (Vì trong UnitOfWork bạn đã có AuditLogs)
@@ -65,9 +58,6 @@ namespace Service.Services.AdminManagement
 		{
 			var user = await _unitOfWork.Users.GetByIdAsync(userId);
 			if (user == null) throw new NotFoundException("User không tồn tại.");
-
-			user.Status = statusDTO.Status; //
-
 			_unitOfWork.Users.Update(user);
 			await _unitOfWork.SaveChangesAsync();
 			return true;

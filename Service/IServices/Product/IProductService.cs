@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Service.IServices.Product
 {
-	public interface IProductService : IBaseService<DAL.Entities.Product,ProductDTO,ProductCreateDTO,ProductUpdateDTO>
+	public interface IProductService : IBaseService<DAL.Entities.Product.Product, ProductDTO,ProductCreateDTO,ProductUpdateDTO>
 	{
 		
 	}

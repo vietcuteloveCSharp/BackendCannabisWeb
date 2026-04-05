@@ -1,5 +1,5 @@
-﻿using DTO.DTOs.Shared;
-using DTO.TokenDTOs;
+﻿using DTO.TokenDTOs;
+using DTO.Request;
 
 namespace Cannabis.Server.Controllers.Shared
 {
@@ -93,7 +93,7 @@ namespace Cannabis.Server.Controllers.Shared
 		public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO dto)
 		{
 			// Lấy UserId từ HttpContext (do JwtMiddleware của bạn gán vào)
-			var user = HttpContext.Items["User"] as DAL.Entities.User;
+			var user = HttpContext.Items["User"] as DAL.Entities.User.User;
 
 			await _userService.ChangePasswordAsync(user!.Id, dto);
 
@@ -136,10 +136,10 @@ namespace Cannabis.Server.Controllers.Shared
 		public async Task<IActionResult> SendOtp([FromQuery] string email)
 		{
 			if (string.IsNullOrWhiteSpace(email))
-				return BadRequest(ApiResponse<string>.Fail("Email is required."));
+				return BadRequest(ApiResult.Fail("Email is required."));
 
 			await _forgotPasswordService.SendOtpAsync(email);
-			return Ok(ApiResponse<string>.Content("OTP sent successfully. Check your email." ));
+			return Ok(ApiResult.Ok("OTP sent successfully. Check your email." ));
 		}
 		/// <summary>
 		/// Resets the user's password using OTP verification.
@@ -157,7 +157,7 @@ namespace Cannabis.Server.Controllers.Shared
 		{
 
 			await _forgotPasswordService.ForgotPasswordAsync(resetPasswordParam);
-			return Ok(ApiResponse<string>.Content("Password has been reset successfully."));
+			return Ok(ApiResult.Ok("Password has been reset successfully."));
 		}
 		private void AppendRefreshTokenCookie(string refreshToken)
 		{

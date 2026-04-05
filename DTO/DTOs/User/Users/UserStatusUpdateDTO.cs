@@ -8,6 +8,6 @@ namespace DTO.DTOs.User.Users
 {
 	public class UserStatusUpdateDTO
 	{
-		public EUserStatus Status { get; set; }
+	
 	}
 }

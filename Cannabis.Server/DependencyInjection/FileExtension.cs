@@ -8,7 +8,7 @@ namespace Cannabis.Server.DependencyInjection
 		public static IServiceCollection AddFileConfiguration(this IServiceCollection services, IWebHostEnvironment env)
 		{
 			// 1. Xác định đường dẫn thư mục Uploads ở ổ D (trong project)
-			string uploadFolder = Path.Combine(env.ContentRootPath, "Uploads");
+			string uploadFolder = Path.Combine(env.ContentRootPath, "uploads");
 
 			// 2. Kiểm tra và tạo thư mục nếu chưa có
 			if (!Directory.Exists(uploadFolder))

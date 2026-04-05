@@ -1,4 +1,5 @@
-﻿using DTO.DTOs.User.Users;
+﻿using DAL.Entities.User;
+using DTO.DTOs.User.Users;
 using Service.IServices.UserManagement;
 
 namespace Service.Services.UserManagement
@@ -78,7 +79,7 @@ namespace Service.Services.UserManagement
 			//DTO-> Entity
 			var userEntity = _mapper.Map<User>(createUserDTO);
 			// Encryption password
-			userEntity.HashPassword = _passwordHasher.HashPassword(userEntity, createUserDTO.Password);
+			userEntity.PasswordHash = _passwordHasher.HashPassword(userEntity, createUserDTO.Password);
 			//gán role mặc định user
 			userEntity.RoleId = userRole.Id;
 			var result = await _unitOfWork.Users.AddAsync(userEntity);
@@ -92,14 +93,14 @@ namespace Service.Services.UserManagement
 			if (user == null) throw new NotFoundException("User not found.");
 
 			// 1. Kiểm tra mật khẩu cũ có đúng không
-			var verifyOldPass = _passwordHasher.VerifyHashedPassword(user, user.HashPassword!, changePasswordDto.OldPassword);
+			var verifyOldPass = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash!, changePasswordDto.OldPassword);
 			if (verifyOldPass == PasswordVerificationResult.Failed)
 			{
 				throw new InvalidOperationException("Mật khẩu cũ không chính xác.");
 			}
 
 			// 2. Hash mật khẩu mới và cập nhật
-			user.HashPassword = _passwordHasher.HashPassword(user, changePasswordDto.NewPassword);
+			user.PasswordHash = _passwordHasher.HashPassword(user, changePasswordDto.NewPassword);
 
 			_unitOfWork.Users.Update(user);
 			return await _unitOfWork.SaveChangesAsync() > 0;

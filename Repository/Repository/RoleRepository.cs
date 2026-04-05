@@ -1,5 +1,4 @@
-﻿
-namespace Repository.Repository
+﻿namespace Repository.Repository
 {
 	public class RoleRepository : BaseRepository<Role>, IRoleRepository
 	{

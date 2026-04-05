@@ -1,5 +1,4 @@
-﻿
-using DAL.Entities;
+﻿using DAL.Entities.Promotion;
 
 namespace Repository.Repository
 {

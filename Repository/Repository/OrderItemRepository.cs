@@ -1,4 +1,6 @@
-﻿namespace Repository.Repository
+﻿using DAL.Entities.Order;
+
+namespace Repository.Repository
 {
 	public class OrderItemRepository : BaseRepository<OrderItem>
 	{

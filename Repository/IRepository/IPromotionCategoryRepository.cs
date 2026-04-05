@@ -1,4 +1,6 @@
-﻿namespace Repository.IRepository
+﻿using DAL.Entities.Promotion;
+
+namespace Repository.IRepository
 {
 	public interface IPromotionCategoryRepository
 	{

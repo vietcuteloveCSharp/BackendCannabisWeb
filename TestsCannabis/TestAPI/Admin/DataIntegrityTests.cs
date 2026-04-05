@@ -41,8 +41,8 @@ namespace TestsCannabis.TestAPI.Admin
 			var db = scope.ServiceProvider.GetRequiredService<CannabisAccessoriesDBContext>();
 			var userInDb = await db.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
 			// Kiểm tra mật khẩu đã được băm
-			userInDb!.HashPassword.Should().NotBeNullOrEmpty("Trường HashPassword không được để trống.");
-			userInDb.HashPassword.Should().NotBe(dto.Password, "Mật khẩu trong DB không được giống mật khẩu thô.");
+			userInDb!.PasswordHash.Should().NotBeNullOrEmpty("Trường HashPassword không được để trống.");
+			userInDb.PasswordHash.Should().NotBe(dto.Password, "Mật khẩu trong DB không được giống mật khẩu thô.");
 		}
 
 		[Fact]

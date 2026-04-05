@@ -1,4 +1,5 @@
-﻿using DTO.DTOs.Brands;
+﻿using DAL.Entities.Product;
+using DTO.DTOs.Brands;
 
 namespace DTO.MapDTO_Entity
 {
@@ -7,9 +8,8 @@ namespace DTO.MapDTO_Entity
 		public BrandMappingProfile()
 		{
 			#region Map Brand
-			CreateMap<Brand, BrandDTO>(MemberList.None);
+			CreateMap<Brand, BrandDTO>(MemberList.None).ReverseMap();
 			CreateMap<BrandCreateDTO, Brand>(MemberList.None);
-			CreateMap<BrandDTO, Brand>(MemberList.None);
 			CreateMap<BrandUpdateDTO, Brand>(MemberList.None);
 			#endregion
 		}

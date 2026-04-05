@@ -15,11 +15,17 @@ namespace Service.IServices
 		where TCreateDto : class
 		where TUpdateDto : class
 	{
-		Task<ApiResponse<PagedResult<TReadDto>>> GetPagedAsync(int page, int size,string? search);
+		Task<ApiResponse<IEnumerable<TReadDto>>> GetAllAsync();
+		Task<ApiResponse<PagedResult<TReadDto>>> GetPagedAsync(QueryParam query);
 		Task<ApiResponse<TReadDto>> GetByIdAsync(int id);
 		Task<ApiResult> CreateAsync(TCreateDto dto);
 		Task<ApiResult> UpdateAsync(int id, TUpdateDto dto);
-		Task<ApiResult> DeleteAsync(int id);
+		Task<ApiResult> SoftDeleteAsync(int id);
+		Task<ApiResult> DeleteManyAsync(List<int> ids);
+		Task<ApiResult> HardDeleteAsync(int id);
+		Task<ApiResult> HardDeleteManyAsync(List<int> ids);
+		Task<ApiResult> RestoreAsync(int id);
+		Task<ApiResult> RestoreManyAsync(List<int> ids);
 		Task<ApiResponse<bool>> ExistsAsync(int id);
 		
 
