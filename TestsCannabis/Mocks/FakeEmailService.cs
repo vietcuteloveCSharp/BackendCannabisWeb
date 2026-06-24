@@ -1,4 +1,7 @@
-﻿namespace TestsCannabis.Mocks
+﻿using Service.Interfaces.Auth;
+using Shared.DTOs.Common.Params;
+
+namespace TestsCannabis.Mocks
 {
 	public class FakeEmailService : IEmailService
 	{

@@ -32,11 +32,12 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />
-    <ProjectReference Include="..\DTO\DTO.csproj" />
-    <ProjectReference Include="..\Enum\Enum.csproj" />
-    <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
-    <ProjectReference Include="..\Middleware\Middleware.csproj" />
     <ProjectReference Include="..\Service\Service.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Controllers\Inventory\" />
   </ItemGroup>
 
 </Project>

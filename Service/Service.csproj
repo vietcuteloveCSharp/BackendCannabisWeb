@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="4.14.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
@@ -30,14 +31,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />
-    <ProjectReference Include="..\DTO\DTO.csproj" />
-    <ProjectReference Include="..\Exceptions\Exceptions.csproj" />
-    <ProjectReference Include="..\Repository\Repository.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="IServices\Promotion\" />
-    <Folder Include="IServices\Order\" />
+    <Folder Include="Interfaces\Inventory\" />
+    <Folder Include="Interfaces\Promotion\" />
+    <Folder Include="Interfaces\Order\" />
+    <Folder Include="Implementations\Inventory\" />
   </ItemGroup>
 
 </Project>

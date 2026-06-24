@@ -1,0 +1,17 @@
+﻿namespace Shared.DTOs.DTO.Brands
+{
+	public class BrandUpdateDTO
+	{
+		
+		[StringLength(255, ErrorMessage = "Brand name cannot exceed 255 characters.")]
+		public string BrandName { get; set; } = string.Empty;
+		[StringLength(150, ErrorMessage = "Country name cannot exceed 150 characters.")]
+		public string Country { get; set; } = string.Empty;
+		public string? Description { get; set; }
+		[StringLength(255, ErrorMessage = "Website link cannot exceed 255 characters.")]
+		public string? Website { get; set; }
+		public bool IsPremium { get; set; }
+
+
+	}
+}

@@ -5,12 +5,32 @@ global using System.Collections.Generic;
 global using System.Linq;
 global using System.Text;
 global using System.Threading.Tasks;
-global  using  static Enum.Domain.Orders;
-global  using  static Enum.Domain.Product_Inventory;
-global  using  static Enum.Domain.System_User;
-global  using  static Enum.Domain.TechnicalSpecs;
-global using DAL.Inherited;
 global using DAL.Entities;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Design;
 global using Microsoft.Extensions.Configuration;
+global using DAL.Entities.User;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using DAL.Entities.Product;
+global using DAL.Entities.Inventory;
+global using DAL.Entities.Cart;
+global using DAL.Entities.Order;
+global using DAL.Entities.Payment;
+global using DAL.Entities.Ship;
+global using DAL.Entities.Noti;
+global using DAL.Entities.Review;
+global using DAL.Entities.Promotion;
+global using DAL.Entities.Audit;
+global using DAL.Dbcontext;
+global using DAL.Entities.Inherited;
+global using Microsoft.EntityFrameworkCore.Query;
+global using System.Linq.Expressions;
+global using DAL.Repository.Interfaces;
+global using DAL.Repository.BaseRepository;
+global using DAL.Repository.Implementations;
+global using Microsoft.EntityFrameworkCore.Storage;
+global using Shared.Interfaces.Audit;
+global using Shared.Common.Response;
+
+
+

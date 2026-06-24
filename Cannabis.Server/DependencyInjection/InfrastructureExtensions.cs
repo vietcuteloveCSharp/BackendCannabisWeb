@@ -1,4 +1,6 @@
-﻿namespace Cannabis.Server.DependencyInjection
+﻿using Shared.DTOs.Options;
+
+namespace Cannabis.Server.DependencyInjection
 {
 	public static class InfrastructureExtensions
 	{
