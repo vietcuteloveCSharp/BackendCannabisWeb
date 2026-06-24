@@ -1,6 +1,7 @@
 ﻿using Cannabis.Server.DependencyInjection;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Hosting;
+using Service.Interfaces.Auth;
 using TestsCannabis.Mocks;
 
 namespace TestsCannabis.BaseApplicationFactory

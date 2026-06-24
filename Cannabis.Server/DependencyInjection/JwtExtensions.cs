@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+﻿
 
 
 namespace Cannabis.Server.DependencyInjection
@@ -83,7 +82,7 @@ namespace Cannabis.Server.DependencyInjection
 						{
 							context.Fail("Tài khoản đã bị khóa hoặc không tồn tại.");
 						}
-						
+						context.HttpContext.Items["UserId"] = userId;
 					},
 					OnChallenge = async context =>
 					{

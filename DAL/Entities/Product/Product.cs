@@ -1,4 +1,5 @@
 ﻿using DAL.Entities.Cart;
+using DAL.Entities.Inherited;
 using DAL.Entities.Order;
 using DAL.Entities.Review;
 

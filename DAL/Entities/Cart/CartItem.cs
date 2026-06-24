@@ -1,4 +1,6 @@
 ﻿
+using DAL.Entities.Inherited;
+
 namespace DAL.Entities.Cart
 {
     public class CartItem :BaseEntity ,ISoftDelete

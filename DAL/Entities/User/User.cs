@@ -1,4 +1,6 @@
 ﻿
+using DAL.Entities.Inherited;
+
 namespace DAL.Entities.User
 {
     public class User :BaseEntity ,ISoftDelete
@@ -26,7 +28,7 @@ namespace DAL.Entities.User
 		public virtual ICollection<Order.Order> OrdersAsBuyer { get; set; } = new List<Order.Order>();
 
 		// 2. Đơn hàng người dùng bán
-		public virtual  ICollection<Order.Order> OrdersAsSeller { get; set; } = new List<Order.Order>();
+		public virtual  ICollection<Order.Order> OrdersAsStaff { get; set; } = new List<Order.Order>();
 		public virtual ICollection<UserRefreshToken> RefreshTokens { get; set; } =new List<UserRefreshToken>();
         public virtual ICollection<Address> ? Addresses { get; set; } = new HashSet<Address>();
 		public virtual ICollection<Review.Review>? Reviews { get; set; } = new HashSet<Review.Review>();

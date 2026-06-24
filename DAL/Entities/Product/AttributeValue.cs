@@ -1,4 +1,6 @@
 ﻿//định nghĩa kiểu (Size, Color…)
+using DAL.Entities.Inherited;
+
 namespace DAL.Entities.Product
 {
 	public class AttributeValue : BaseEntity, ISoftDelete

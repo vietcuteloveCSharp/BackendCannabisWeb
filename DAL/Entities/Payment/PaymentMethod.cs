@@ -1,4 +1,6 @@
-﻿namespace DAL.Entities.Payment
+﻿using DAL.Entities.Inherited;
+
+namespace DAL.Entities.Payment
 {
 	public class PaymentMethod:BaseEntity
 	{

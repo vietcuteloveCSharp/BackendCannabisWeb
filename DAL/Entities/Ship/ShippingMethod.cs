@@ -1,4 +1,6 @@
-﻿namespace DAL.Entities.Ship
+﻿using DAL.Entities.Inherited;
+
+namespace DAL.Entities.Ship
 {
 	public class ShippingMethod :BaseEntity
 	{

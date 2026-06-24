@@ -1,4 +1,6 @@
-﻿namespace DAL.Entities.Noti
+﻿using DAL.Entities.Inherited;
+
+namespace DAL.Entities.Noti
 {
 	public class NotificationLog :BaseEntity
 	{

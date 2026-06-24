@@ -1,7 +1,4 @@
-﻿using Service.IServices.Product;
-using Service.Services.Product;
-
-namespace Cannabis.Server.DependencyInjection{
+﻿namespace Cannabis.Server.DependencyInjection{
 	public static class ServiceExtenstions
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
@@ -17,6 +14,7 @@ namespace Cannabis.Server.DependencyInjection{
 			services.AddScoped<IAdminService, AdminService>();
 			services.AddScoped<IUserService ,UserService>();
 			services.AddScoped<IRoleService, RoleService>();
+			services.AddScoped<IUserStatusService, UserStatusService>();
 			return services;
 		}
 	}

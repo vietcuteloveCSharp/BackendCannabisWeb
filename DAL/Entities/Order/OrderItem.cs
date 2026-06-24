@@ -1,4 +1,5 @@
-﻿using DAL.Entities.Product;
+﻿using DAL.Entities.Inherited;
+using DAL.Entities.Product;
 
 namespace DAL.Entities.Order
 {

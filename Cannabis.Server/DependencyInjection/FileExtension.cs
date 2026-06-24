@@ -1,5 +1,4 @@
-﻿using Service.IServices.Shared;
-using Service.Services.Shared;
+﻿
 
 namespace Cannabis.Server.DependencyInjection
 {

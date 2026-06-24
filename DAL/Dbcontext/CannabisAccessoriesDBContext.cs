@@ -1,21 +1,12 @@
-﻿using DAl.Data;
-using DAL.Entities.Audit;
-using DAL.Entities.Cart;
-using DAL.Entities.Order;
-using DAL.Entities.Review;
-using System.Linq.Expressions;
-
-
-namespace DAL.Dbcontext
+﻿namespace DAL.Dbcontext
 {
 	public class CannabisAccessoriesDBContext : DbContext
 	{
+		private readonly IAuditQueue _auditQueue;
 		public CannabisAccessoriesDBContext(DbContextOptions<CannabisAccessoriesDBContext> options) : base(options)
 		{
 
 		}
-		public virtual DbSet<AuditLog> AuditLogs { get; set; }
-		public virtual DbSet<EntityChange> EntityChanges { get; set; }
 		public virtual DbSet<Address> Addresses { get; set; }
 		public virtual DbSet<Brand> Brands { get; set; }
 		public virtual DbSet<Cart> Carts { get; set; }
@@ -84,7 +75,6 @@ namespace DAL.Dbcontext
 				}
 			}
 
-			//DbInitializer.Seed(modelBuilder);
 
 		}
 

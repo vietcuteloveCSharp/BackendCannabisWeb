@@ -1,6 +1,6 @@
 ﻿namespace DAL.Entities.Audit
 { 
-    public class AuditLog :BaseEntity,ISoftDelete
+    public class AuditLog
     {
 		public int Id { get; set; }
 		public int? UserId { get; set; } // ai thực hiện hành động
@@ -12,12 +12,7 @@
 		public string? NewValues { get; set; } // dữ liệu mới
 		public string? ChangedColumns { get; set; } // tên cột bị thay đổi
 
-		public bool IsDeleted { get; set; } = false;
-		public DateTime? DeletedAt { get; set; }
-		public int? DeletedBy { get; set; }
-
 		// Navigation
-		public virtual User.User? User { get; set; }
 		public virtual ICollection<EntityChange> EntityChanges { get; set; } = new HashSet<EntityChange>();
 	}
 }

@@ -1,5 +1,7 @@
 ﻿//map giữa pro->tap
 
+using DAL.Entities.Inherited;
+
 namespace DAL.Entities.Product
 {
 	public class ProductTag : BaseEntity,ISoftDelete

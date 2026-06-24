@@ -1,4 +1,8 @@
-﻿namespace Cannabis.Server.DependencyInjection
+﻿
+
+
+
+namespace Cannabis.Server.DependencyInjection
 {
 	public static class AutoMapperExtensions
 	{

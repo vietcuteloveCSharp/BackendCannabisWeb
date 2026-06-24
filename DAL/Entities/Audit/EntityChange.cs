@@ -1,4 +1,6 @@
-﻿namespace DAL.Entities.Audit
+﻿using DAL.Entities.Inherited;
+
+namespace DAL.Entities.Audit
 {
 	public class EntityChange : BaseEntity
 	{

@@ -1,4 +1,6 @@
-﻿namespace DAL.Entities.User
+﻿using DAL.Entities.Inherited;
+
+namespace DAL.Entities.User
 {
     public class Address :BaseEntity , ISoftDelete
     {
@@ -8,7 +10,9 @@
         public string Country { get; set; } = string.Empty;
         public string City { get; set; }  =string.Empty;
         public string Street { get; set; } = string.Empty;
-        public string HouseNumber { get; set; }= string.Empty;
+        public string Ward { get; set; } = string.Empty;
+
+		public string HouseNumber { get; set; }= string.Empty;
         public bool IsDefault { get; set; } = false;
 		public bool IsDeleted { get; set; }
 		public DateTime? DeletedAt { get; set; }

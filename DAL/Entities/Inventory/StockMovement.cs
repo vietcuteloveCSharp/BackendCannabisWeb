@@ -1,4 +1,5 @@
-﻿using static Enum.Domain.Product_Inventory;
+﻿using static Shared.Enum.Product_Inventory;
+
 namespace DAL.Entities.Inventory
 {
 	public class StockMovement : BaseEntity, ISoftDelete

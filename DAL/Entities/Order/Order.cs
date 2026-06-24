@@ -1,4 +1,5 @@
-﻿using DAL.Entities.Ship;
+﻿using DAL.Entities.Inherited;
+using DAL.Entities.Ship;
 
 namespace DAL.Entities.Order
 {
@@ -7,7 +8,7 @@ namespace DAL.Entities.Order
         public int  Id { get; set; }
         public int BuyerId { get; set; }
 
-        public int SellerId {  get; set; }
+        public int? StaffId {  get; set; }
 		public int StatusId {  get; set; }
         public decimal TotalAmount {  get; set; } // tổng tiền
         public string? ShippingAddress {  get; set; }
@@ -16,7 +17,7 @@ namespace DAL.Entities.Order
 		public int? DeletedBy { get; set; }
 		//navigation
 		public virtual User.User Buyer { get; set; } =default!;
-		public virtual User.User Seller { get; set; } = default!;
+		public virtual User.User Staff { get; set; } = default!;
         
         public virtual Payment.Payment? Payment { get; set; }
         public virtual OrderStatus OrderStatus { get; set; } = default!;

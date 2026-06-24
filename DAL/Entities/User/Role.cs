@@ -1,4 +1,6 @@
-﻿namespace DAL.Entities.User
+﻿using DAL.Entities.Inherited;
+
+namespace DAL.Entities.User
 {
     public class Role :BaseEntity
     {

@@ -1,5 +1,6 @@
 ﻿using Azure;
-using DTO.DTOs.Admin.Admins;
+using Shared.DTOs.DTO.Admin.Admins;
+using Shared.DTOs.DTO.User.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,7 +60,7 @@ namespace TestsCannabis.TestAPI.Admin
 			// Assert: Kiểm tra bảng AuditLogs (Nếu logic của bạn đã cài đặt Audit)
 			using var scope = _factory.Services.CreateScope();
 			var db = scope.ServiceProvider.GetRequiredService<CannabisAccessoriesDBContext>();
-			var logs = await db.AuditLogs.Where(l => l.UserId == 1).ToListAsync(); // Admin (Id=1) thực hiện
+			//var logs = await db.AuditLogs.Where(l => l.UserId == 1).ToListAsync(); // Admin (Id=1) thực hiện
 
 			// logs.Should().NotBeEmpty(); // Mở comment này nếu bạn đã triển khai lưu log
 		}

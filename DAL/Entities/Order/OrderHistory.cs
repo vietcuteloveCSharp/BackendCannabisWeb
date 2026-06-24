@@ -1,4 +1,6 @@
-﻿namespace DAL.Entities.Order
+﻿using DAL.Entities.Inherited;
+
+namespace DAL.Entities.Order
 {
 	public class OrderHistory :   BaseEntity
 	{

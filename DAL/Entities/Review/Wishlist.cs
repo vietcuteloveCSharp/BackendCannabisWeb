@@ -1,4 +1,6 @@
 ﻿
+using DAL.Entities.Inherited;
+
 namespace DAL.Entities.Review
 {
 	public class Wishlist :BaseEntity ,ISoftDelete

@@ -1,4 +1,6 @@
 ﻿
+using DAL.Entities.Inherited;
+
 namespace DAL.Entities.Product
 
 {
@@ -8,7 +10,6 @@ namespace DAL.Entities.Product
 		public int ProductId { get; set; }
 		public string SKU { get; set; } = default!; // Mã SKU của variant
 		public decimal Price { get; set; } // Giá
-		public int Stock { get; set; } // Số lượng tồn kho
 		public string? Barcode { get; set; } // Mã vạch (nếu cần)
 											 // Soft delete
 		public bool IsDeleted { get; set; } = false;
@@ -18,7 +19,7 @@ namespace DAL.Entities.Product
 		public Product Product { get; set; } = default!;
 		public virtual ICollection<ProductVariantAttribute> Attributes { get; set; } = new HashSet<ProductVariantAttribute>();
 		public virtual ICollection<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
-		public virtual Inventory.Inventory? Inventory { get; set; }
+		public virtual ICollection< Inventory.Inventory> Inventories { get; set; } = new List<Inventory.Inventory>();
 		public virtual ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();
 
 	}

@@ -28,8 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Cannabis.Server\Cannabis.Server.csproj" />
     <ProjectReference Include="..\DAL\DAL.csproj" />
-    <ProjectReference Include="..\Enum\Enum.csproj" />
-    <ProjectReference Include="..\Repository\Repository.csproj" />
     <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
 

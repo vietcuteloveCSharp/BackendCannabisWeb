@@ -1,4 +1,6 @@
-﻿namespace DAL.Entities.Product
+﻿using DAL.Entities.Inherited;
+
+namespace DAL.Entities.Product
 {
 	public class Tag : BaseEntity ,ISoftDelete
 	{

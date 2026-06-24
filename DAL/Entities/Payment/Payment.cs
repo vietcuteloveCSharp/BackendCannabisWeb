@@ -1,5 +1,4 @@
-﻿using DAL.Entities.Product;
-
+﻿
 namespace DAL.Entities.Payment
 {
 	public class Payment : BaseEntity, ISoftDelete

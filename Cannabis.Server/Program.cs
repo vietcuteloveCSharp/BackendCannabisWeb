@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.OpenApi.Models;
+﻿
+
 
 namespace Cannabis.Server
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
@@ -73,6 +72,18 @@ namespace Cannabis.Server
 				options.EnableSensitiveDataLogging()
 						.LogTo(Console.WriteLine, LogLevel.Information);
 			});
+			// 2. THÊM MỚI: Cấu hình DB Audit Log riêng biệt
+			builder.Services.AddDbContext<AuditDbContext>(options =>
+			{
+				var auditConnectionString = builder.Configuration.GetConnectionString("CannabisAccessoriesAuditDB");
+				if (!string.IsNullOrEmpty(auditConnectionString))
+				{
+					options.UseSqlServer(auditConnectionString, sqlOptions => sqlOptions.EnableRetryOnFailure(
+						maxRetryCount: 5,
+						maxRetryDelay: TimeSpan.FromSeconds(10),
+						errorNumbersToAdd: null));
+				}
+			});
 			builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 			builder.Services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
 			//đăng kí dịch vụ auto mapper, repository, service, mailkit, redis
@@ -92,7 +103,7 @@ namespace Cannabis.Server
 						  .AllowCredentials();
 				});
 			});
-			Console.WriteLine($"JWT KEY = {builder.Configuration["Jwt:Key"]}");
+			// Console.WriteLine($"JWT KEY = {builder.Configuration["Jwt:Key"]}");
 			//Cấu hình JWT
 			builder.Services.AddJwtAuth(builder.Configuration);
 			// cấu hình version
@@ -110,8 +121,8 @@ namespace Cannabis.Server
 			//	 options.SubstituteApiVersionInUrl = true; // Cái này cực kỳ quan trọng để resolve {version:apiVersion}
 			// });
 			var app = builder.Build();
-		
 
+			await app.SeedDatabaseAsync();
 			// 1. Xử lý lỗi toàn cục - Phải nằm trên cùng để bắt mọi lỗi của các Middleware sau
 			app.UseMiddleware<GlobalExceptionMiddleware>();
 			// 2. HTTPS Redirection

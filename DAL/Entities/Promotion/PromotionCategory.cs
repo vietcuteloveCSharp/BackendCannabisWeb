@@ -1,4 +1,6 @@
 ﻿
+using DAL.Entities.Inherited;
+
 namespace DAL.Entities.Promotion
 {
     public class PromotionCategory :BaseEntity,ISoftDelete

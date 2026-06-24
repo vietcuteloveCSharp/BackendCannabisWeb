@@ -1,4 +1,6 @@
-﻿namespace Cannabis.Server.Configuartions
+﻿using Shared.DTOs.Options;
+
+namespace Cannabis.Server.Configuartions
 {
 	public  class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
 	{

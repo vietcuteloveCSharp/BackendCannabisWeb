@@ -1,4 +1,6 @@
-﻿namespace DAL.Entities.Promotion
+﻿using DAL.Entities.Inherited;
+
+namespace DAL.Entities.Promotion
 {
 	public class Coupon : BaseEntity, ISoftDelete
 	{

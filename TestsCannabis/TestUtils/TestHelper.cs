@@ -1,4 +1,5 @@
-﻿
+﻿using Shared.DTOs.Options;
+
 namespace TestsCannabis.TestUtils
 {
 	public static class TestHelper

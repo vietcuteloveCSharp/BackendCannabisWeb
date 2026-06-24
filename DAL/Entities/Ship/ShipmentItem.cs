@@ -1,4 +1,6 @@
 ﻿
+using DAL.Entities.Inherited;
+
 namespace DAL.Entities.Ship
 {
 	public class ShipmentItem :BaseEntity, ISoftDelete
