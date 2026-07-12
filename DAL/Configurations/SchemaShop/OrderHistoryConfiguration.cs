@@ -1,10 +1,10 @@
-﻿namespace DAL.Configurations.SchemaOrder
+﻿namespace DAL.Configurations.SchemaShop
 {
 	public class OrderHistoryConfiguration : IEntityTypeConfiguration<OrderHistory>
 	{
 		public void Configure(EntityTypeBuilder<OrderHistory> builder)
 		{
-			builder.ToTable("OrderHistories","Orders");
+			builder.ToTable("OrderHistories","Shop");
 
 			builder.HasKey(h => h.Id);
 			builder.Property(c => c.Note).HasMaxLength(500);

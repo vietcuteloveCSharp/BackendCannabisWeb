@@ -1,10 +1,10 @@
-﻿namespace DAL.Configurations.SchemaOrder
+﻿namespace DAL.Configurations.SchemaShop
 {
 	internal class OrderStatusConfiguration : IEntityTypeConfiguration<OrderStatus>
 	{
 		public void Configure(EntityTypeBuilder<OrderStatus> builder)
 		{
-			builder.ToTable("OrderStatuses","Orders");
+			builder.ToTable("OrderStatuses","Shop");
 
 			builder.HasKey(s => s.Id);
 

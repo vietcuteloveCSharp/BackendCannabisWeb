@@ -1,10 +1,10 @@
-﻿namespace DAL.Configurations.SchemaCart
+﻿namespace DAL.Configurations.SchemaShop
 {
 	public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
 	{
 		public void Configure(EntityTypeBuilder<CartItem> builder)
 		{
-			builder.ToTable("CartItems", "Cart");
+			builder.ToTable("CartItems", "Shop");
 
 			builder.HasKey(ci => ci.Id);
 

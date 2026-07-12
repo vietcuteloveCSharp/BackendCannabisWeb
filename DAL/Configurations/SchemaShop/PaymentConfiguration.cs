@@ -1,10 +1,10 @@
-﻿namespace DAL.Configurations.SchemaPayment
+﻿namespace DAL.Configurations.SchemaShop
 {
 	public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 	{
 		public void Configure(EntityTypeBuilder<Payment> builder)
 		{
-			builder.ToTable("Payments", "Payments");
+			builder.ToTable("Payments", "Shop");
 			builder.HasKey(c => c.Id);
 			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c=>c.Amount).HasPrecision(18,2);

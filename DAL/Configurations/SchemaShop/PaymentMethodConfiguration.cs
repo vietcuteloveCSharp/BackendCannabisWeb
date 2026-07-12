@@ -1,10 +1,10 @@
-﻿namespace DAL.Configurations.SchemaPayment
+﻿namespace DAL.Configurations.SchemaShop
 {
 	internal class PaymentMethodConfiguration : IEntityTypeConfiguration<PaymentMethod>
 	{
 		public void Configure(EntityTypeBuilder<PaymentMethod> builder)
 		{
-			builder.ToTable("PaymentMethods", "Payments");
+			builder.ToTable("PaymentMethods", "Shop");
 
 			builder.HasKey(m => m.Id);
 

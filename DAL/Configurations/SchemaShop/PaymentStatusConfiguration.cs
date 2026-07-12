@@ -1,10 +1,10 @@
-﻿namespace DAL.Configurations.SchemaPayment
+﻿namespace DAL.Configurations.SchemaShop
 {
 	public class PaymentStatusConfiguration :IEntityTypeConfiguration<PaymentStatus>
 	{
 		public void Configure(EntityTypeBuilder<PaymentStatus> builder) 
 		{
-			builder.ToTable("PaymentStatuses","Payments");
+			builder.ToTable("PaymentStatuses","Shop");
 
 			builder.HasKey(s => s.Id);
 

@@ -1,10 +1,10 @@
-﻿namespace DAL.Configurations.SchemaOrder
+﻿namespace DAL.Configurations.SchemaShop
 {
 	public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
 	{
 		public void Configure(EntityTypeBuilder<OrderItem> builder)
 		{
-			builder.ToTable("OrderItems", "Orders");
+			builder.ToTable("OrderItems", "Shop");
 			builder.HasKey(c => c.Id);
 			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.Quantity);
