@@ -15,10 +15,14 @@
 .vscode/
 
 # ==========================================
-# 2. Docker Configs & DevOps
+# 2. Docker & DevOps (Dockerfile + Compose)
 # ==========================================
-# Bắt cả chữ hoa lẫn chữ thường (Dockerfile, dockerfile, dockerfile.dev...)
+# Bắt cả chữ hoa lẫn chữ thường (Dockerfile, dockerfile)
 *[Dd]ockerfile*
+
+# Bắt tất cả các file chứa chữ docker-compose (docker-compose.yml, docker-compose.dev.yml, docker-compose.prod.yaml...)
+*[Dd]ocker-[Cc]ompose*
+
 render.yml
 
 # ==========================================
@@ -30,8 +34,7 @@ Cannabis.Server/Docs/
 
 # ==========================================
 # 4. AppSettings & Secrets
-# Ignore tất cả các file cấu hình môi trường để tránh lộ thông tin bảo mật (Connection String, JWT Key)
-# Chỉ giữ lại duy nhất file appsettings.json gốc (chứa cấu trúc trống) để chạy runtime
+# ==========================================
 appsettings.*.json
 
 # ==========================================
