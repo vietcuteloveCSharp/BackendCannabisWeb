@@ -1,6 +1,6 @@
-# .NET (Visual Studio)
-# Visual Studio and .NET build outputs
-# .NET
+# ==========================================
+# 1. .NET (Visual Studio & Build Outputs)
+# ==========================================
 **/bin/
 **/obj/
 *.user
@@ -13,18 +13,29 @@
 *.db
 .vs/
 .vscode/
-dockerfile
+
+# ==========================================
+# 2. Docker Configs & DevOps
+# ==========================================
+# Bắt cả chữ hoa lẫn chữ thường (Dockerfile, dockerfile, dockerfile.dev...)
+*[Dd]ockerfile*
 render.yml
+
+# ==========================================
+# 3. Project Folders (Uploads, Docs, Solutions)
+# ==========================================
 Cannabis.Server/Uploads/
 Cannabis.Server/Docs/
-WebCannabisAccessorries.sln
-appsettings.Development.json
-appsettings.Production.json
-appsettings.Staging.json
-appsettings.Test.json
-appsettings.migrations.json
+*.sln
 
+# ==========================================
+# 4. AppSettings & Secrets
+# Ignore tất cả các file cấu hình môi trường để tránh lộ thông tin bảo mật (Connection String, JWT Key)
+# Chỉ giữ lại duy nhất file appsettings.json gốc (chứa cấu trúc trống) để chạy runtime
+appsettings.*.json
 
-# OS + IDE
+# ==========================================
+# 5. OS + IDE Trash Files
+# ==========================================
 .DS_Store
 Thumbs.db
