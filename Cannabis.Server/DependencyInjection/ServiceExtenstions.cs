@@ -1,20 +1,23 @@
-﻿namespace Cannabis.Server.DependencyInjection{
+using Shared.Implementations.Audit;
+using Shared.Interfaces.Audit;
+using Service.Interfaces.Internal;
+using Service.Implementations.Internal;
+using Service.Interfaces.Auth.Internal;
+using Service.Implementations.Auth.Internal;
+
+namespace Cannabis.Server.DependencyInjection{
 	public static class ServiceExtenstions
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
 		
-			services.AddScoped<IAuthService, AuthService>();
 			services.AddScoped<IBrandService, BrandService>();	
 			services.AddScoped<ICategoryService, CategoryService>();
-			services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 			services.AddScoped<ITokenService, TokenService>();
-			services.AddScoped<IUserService, UserService>();
-			services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
-			services.AddScoped<IAdminService, AdminService>();
-			services.AddScoped<IUserService ,UserService>();
 			services.AddScoped<IRoleService, RoleService>();
-			services.AddScoped<IUserStatusService, UserStatusService>();
+			services.AddScoped<IStaffAuthService, StaffAuthService>();
+			services.AddScoped<IStaffRefreshTokenService, StaffRefreshTokenService>();
+			
 			return services;
 		}
 	}

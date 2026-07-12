@@ -1,4 +1,4 @@
-﻿
+
 
 
 namespace Cannabis.Server
@@ -11,7 +11,7 @@ namespace Cannabis.Server
 
 			// ✅ Xác định môi trường
 			var env = builder.Environment.EnvironmentName;
-
+			
 			builder.Configuration
 				.SetBasePath(builder.Environment.ContentRootPath)
 				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -57,6 +57,7 @@ namespace Cannabis.Server
 					}
 				});
 			});
+			//1.cấu hình db web
 			builder.Services.AddDbContext<CannabisAccessoriesDBContext>(options =>
 			{
 				var connectionString = builder.Configuration.GetConnectionString("CannabisAccessoriesDB");
@@ -86,12 +87,14 @@ namespace Cannabis.Server
 			});
 			builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 			builder.Services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
+
 			//đăng kí dịch vụ auto mapper, repository, service, mailkit, redis
 			builder.Services.AddApplicationAutoMapper();
 			builder.Services.AddApplicationRepositories();
 			builder.Services.AddApplicationServices();
 			builder.Services.AddInfrastructureServices(builder.Configuration);
 			builder.Services.AddFileConfiguration(builder.Environment);
+			builder.Services.AddHttpContextAccessor();
 			//cấu hình cors
 			builder.Services.AddCors(options =>
 			{
@@ -107,19 +110,7 @@ namespace Cannabis.Server
 			//Cấu hình JWT
 			builder.Services.AddJwtAuth(builder.Configuration);
 			// cấu hình version
-			builder.Services.AddApiVersioning(opt =>
-			{
-				opt.ReportApiVersions = true;
-				opt.AssumeDefaultVersionWhenUnspecified = true;
-				opt.DefaultApiVersion = new ApiVersion(1, 0);
-				opt.ApiVersionReader = new UrlSegmentApiVersionReader();
-
-			});
-			//.AddApiExplorer(options =>
-			// {
-			//	 options.GroupNameFormat = "'v'VVV";
-			//	 options.SubstituteApiVersionInUrl = true; // Cái này cực kỳ quan trọng để resolve {version:apiVersion}
-			// });
+			builder.Services.AddApiVersion();
 			var app = builder.Build();
 
 			await app.SeedDatabaseAsync();
@@ -155,6 +146,7 @@ namespace Cannabis.Server
 			// 6. Xác thực & Phân quyền
 			app.UseAuthentication();
 			app.UseAuthorization();
+			app.UseMiddleware<AdminAuthorizeMiddleware>();
 
 			// 7. Map Controllers
 			app.MapControllers();

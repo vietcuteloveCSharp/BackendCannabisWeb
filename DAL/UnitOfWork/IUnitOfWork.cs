@@ -1,16 +1,23 @@
-﻿namespace Repository.UnitOfWork
+﻿using DAL.Repository.Interfaces.Internal;
+using DAL.Repository.Interfaces.Shop;
+
+namespace Repository.UnitOfWork
 {
 	public interface IUnitOfWork : IDisposable
 	{
-		public IAddressRepository Addresses { get; }
-		public ICategoryRepository Categories { get; }
-		public IProductRepository Products { get; }
-		public IUserRepository Users { get; }
-		public IBrandRepository Brands { get; }
-		public IRefreshTokenRepository RefreshTokens { get; }
+		// --- PHÂN HỆ NỘI BỘ QUẢN TRỊ (Internal Schema Repositories) ---
+		public IStaffRepository Staffs { get; }               
+		public IStaffSessionRepository StaffSessions { get; }  
+		public IStaffRefreshTokenRepository StaffRefreshTokens { get; } 
+		public IStaffStatusRepository StaffStatuses { get; }
 		public IRoleRepository Roles { get; }
-		public IUserStatusRepository userStatus { get; }
-		
+		// --- PHÂN HỆ KHÁCH HÀNG & MUA SẮM(Shop Schema Repositories) ---
+        public ICustomerRepository Customers { get; }
+		public ICustomerSessionRepository CustomerSessions { get; }
+		public ICustomerRefreshTokenRepository CustomerRefreshTokens { get; }
+		public IAddressRepository Addresses { get; }
+
+		public IBrandRepository Brands { get; }
 		IBaseRepository<TEntity> Repository<TEntity>() where TEntity : class;
 		Task<int> SaveChangesAsync();
 		Task<IDbContextTransaction> BeginTransactionAsync();

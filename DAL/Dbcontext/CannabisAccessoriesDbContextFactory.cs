@@ -25,9 +25,10 @@ namespace DAL.Dbcontext
 			{
 				throw new Exception($"[FACTORY ERROR] Không lấy được ConnectionString! Path: {basePath}");
 			}
-
 			var optionsBuilder = new DbContextOptionsBuilder<CannabisAccessoriesDBContext>();
 			optionsBuilder.UseSqlServer(connectionString);
+
+
 
 			return new CannabisAccessoriesDBContext(optionsBuilder.Options);
 		}

@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace DAL.Dbcontext
 {
 	public class AuditDbContext :DbContext
-	{
+	{	
+		
 		public AuditDbContext(DbContextOptions<AuditDbContext> options):base(options) 
 		{
 			

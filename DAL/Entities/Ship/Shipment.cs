@@ -16,7 +16,7 @@ namespace DAL.Entities.Ship
 		public int? DeletedBy { get; set; }
 
 		// Navigation
-		public Order.Order Order { get; set; } = default!;
+		public Shop.Order Order { get; set; } = default!;
 		public ShipmentStatus Status { get; set; } = default!;
 		public ShippingMethod Method { get; set; } = default!;
 		public ICollection<ShipmentItem> Items { get; set; } = new HashSet<ShipmentItem>();

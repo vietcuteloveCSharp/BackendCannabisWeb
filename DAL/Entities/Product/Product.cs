@@ -1,7 +1,4 @@
-﻿using DAL.Entities.Cart;
-using DAL.Entities.Inherited;
-using DAL.Entities.Order;
-using DAL.Entities.Review;
+﻿using DAL.Entities.Inherited;
 
 namespace DAL.Entities.Product
 {
@@ -19,7 +16,7 @@ namespace DAL.Entities.Product
 		public DateTime? DeletedAt { get; set; }
 		public int? DeletedBy { get; set; }
 		//naviagtion
-		public virtual ICollection<Review.Review> Reviews { get; set; } = new HashSet<Review.Review>();
+		public virtual ICollection<Shop.Review> Reviews { get; set; } = new HashSet<Shop.Review>();
         public virtual ICollection<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
 		public virtual ICollection<PromotionProduct> PromotionProducts { get; set; } = new HashSet<PromotionProduct>();
         public virtual ICollection<ProductTag> ProductTags { get; set; } = new HashSet<ProductTag>();

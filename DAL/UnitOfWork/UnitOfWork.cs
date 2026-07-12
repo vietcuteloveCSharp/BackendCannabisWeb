@@ -1,4 +1,10 @@
 ﻿
+using DAL.Repository.Implementations.Internal;
+using DAL.Repository.Implementations.Shop;
+using DAL.Repository.Interfaces.Internal;
+using DAL.Repository.Interfaces.Shop;
+using Microsoft.EntityFrameworkCore;
+
 namespace Repository.UnitOfWork
 {
 	public class UnitOfWork : IUnitOfWork
@@ -7,39 +13,47 @@ namespace Repository.UnitOfWork
 
 		private readonly CannabisAccessoriesDBContext _context;
 		private Dictionary<string, object>? _repositories;
+		// Khai báo các backing field cho các repo mới tách
+		private IStaffRepository? _staffs;
+		private IStaffSessionRepository?_staffSessions;
+		private IStaffRefreshTokenRepository? _staffRefreshTokens;
+		private IStaffStatusRepository? _staffStatuses;
+		private IRoleRepository? _roles;
 
-		private IProductRepository? _productsRepository;
+		private ICustomerRepository? _customers;
+		private ICustomerSessionRepository? _customerSessions;
+		private ICustomerRefreshTokenRepository? _customerRefreshTokens;
+		private IAddressRepository? _addresses;
+		
 
-
-		private IAddressRepository? _addressRepository;
-
-		private IUserRepository? _userRepository;
 
 		private IBrandRepository? _brandRepository;
 
 
-		private IRefreshTokenRepository? _refreshTokenRepository;
+	
 
-		private IRoleRepository? _roleRepository;
-
-		private IUserStatusRepository? _userStatusRepository;
-
-		private ICategoryRepository? _categoryRepository;
 
 		public UnitOfWork(CannabisAccessoriesDBContext context)
 		{
 			_context = context;
-			
+
 
 		}
-		public IProductRepository Products => _productsRepository ??= new ProductRepository(_context);
-		public ICategoryRepository Categories => _categoryRepository ??= new CategoryRepository(_context);
-		public IUserRepository Users => _userRepository ??= new UserRepository(_context);
-		public IAddressRepository Addresses => _addressRepository ??= new AddressRepository(_context);
-		public IBrandRepository Brands => _brandRepository ??= new BrandRepository(_context);		public IRefreshTokenRepository RefreshTokens => _refreshTokenRepository ??= new RefreshTokenRepository(_context);
-		public IRoleRepository Roles => _roleRepository ??= new RoleRepository(_context);
-		public IUserStatusRepository userStatus => _userStatusRepository ??= new UserStatusRepository(_context);
-		
+		// Triển khai cơ chế Lazy Loading (chỉ khởi tạo khi được gọi tới)
+		public IStaffRepository Staffs => _staffs ??= new StaffRepository(_context);
+		public IStaffSessionRepository StaffSessions => _staffSessions ??= new StaffSessionRepository(_context);
+		public IStaffRefreshTokenRepository StaffRefreshTokens => _staffRefreshTokens ??= new StaffRefreshTokenRepository(_context);
+		public IStaffStatusRepository StaffStatuses => _staffStatuses ??= new StaffStatusRepository(_context);
+		public IRoleRepository Roles => _roles ??= new RoleRepository(_context);
+		public ICustomerRepository Customers => _customers ??= new CustomerRepository(_context);
+		public ICustomerSessionRepository CustomerSessions => _customerSessions ??= new CustomerSessionRepository(_context);
+		public ICustomerRefreshTokenRepository CustomerRefreshTokens => _customerRefreshTokens ??= new CustomerRefreshTokenRepository(_context);
+		public IAddressRepository Addresses => _addresses ??= new AddressRepository(_context);
+
+		public IBrandRepository Brands => _brandRepository ??= new BrandRepository(_context);			
+
+
+
 
 		// Cập nhật hàm Dispose chung của UnitOfWork
 		public void Dispose()

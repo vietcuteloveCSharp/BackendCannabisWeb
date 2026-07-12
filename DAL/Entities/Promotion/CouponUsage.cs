@@ -1,8 +1,4 @@
-﻿
-
-using DAL.Entities.Inherited;
-
-namespace DAL.Entities.Promotion
+﻿namespace DAL.Entities.Promotion
 {
 
     public class CouponUsage : BaseEntity ,ISoftDelete
@@ -12,7 +8,7 @@ namespace DAL.Entities.Promotion
 
         public int CouponId { get; set; }
 
-        public int UserId { get; set; }
+        public int CustomerId { get; set; }
 
         public int OrderId { get; set; } // nếu áp dụng cho 1 đơn hàng
 
@@ -21,7 +17,7 @@ namespace DAL.Entities.Promotion
 		public int? DeletedBy { get; set; }
         // Navigation
         public Coupon Coupon { get; set; } = default!;
-        public User.User User { get; set; } = default!;
-        public Order.Order Order { get; set; } = default!;
+        public Customer Customer { get; set; } = default!;
+        public Shop.Order Order { get; set; } = default!;
 	}
 }

@@ -1,10 +1,11 @@
 services:
   db:
     container_name: sql
-    image: mcr.microsoft.com/azure-sql-edge:latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
-      SA_PASSWORD: "Vuvietanh1"
+      MSSQL_SA_PASSWORD: "Vuvietanh1"
       ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
     ports:
       - "1433:1433"
     volumes:

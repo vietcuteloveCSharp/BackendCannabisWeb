@@ -13,6 +13,7 @@ namespace DAL.Entities.Noti
 		public DateTime? DeletedAt { get; set; }
 		public int? DeletedBy { get; set; }
 
-		public ICollection<NotificationLog> notificationLogs { get; set;} = new List<NotificationLog>();
+		public virtual ICollection<CustomerNotificationLog> CustomerNotificationLogs { get; set; } = new List<CustomerNotificationLog>();
+		public virtual ICollection<StaffNotificationLog> StaffNotificationLogs { get; set; } = new List<StaffNotificationLog>();
 	}
 }

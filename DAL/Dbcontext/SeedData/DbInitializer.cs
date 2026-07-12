@@ -19,57 +19,96 @@ namespace DAL.Dbcontext.SeedData
 				using var transaction = await context.Database.BeginTransactionAsync();
 				try
 				{
-					// --- BẮT ĐẦU SEED LOGIC (Giữ nguyên phần này) ---
-					var adminRole = new Role { RoleName = "Admin", Description = "Toàn quyền", CreatedAt = DateTime.UtcNow, CreatedBy = 1, UpdatedBy = 1 };
-					var customerRole = new Role { RoleName = "Customer", Description = "Khách hàng", CreatedAt = DateTime.UtcNow, CreatedBy = 1, UpdatedBy = 1 };
-					await context.Set<Role>().AddRangeAsync(adminRole, customerRole);
-
-					var activeStatus = new UserStatus { Code = "ACTIVE", Name = "Đang hoạt động" };
-					await context.Set<UserStatus>().AddAsync(activeStatus);
-
-					await context.SaveChangesAsync();
-					// --- 2. NHÓM ORDER & SHIPPING (Master data) ---
-					var pendingStatus = new OrderStatus { Name = "Pending", Description = "Chờ xử lý", CreatedAt = DateTime.UtcNow, CreatedBy = 1, UpdatedBy = 1 };
-					await context.Set<OrderStatus>().AddAsync(pendingStatus);
-
-					var codMethod = new PaymentMethod { Name = "COD", Description = "Thanh toán khi nhận hàng", CreatedAt = DateTime.UtcNow, CreatedBy = 1, UpdatedBy = 1 };
-					await context.Set<PaymentMethod>().AddAsync(codMethod);
-
-					var unpaidStatus = new PaymentStatus { Name = "Unpaid", CreatedAt = DateTime.UtcNow, CreatedBy = 1, UpdatedBy = 1 };
-					await context.Set<PaymentStatus>().AddAsync(unpaidStatus);
-
-					var standardShip = new ShippingMethod { Name = "Standard", Description = "Giao hàng tiêu chuẩn", CreatedAt = DateTime.UtcNow, CreatedBy = 1, UpdatedBy = 1 };
-					await context.Set<ShippingMethod>().AddAsync(standardShip);
-
-					// --- 3. NHÓM CATALOG (Bắt buộc cho Product) ---
-					var bongCat = new Category { CategoryName = "Bongs", CreatedAt = DateTime.UtcNow, CreatedBy = 1, UpdatedBy = 1 };
-					await context.Set<Category>().AddAsync(bongCat);
-
-					var rawBrand = new Brand { BrandName = "Raw", Country = "Spain", CreatedAt = DateTime.UtcNow, CreatedBy = 1, UpdatedBy = 1 };
-					await context.Set<Brand>().AddAsync(rawBrand);
-
-					await context.SaveChangesAsync();
-					// --- 4. TẠO ADMIN USER (Bản ghi hoàn chỉnh) ---
-					var admin = new User
+					// ==========================
+					// Seed Role
+					// ==========================
+					Role adminRole;
+					Role customerRole;
+					if (!await context.Set<Role>().AnyAsync())
 					{
-						Username = "admin",
-						PasswordHash = "AQAAAAIAAYagAAAAEImX588zM4W0XlS+3Dsh6Bv6L3vU/3HInG5O3oN1uU6VvO+V/vV6=", // 123456
-						Name = "System Admin",
-						Email = "admin@cannabis.com",
-						PhoneNumber = "0123456789",
-						StatusId = activeStatus.Id,
-						RoleId = adminRole.Id,
-						CreatedAt = DateTime.UtcNow,
-						CreatedBy = 1,
-						UpdatedBy = 1
-					};
-					await context.Set<User>().AddAsync(admin);
+						adminRole = new Role
+						{
+							RoleName = "Admin",
+							Description = "System Administrator",
+							CreatedAt = DateTime.UtcNow,
+							CreatedBy = 1,
+							UpdatedBy = 1
+						};
+						customerRole = new Role
+						{
+							RoleName = "Customer",
+							Description = "Customer",
+							CreatedAt = DateTime.UtcNow,
+							CreatedBy = 1,
+							UpdatedBy = 1
+						};
+						await context.Set<Role>().AddRangeAsync(adminRole, customerRole);
+						await context.SaveChangesAsync();
+					}
+					else
+					{
+						adminRole = await context.Set<Role>()
+							.FirstAsync(x => x.RoleName == "Admin");
 
-					await context.Set<Category>().AddAsync(new Category { CategoryName = "Bongs", CreatedAt = DateTime.UtcNow, CreatedBy = 1, UpdatedBy = 1 });
-					await context.Set<Brand>().AddAsync(new Brand { BrandName = "Raw", Country = "Spain", CreatedAt = DateTime.UtcNow, CreatedBy = 1, UpdatedBy = 1 });
+						customerRole = await context.Set<Role>()
+							.FirstAsync(x => x.RoleName == "Customer");
+					}
+					// ==========================
+					// Seed User Status
+					// ==========================
+					StaffStatus activeStatus;
+					StaffStatus inactiveStatus;
 
-					// 4. Lưu và Commit
-					await context.SaveChangesAsync();
+					if (!await context.Set<StaffStatus>().AnyAsync())
+					{
+						activeStatus = new StaffStatus
+						{
+							Code = "ACTIVE",
+							Name = "Active"
+						};
+						inactiveStatus = new StaffStatus
+						{
+							Code = "INACTIVE",
+							Name = "Inactive"
+						};
+
+						await context.Set<StaffStatus>().AddAsync(activeStatus);
+						await context.SaveChangesAsync();
+					}
+					else
+					{
+						activeStatus = await context.Set<StaffStatus>()
+							.FirstAsync(x => x.Code == "ACTIVE");
+						activeStatus = await context.Set<StaffStatus>()
+							.FirstAsync(x => x.Code == "INACTIVE");
+					}
+
+					// ==========================
+					// Seed Admin
+					// ==========================
+					if (!await context.Set<Staff>()
+						.AnyAsync(x => x.Username == "admin"))
+					{
+						var admin = new Staff
+						{
+							Username = "admin",
+							PasswordHash = "AQAAAAIAAYagAAAAEImX588zM4W0XlS+3Dsh6Bv6L3vU/3HInG5O3oN1uU6VvO+V/vV6=", // 123456
+							Name = "System Admin",
+							Email = "admin@cannabis.com",
+							PhoneNumber = "0123456789",
+
+							RoleId = adminRole.Id,
+							StatusId = activeStatus.Id,
+
+							CreatedAt = DateTime.UtcNow,
+							CreatedBy = 1,
+							UpdatedBy = 1
+						};
+
+						await context.Set<Staff>().AddAsync(admin);
+						await context.SaveChangesAsync();
+					}
+
 					await transaction.CommitAsync();
 				}
 				catch (Exception)

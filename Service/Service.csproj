@@ -7,10 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interfaces\Order\**" />
+    <Compile Remove="Interfaces\Promotion\**" />
     <Compile Remove="IRepository\**" />
     <Compile Remove="Repository\**" />
+    <EmbeddedResource Remove="Interfaces\Order\**" />
+    <EmbeddedResource Remove="Interfaces\Promotion\**" />
     <EmbeddedResource Remove="IRepository\**" />
     <EmbeddedResource Remove="Repository\**" />
+    <None Remove="Interfaces\Order\**" />
+    <None Remove="Interfaces\Promotion\**" />
     <None Remove="IRepository\**" />
     <None Remove="Repository\**" />
   </ItemGroup>
@@ -36,8 +42,6 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\Inventory\" />
-    <Folder Include="Interfaces\Promotion\" />
-    <Folder Include="Interfaces\Order\" />
     <Folder Include="Implementations\Inventory\" />
   </ItemGroup>
 
