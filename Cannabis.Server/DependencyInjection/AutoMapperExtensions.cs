@@ -1,8 +1,4 @@
-﻿
-
-
-
-namespace Cannabis.Server.DependencyInjection
+﻿namespace Cannabis.Server.DependencyInjection
 {
 	public static class AutoMapperExtensions
 	{
@@ -12,9 +8,6 @@ namespace Cannabis.Server.DependencyInjection
 			{
 				cfg.AddProfile<AddressMappingProfile>();
 				cfg.AddProfile<BrandMappingProfile>();
-				cfg.AddProfile<RefreshTokenMappingProfile>();
-				cfg.AddProfile<RoleMappingProfile>();
-				cfg.AddProfile<UserMappingProfile>();
 				cfg.AddProfile<CategoryMappingProfile>();
 				cfg.AddProfile<ProductMappingProfile>();
 			});

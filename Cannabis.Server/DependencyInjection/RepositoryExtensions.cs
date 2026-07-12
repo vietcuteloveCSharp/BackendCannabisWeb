@@ -1,4 +1,9 @@
-﻿namespace Cannabis.Server.DependencyInjection
+﻿using DAL.Repository.Implementations.Internal;
+using DAL.Repository.Implementations.Shop;
+using DAL.Repository.Interfaces.Internal;
+using DAL.Repository.Interfaces.Shop;
+
+namespace Cannabis.Server.DependencyInjection
 {
 	public static class RepositoryExtensions
 	{
@@ -7,12 +12,7 @@
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddScoped<IAddressRepository, AddressRepository>();
 			services.AddScoped<IBrandRepository, BrandRepository>();
-			services.AddScoped<ICategoryRepository, CategoryRepository>();
 			services.AddScoped<IRoleRepository, RoleRepository>();
-			services.AddScoped<IProductRepository, ProductRepository>();
-			services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-			services.AddScoped<IUserRepository, UserRepository>();
-			services.AddScoped<IUserStatusRepository, UserStatusRepository>();
 			return services;
 		}
 	}

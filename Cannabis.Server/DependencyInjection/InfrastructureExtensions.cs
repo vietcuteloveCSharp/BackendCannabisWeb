@@ -1,4 +1,4 @@
-﻿using Shared.DTOs.Options;
+﻿
 
 namespace Cannabis.Server.DependencyInjection
 {
@@ -10,7 +10,8 @@ namespace Cannabis.Server.DependencyInjection
 			services.Configure<RedisSetings>(config.GetSection("Redis"));
 			services.AddScoped<IEmailService, EmailService>();
 			services.AddSingleton<IRedisService, RedisService>();
-			services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+			services.AddScoped<IPasswordHasher<Staff>, PasswordHasher<Staff>>();
+			services.AddScoped<IAuditQueue, AuditQueue>();
 			return services;
 		}
 	}

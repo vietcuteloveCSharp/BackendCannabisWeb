@@ -1,4 +1,4 @@
-﻿
+
 
 
 namespace Cannabis.Server.DependencyInjection
@@ -71,18 +71,6 @@ namespace Cannabis.Server.DependencyInjection
 							context.Fail("Unauthorized: Missing User ID.");
 							return;
 						}
-						// 3. Kiểm tra trạng thái thực tế trong DB
-						var user = await dbContext.Users
-							.AsNoTracking()
-							.Where(u => u.Id == userId)
-							.Select(u => new { u.Status })
-							.FirstOrDefaultAsync();
-						// 4. Nếu User không tồn tại hoặc bị khóa, chặn ngay lập tức
-						if (user == null)
-						{
-							context.Fail("Tài khoản đã bị khóa hoặc không tồn tại.");
-						}
-						context.HttpContext.Items["UserId"] = userId;
 					},
 					OnChallenge = async context =>
 					{

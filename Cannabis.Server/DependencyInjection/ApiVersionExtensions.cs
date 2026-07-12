@@ -4,12 +4,12 @@
 	{   // cấu hình version
 		public static IServiceCollection AddApiVersion(this IServiceCollection services)
 		{
-			var versioningBuilder = services.AddApiVersioning(otpions =>
+			var versioningBuilder = services.AddApiVersioning(options =>
 			{
-				otpions.ReportApiVersions = true;
-				otpions.AssumeDefaultVersionWhenUnspecified = true;
-				otpions.DefaultApiVersion = new Asp.Versioning.ApiVersion(1, 0);
-				otpions.ApiVersionReader = new Asp.Versioning.UrlSegmentApiVersionReader();
+				options.ReportApiVersions = true;
+				options.AssumeDefaultVersionWhenUnspecified = true;
+				options.DefaultApiVersion = new Asp.Versioning.ApiVersion(1, 0);
+				options.ApiVersionReader = new Asp.Versioning.UrlSegmentApiVersionReader();
 			});
 			// ✅ Bây giờ gọi AddApiExplorer từ versioningBuilder sẽ không còn lỗi
 			versioningBuilder.AddApiExplorer(options =>
