@@ -1,6 +1,5 @@
 ﻿
 using System.Threading.Tasks;
-using DAL.Entities.User;
 using DAL.Entities.Product;
 
 namespace TestsCannabis.DataSeed

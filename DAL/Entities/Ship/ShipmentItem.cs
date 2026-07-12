@@ -17,7 +17,7 @@ namespace DAL.Entities.Ship
 
 		// Navigation
 		public Shipment Shipment { get; set; } = default!;
-		public Order.OrderItem OrderItem { get; set; } = default!;
+		public OrderItem OrderItem { get; set; } = default!;
 	}
 
 }

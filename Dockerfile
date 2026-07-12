@@ -1,41 +1,29 @@
-# ===============================
-# BUILD STAGE
-# ===============================
+# Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
 WORKDIR /src
 
-# Copy solution + csproj
-COPY WebCannabisAccessorries.sln .
-COPY ./Cannabis.Server/*.csproj   ./Cannabis.Server/
-COPY ./DAL/*.csproj   ./DAL/
-COPY ./DTO/*.csproj   ./DTO/
-COPY ./Exceptions/*.csproj  ./Exceptions/
-COPY ./Service/*.csproj  ./Service/
-COPY ./Repository/*.csproj  ./Repository/
-COPY ./Enum/*.csproj ./Enum/
-COPY ./Middleware/*.csproj ./Middleware/
-
-# Restore
-RUN dotnet restore ./Cannabis.Server/Cannabis.Server.csproj
-
-# Copy source
+COPY ["WebCannabisAccessorries.sln", "./"]
+COPY ["Cannabis.Server/Cannabis.Server.csproj", "Cannabis.Server/"]
+COPY ["DAL/DAL.csproj", "DAL/"]
+COPY ["Service/Service.csproj", "Service/"]
+COPY ["Shared/Shared.csproj", "Shared/"]
+RUN dotnet restore Cannabis.Server/Cannabis.Server.csproj
 COPY . .
+WORKDIR "/src/Cannabis.Server"
+RUN dotnet publish -c Release -o /app/publish --no-restore
 
-# Publish
-WORKDIR /src/Cannabis.Server
-RUN dotnet publish -c Release -o /app/publish
 
-# ===============================
-# RUNTIME STAGE
-# ===============================
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+# Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+
 WORKDIR /app
 
 COPY --from=build /app/publish .
 
+ENV ASPNETCORE_URLS=http://+:8080
+#ENV ASPNETCORE_ENVIRONMENT=Development
+
 EXPOSE 8080
 
-ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_URLS=http://0.0.0.0:8080
-
-ENTRYPOINT ["dotnet", "Cannabis.Server.dll"]
+ENTRYPOINT ["dotnet","Cannabis.Server.dll"]

@@ -1,4 +1,4 @@
-﻿using Service.Interfaces.Auth;
+﻿using Service.Interfaces.Auth.Internal;
 using Shared.DTOs.Common.Params;
 
 namespace TestsCannabis.Mocks

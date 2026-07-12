@@ -1,6 +1,8 @@
 ﻿
 
 
+using DAL.Entities.Shop;
+
 namespace Service.MapDTO_Entity
 {
 	public class AddressMappingProfile :Profile

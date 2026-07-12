@@ -16,7 +16,7 @@
 dockerfile
 render.yml
 Cannabis.Server/Uploads/
-
+Cannabis.Server/Docs/
 WebCannabisAccessorries.sln
 appsettings.Development.json
 appsettings.Production.json
