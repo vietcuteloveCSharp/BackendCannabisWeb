@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <Compile Remove="DTOs\Common\Auth\**" />
+    <EmbeddedResource Remove="DTOs\Common\Auth\**" />
+    <None Remove="DTOs\Common\Auth\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Common\Auth\" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
