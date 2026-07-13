@@ -22,14 +22,12 @@ namespace DAL.Dbcontext
 			// Cấu hình bảng AuditLog
 			modelBuilder.Entity<AuditLog>(entity =>
 			{
-				entity.ToTable("AuditLogs", "Audit");
+				entity.ToTable("AuditLogs", "audit"); // Đổi thành schema audit
 				entity.HasKey(e => e.Id);
-
 				entity.Property(e => e.Action).IsRequired().HasMaxLength(50);
 				entity.Property(e => e.TableName).IsRequired().HasMaxLength(100);
 				entity.Property(e => e.ActionTime).IsRequired();
 
-				// Quan hệ 1-Nhiều nội bộ giữa AuditLog và EntityChanges
 				entity.HasMany(a => a.EntityChanges)
 					  .WithOne(c => c.AuditLog)
 					  .HasForeignKey(c => c.AuditLogId)
@@ -39,9 +37,8 @@ namespace DAL.Dbcontext
 			// Cấu hình bảng EntityChange
 			modelBuilder.Entity<EntityChange>(entity =>
 			{
-				entity.ToTable("EntityChanges", "dbo");
+				entity.ToTable("EntityChanges", "audit"); // Đổi từ dbo sang audit để đồng bộ khóa ngoại
 				entity.HasKey(e => e.Id);
-
 				entity.Property(e => e.PropertyName).IsRequired().HasMaxLength(150);
 			});
 		}
