@@ -1,4 +1,4 @@
-﻿global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations;
 global using System.ComponentModel.DataAnnotations.Schema;
 global using System;
 global using System.Collections.Generic;
@@ -18,7 +18,7 @@ global using DAL.Entities.Noti;
 global using DAL.Entities.Promotion;
 global using DAL.Entities.Audit;
 global using DAL.Dbcontext;
-global using DAL.Entities.Inherited;
+global using Shared.Common.Inherited;
 global using Microsoft.EntityFrameworkCore.Query;
 global using System.Linq.Expressions;
 global using DAL.Repository.Interfaces;
