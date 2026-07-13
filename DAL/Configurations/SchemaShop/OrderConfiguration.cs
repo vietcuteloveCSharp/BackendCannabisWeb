@@ -1,4 +1,6 @@
-﻿namespace DAL.Configurations.SchemaShop
+﻿using DAL.Entities.Shop;
+
+namespace DAL.Configurations.SchemaShop
 {
 	public class OrderConfiguration : IEntityTypeConfiguration<Order>
 	{
@@ -39,7 +41,7 @@
 				.HasConstraintName("FK_Orders_Staffs_StaffId");
 
 			builder.HasOne(o => o.OrderStatus)
-				.WithMany() // Giả định bảng OrderStatus không cần danh sách Order ngược lại
+				.WithMany(o=>o.Orders) // Giả định bảng OrderStatus không cần danh sách Order ngược lại
 				.HasForeignKey(o => o.StatusId)
 				.OnDelete(DeleteBehavior.Restrict)
 				.HasConstraintName("FK_Orders_OrderStatuses_StatusId");

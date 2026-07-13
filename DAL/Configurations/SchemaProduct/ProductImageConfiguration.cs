@@ -24,7 +24,15 @@ namespace DAL.Configurations.SchemaProduct
 				   .HasConstraintName("FK_PRODUCTIMAGE_PRODUCT_PRODUCTID")
 				   .OnDelete(DeleteBehavior.Cascade)
 				   .IsRequired();
-			 
+			// Quan hệ với bảng ProductVariant (Xóa một Variant cụ thể thì ảnh của Variant đó tự động set NULL hoặc xóa)
+			// Dùng Restrict hoặc SetNull tùy thuộc vào việc bạn có muốn giữ lại ảnh khi Variant bị xóa không. 
+			// Ở đây dùng Restrict để chặn việc xóa nhầm variant khi đang có ảnh ràng buộc.
+			builder.HasOne(pi => pi.ProductVariant)
+				.WithMany(pv => pv.ProductImages) // Đảm bảo trong ProductVariant.cs cũng có: public virtual ICollection<ProductImage> ProductImages { get; set; } = new HashSet<ProductImage>();
+				.HasForeignKey(pi => pi.ProductVariantId)
+				.OnDelete(DeleteBehavior.Restrict)
+				.HasConstraintName("FK_ProductImages_ProductVariants_ProductVariantId");
 		}
 	}
+	
 }

@@ -10,8 +10,6 @@
 			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
 			builder.Property(c => c.Session_Id).HasMaxLength(255); 
-            builder.Property(c => c.Price).HasColumnType("decimal(18,2)"); 
-
             builder.Property(c => c.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
 			builder.Property(c => c.IsDeleted).HasDefaultValue(false); 
 

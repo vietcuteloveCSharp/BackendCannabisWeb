@@ -9,7 +9,12 @@
 			builder.Property(c => c.Id).ValueGeneratedOnAdd();
 			builder.Property(c => c.Quantity);
 			builder.Property(c => c.UnitPrice).HasPrecision(18, 2);
+			builder.Property(oi => oi.ProductNameSnapshot)
+				.IsRequired()
+				.HasMaxLength(250); // Giới hạn độ dài để tối ưu lưu trữ hóa đơn
 
+			builder.Property(oi => oi.VariantNameSnapshot)
+				.HasMaxLength(250);
 			builder.HasQueryFilter(oi => !oi.IsDeleted);
 
 			builder.HasOne(c => c.Order)
@@ -21,8 +26,9 @@
 			builder.HasOne(oi => oi.ProductVariant)
 				.WithMany(c=>c.OrderItems)
 				.HasForeignKey(oi => oi.ProductVariantId)
-				.OnDelete(DeleteBehavior.Restrict);
-			
+				.OnDelete(DeleteBehavior.Restrict)
+				.HasConstraintName("FK_OrderItems_ProductVariants_ProductVariantId");
+
 		}
 	}
 }

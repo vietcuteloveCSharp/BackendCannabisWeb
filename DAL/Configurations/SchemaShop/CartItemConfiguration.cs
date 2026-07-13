@@ -12,13 +12,15 @@
 				   .WithMany(c => c.CartItems)
 				   .HasForeignKey(ci => ci.CartId)
 				   .OnDelete(DeleteBehavior.Cascade);
-
+			builder.Property(ci => ci.Quantity)
+				.IsRequired() // Đảm bảo cột thành NOT NULL trong database
+				.HasDefaultValue(1); // Đặt giá trị mặc định là 1 khi Insert
 			builder.HasOne(ci => ci.ProductVariant)
 				   .WithMany()
 				   .HasForeignKey(ci => ci.ProductVariantId)
 				   .OnDelete(DeleteBehavior.Restrict);
 			builder.HasIndex(cd => cd.CartId)
-				  .HasDatabaseName("IX_CartDetails_CartId");
+				  .HasDatabaseName("IX_CartItems_CartId");
 
 			builder.HasIndex(cd => cd.ProductVariantId)
 				.HasDatabaseName("IX_CartDetails_ProductVariantId");
