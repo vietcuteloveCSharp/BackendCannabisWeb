@@ -1,4 +1,4 @@
-﻿namespace DAL.Entities.Internal
+namespace DAL.Entities.Internal
 {
 	
 		public class Staff : BaseEntity, ISoftDelete
@@ -30,7 +30,6 @@
 			public virtual ICollection<Shop.Order> OrdersAsStaff { get; set; } = new List<Shop.Order>();
 			public virtual ICollection<StaffRefreshToken> RefreshTokens { get; set; } = new List<StaffRefreshToken>();
 			public virtual ICollection<StaffSession> StaffSessions { get; set; } = new HashSet<StaffSession>();
-			public virtual ICollection<AuditLog> AuditLogs { get; set; } = new HashSet<AuditLog>();
 			public virtual ICollection<StaffNotificationLog> NotificationLogs { get; set; } = new HashSet<StaffNotificationLog>();
 
 	}

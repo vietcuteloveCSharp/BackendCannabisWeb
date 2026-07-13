@@ -1,5 +1,4 @@
-﻿using static Shared.Enum.Product_Inventory;
-
+﻿
 namespace DAL.Entities.Inventory
 {
 	public class StockMovement : BaseEntity, ISoftDelete
@@ -10,7 +9,7 @@ namespace DAL.Entities.Inventory
 
 		public int QuantityChanged { get; set; } // Số lượng tăng/giảm
 
-		public EStockMovementType MovementType { get; set; } // Loại di chuyển
+		public int TypeId { get; set; } // Loại di chuyển
 
 		public string? Note { get; set; } // Ghi chú nếu cần
 
@@ -20,6 +19,7 @@ namespace DAL.Entities.Inventory
 		public int? DeletedBy { get; set; }
 
 		// Navigation
-		public Inventory Inventory { get; set; } = default!;
+		public virtual Inventory Inventory { get; set; } = default!;
+		public virtual StockMovementType StockMovementType { get; set; } = default!;
 	}
 }

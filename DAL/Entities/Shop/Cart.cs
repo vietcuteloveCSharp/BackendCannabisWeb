@@ -8,7 +8,7 @@
         public int CustomerId {  get; set; }
         public string? Session_Id { get; set; } = string.Empty; // Mã phiên làm việc
 
-        public decimal? Price { get; set; } //khi thêm vào giỏ hàng lưu giá lại 
+  
 		public bool IsDeleted { get; set; } = false;
 		public DateTime? DeletedAt { get; set; }
 		public int? DeletedBy { get; set; }

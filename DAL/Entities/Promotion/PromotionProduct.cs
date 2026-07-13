@@ -2,10 +2,9 @@
 {
     public class PromotionProduct
     {
-		
-		public int Id { get; set; }
+		[Key]
 		public int PromotionId { get; set; }
-
+		[Key]
 		public int ProductId { get; set; }
 
 		// Navigation

@@ -1,4 +1,4 @@
-﻿using DAL.Entities.Inherited;
+﻿using Shared.Common.Inherited;
 using System;
 using System.Collections.Generic;
 using System.Linq;

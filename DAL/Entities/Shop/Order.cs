@@ -1,4 +1,4 @@
-﻿using DAL.Entities.Inherited;
+﻿using Shared.Common.Inherited;
 using DAL.Entities.Ship;
 
 namespace DAL.Entities.Shop

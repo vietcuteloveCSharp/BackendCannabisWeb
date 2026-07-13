@@ -1,4 +1,4 @@
-﻿using DAL.Entities.Inherited;
+﻿using Shared.Common.Inherited;
 
 namespace DAL.Entities.Promotion
 {
@@ -7,6 +7,8 @@ namespace DAL.Entities.Promotion
 		public int Id { get; set; }
 		public string Name { get; set; } = default!;
 		public string? Description { get; set; }
+		public int TypeId { get; set; }
+		public decimal DiscountValue { get; set; }
 		public DateTime? StartAt { get; set; }
 		public DateTime? EndAt { get; set; }
 		public bool IsDeleted { get; set; } = false;
@@ -17,5 +19,6 @@ namespace DAL.Entities.Promotion
 		public ICollection<PromotionProduct> Products { get; set; } = new HashSet<PromotionProduct>();
 		public ICollection<PromotionCategory> Categories { get; set; } = new HashSet<PromotionCategory>();
 		public ICollection<Coupon> Coupons { get; set; } = new HashSet<Coupon>();
+		public virtual PromotionType PromotionType { get; set; } = default!;
 	}
 }

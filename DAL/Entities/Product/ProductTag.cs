@@ -1,6 +1,6 @@
 ﻿//map giữa pro->tap
 
-using DAL.Entities.Inherited;
+using Shared.Common.Inherited;
 
 namespace DAL.Entities.Product
 {
