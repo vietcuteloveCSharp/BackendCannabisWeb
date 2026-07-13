@@ -1,4 +1,6 @@
-﻿using Shared.DTOs.DTO.AuditLog;
+using Shared.Common.Inherited;
+using Shared.DTOs.Common.Extension;
+using Shared.DTOs.DTO.AuditLog;
 using System.Text.Json;
 
 namespace DAL.Dbcontext
@@ -81,29 +83,12 @@ namespace DAL.Dbcontext
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			//Đăng ký TẤT CẢ các class thực thi IEntityTypeConfiguration trong cùng Assembly
-			modelBuilder.ApplyConfigurationsFromAssembly(typeof(CannabisAccessoriesDBContext).Assembly);
 
-			// Apply base entity mapping cho tất cả entity kế thừa BaseEntity
-			foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-			{
-				if (typeof(ISoftDelete).IsAssignableFrom(entityType.ClrType))
-				{
-					var method = typeof(ModelBuilder)
-					.GetMethods()
-					.First(m => m.Name == "Entity" && m.IsGenericMethod)
-					.MakeGenericMethod(entityType.ClrType);
+			// 1. Tự động apply các file Configuration thuộc namespace DAL.Configurations
+			modelBuilder.ApplyConfigurationsFromNamespace(typeof(CannabisAccessoriesDBContext).Assembly, "DAL.Configurations");
 
-					var entityBuilder = method.Invoke(modelBuilder, null);
-
-					var param = Expression.Parameter(entityType.ClrType, "e");
-					var prop = Expression.Property(param, nameof(ISoftDelete.IsDeleted));
-					var body = Expression.Equal(prop, Expression.Constant(false));
-					var lambda = Expression.Lambda(body, param);
-
-					entityType.SetQueryFilter(lambda);
-				}
-			}
+			// 2. Tự động apply Query Filter cho Soft Delete
+			modelBuilder.ApplySoftDeleteQueryFilter();
 
 
 		}
@@ -151,11 +136,11 @@ namespace DAL.Dbcontext
 			var result = await base.SaveChangesAsync(cancellationToken);
 
 			// BƯỚC 4: Nếu lưu thành công (result > 0) và có log, đẩy toàn bộ log vào hàng đợi ở tầng Shared
-			if (result > 0 && auditEntries.Any())
+			if (_auditQueue != null && result > 0 && auditEntries.Any())
 			{
 				foreach (var entry in auditEntries)
 				{
-					_auditQueue!.QueueAuditLog(entry); // Kích hoạt đường ống dẫn sang DB Audit!
+					_auditQueue.QueueAuditLog(entry); // Kích hoạt đường ống dẫn sang DB Audit!
 				}
 			}
 
