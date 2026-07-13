@@ -46,3 +46,4 @@ global using Service.Implementations.Auth.Internal;
 global using Service.Interfaces.Auth.Internal;
 global using Shared.Implementations.Audit;
 global using Shared.Interfaces.Audit;
+global using Cannabis.Server.Middleware;

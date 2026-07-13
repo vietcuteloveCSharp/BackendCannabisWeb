@@ -1,4 +1,4 @@
-﻿
+
 
 namespace Cannabis.Server.DependencyInjection
 {
@@ -11,7 +11,7 @@ namespace Cannabis.Server.DependencyInjection
 			services.AddScoped<IEmailService, EmailService>();
 			services.AddSingleton<IRedisService, RedisService>();
 			services.AddScoped<IPasswordHasher<Staff>, PasswordHasher<Staff>>();
-			services.AddScoped<IAuditQueue, AuditQueue>();
+			services.AddSingleton<IAuditQueue, AuditQueue>();
 			return services;
 		}
 	}
