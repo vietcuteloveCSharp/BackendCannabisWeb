@@ -3,23 +3,20 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace DAL.Migrations.AuditDb
+namespace DAL.Migrations.Audit
 {
     /// <inheritdoc />
-    public partial class InitialAuditDb : Migration
+    public partial class Create_Database : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "Audit");
-
-            migrationBuilder.EnsureSchema(
-                name: "dbo");
+                name: "audit");
 
             migrationBuilder.CreateTable(
                 name: "AuditLogs",
-                schema: "Audit",
+                schema: "audit",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -40,7 +37,7 @@ namespace DAL.Migrations.AuditDb
 
             migrationBuilder.CreateTable(
                 name: "EntityChanges",
-                schema: "dbo",
+                schema: "audit",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -60,7 +57,7 @@ namespace DAL.Migrations.AuditDb
                     table.ForeignKey(
                         name: "FK_EntityChanges_AuditLogs_AuditLogId",
                         column: x => x.AuditLogId,
-                        principalSchema: "Audit",
+                        principalSchema: "audit",
                         principalTable: "AuditLogs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -68,7 +65,7 @@ namespace DAL.Migrations.AuditDb
 
             migrationBuilder.CreateIndex(
                 name: "IX_EntityChanges_AuditLogId",
-                schema: "dbo",
+                schema: "audit",
                 table: "EntityChanges",
                 column: "AuditLogId");
         }
@@ -78,11 +75,11 @@ namespace DAL.Migrations.AuditDb
         {
             migrationBuilder.DropTable(
                 name: "EntityChanges",
-                schema: "dbo");
+                schema: "audit");
 
             migrationBuilder.DropTable(
                 name: "AuditLogs",
-                schema: "Audit");
+                schema: "audit");
         }
     }
 }

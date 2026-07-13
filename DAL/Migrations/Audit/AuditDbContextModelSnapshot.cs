@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DAL.Migrations.AuditDb
+namespace DAL.Migrations.Audit
 {
     [DbContext(typeof(AuditDbContext))]
     partial class AuditDbContextModelSnapshot : ModelSnapshot
@@ -60,7 +60,7 @@ namespace DAL.Migrations.AuditDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditLogs", "Audit");
+                    b.ToTable("AuditLogs", "audit");
                 });
 
             modelBuilder.Entity("DAL.Entities.Audit.EntityChange", b =>
@@ -101,7 +101,7 @@ namespace DAL.Migrations.AuditDb
 
                     b.HasIndex("AuditLogId");
 
-                    b.ToTable("EntityChanges", "dbo");
+                    b.ToTable("EntityChanges", "audit");
                 });
 
             modelBuilder.Entity("DAL.Entities.Audit.EntityChange", b =>

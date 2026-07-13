@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DAL.Migrations.AuditDb
+namespace DAL.Migrations.Audit
 {
     [DbContext(typeof(AuditDbContext))]
-    [Migration("20260623200821_InitialAuditDb")]
-    partial class InitialAuditDb
+    [Migration("20260713185126_Create_Database")]
+    partial class Create_Database
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,7 +63,7 @@ namespace DAL.Migrations.AuditDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditLogs", "Audit");
+                    b.ToTable("AuditLogs", "audit");
                 });
 
             modelBuilder.Entity("DAL.Entities.Audit.EntityChange", b =>
@@ -104,7 +104,7 @@ namespace DAL.Migrations.AuditDb
 
                     b.HasIndex("AuditLogId");
 
-                    b.ToTable("EntityChanges", "dbo");
+                    b.ToTable("EntityChanges", "audit");
                 });
 
             modelBuilder.Entity("DAL.Entities.Audit.EntityChange", b =>

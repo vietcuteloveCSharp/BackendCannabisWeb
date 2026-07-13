@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace DAL.Migrations
+namespace DAL.Migrations.MainDb
 {
     /// <inheritdoc />
     public partial class Create_Database : Migration
@@ -216,6 +216,26 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PromotionTypes",
+                schema: "Promotions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PromotionTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 schema: "Internal",
                 columns: table => new
@@ -285,6 +305,21 @@ namespace DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StaffStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StockMovementTypes",
+                schema: "Inventory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StockMovementTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -412,7 +447,6 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     Session_Id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
@@ -649,6 +683,8 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    TypeId = table.Column<int>(type: "int", nullable: false),
+                    DiscountValue = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     StartAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EndAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -669,6 +705,13 @@ namespace DAL.Migrations
                         principalSchema: "Products",
                         principalTable: "Products",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Promotions_PromotionTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalSchema: "Promotions",
+                        principalTable: "PromotionTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -749,33 +792,6 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AuditLog",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    Action = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TableName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ActionTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    KeyValues = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OldValues = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NewValues = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ChangedColumns = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StaffId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AuditLog", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AuditLog_Staffs_StaffId",
-                        column: x => x.StaffId,
-                        principalSchema: "Internal",
-                        principalTable: "Staffs",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 schema: "Shop",
                 columns: table => new
@@ -790,7 +806,6 @@ namespace DAL.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
-                    OrderStatusId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -806,12 +821,6 @@ namespace DAL.Migrations
                         principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_OrderStatuses_OrderStatusId",
-                        column: x => x.OrderStatusId,
-                        principalSchema: "Shop",
-                        principalTable: "OrderStatuses",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_OrderStatuses_StatusId",
                         column: x => x.StatusId,
@@ -904,7 +913,7 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CartId = table.Column<int>(type: "int", nullable: false),
                     ProductVariantId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
@@ -977,13 +986,13 @@ namespace DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductVariantId = table.Column<int>(type: "int", nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AltText = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
                     IsMainImage = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
-                    ProductVariantId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -1004,7 +1013,8 @@ namespace DAL.Migrations
                         column: x => x.ProductVariantId,
                         principalSchema: "Products",
                         principalTable: "ProductVariants",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1072,8 +1082,7 @@ namespace DAL.Migrations
                 columns: table => new
                 {
                     PromotionId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1129,32 +1138,6 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EntityChange",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AuditLogId = table.Column<int>(type: "int", nullable: false),
-                    PropertyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OldValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NewValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EntityChange", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EntityChange_AuditLog_AuditLogId",
-                        column: x => x.AuditLogId,
-                        principalTable: "AuditLog",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OrderHistories",
                 schema: "Shop",
                 columns: table => new
@@ -1199,6 +1182,8 @@ namespace DAL.Migrations
                     ProductVariantId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    ProductNameSnapshot = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    VariantNameSnapshot = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedBy = table.Column<int>(type: "int", nullable: true),
@@ -1415,7 +1400,7 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     InventoryId = table.Column<int>(type: "int", nullable: false),
                     QuantityChanged = table.Column<int>(type: "int", nullable: false),
-                    MovementType = table.Column<int>(type: "int", nullable: false),
+                    TypeId = table.Column<int>(type: "int", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -1434,7 +1419,14 @@ namespace DAL.Migrations
                         principalSchema: "Inventory",
                         principalTable: "Inventories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StockMovements_StockMovementTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalSchema: "Inventory",
+                        principalTable: "StockMovementTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1531,11 +1523,6 @@ namespace DAL.Migrations
                 column: "AttributeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuditLog_StaffId",
-                table: "AuditLog",
-                column: "StaffId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Brands_BrandName",
                 schema: "Products",
                 table: "Brands",
@@ -1543,16 +1530,16 @@ namespace DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartDetails_CartId",
-                schema: "Shop",
-                table: "CartItems",
-                column: "CartId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CartDetails_ProductVariantId",
                 schema: "Shop",
                 table: "CartItems",
                 column: "ProductVariantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItems_CartId",
+                schema: "Shop",
+                table: "CartItems",
+                column: "CartId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_CustomerId",
@@ -1664,11 +1651,6 @@ namespace DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EntityChange_AuditLogId",
-                table: "EntityChange",
-                column: "AuditLogId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Inventories_ProductVariantId",
                 schema: "Inventory",
                 table: "Inventories",
@@ -1709,12 +1691,6 @@ namespace DAL.Migrations
                 schema: "Shop",
                 table: "Orders",
                 column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_OrderStatusId",
-                schema: "Shop",
-                table: "Orders",
-                column: "OrderStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_StaffId",
@@ -1814,6 +1790,12 @@ namespace DAL.Migrations
                 schema: "Promotions",
                 table: "Promotions",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Promotions_TypeId",
+                schema: "Promotions",
+                table: "Promotions",
+                column: "TypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PromotionsCategories_CategoryId",
@@ -1967,6 +1949,12 @@ namespace DAL.Migrations
                 column: "InventoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StockMovements_TypeId",
+                schema: "Inventory",
+                table: "StockMovements",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Wishlists_CustomerId_ProductId",
                 schema: "Shop",
                 table: "Wishlists",
@@ -2002,9 +1990,6 @@ namespace DAL.Migrations
             migrationBuilder.DropTable(
                 name: "CustomerRefreshTokens",
                 schema: "Shop");
-
-            migrationBuilder.DropTable(
-                name: "EntityChange");
 
             migrationBuilder.DropTable(
                 name: "OrderHistories",
@@ -2071,9 +2056,6 @@ namespace DAL.Migrations
                 schema: "Shop");
 
             migrationBuilder.DropTable(
-                name: "AuditLog");
-
-            migrationBuilder.DropTable(
                 name: "PaymentMethods",
                 schema: "Shop");
 
@@ -2110,6 +2092,10 @@ namespace DAL.Migrations
                 schema: "Inventory");
 
             migrationBuilder.DropTable(
+                name: "StockMovementTypes",
+                schema: "Inventory");
+
+            migrationBuilder.DropTable(
                 name: "Promotions",
                 schema: "Promotions");
 
@@ -2136,6 +2122,10 @@ namespace DAL.Migrations
             migrationBuilder.DropTable(
                 name: "Warehouses",
                 schema: "Inventory");
+
+            migrationBuilder.DropTable(
+                name: "PromotionTypes",
+                schema: "Promotions");
 
             migrationBuilder.DropTable(
                 name: "Customers",

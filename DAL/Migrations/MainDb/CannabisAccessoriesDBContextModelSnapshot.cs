@@ -4,19 +4,16 @@ using DAL.Dbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DAL.Migrations
+namespace DAL.Migrations.MainDb
 {
     [DbContext(typeof(CannabisAccessoriesDBContext))]
-    [Migration("20260712194532_Create_Database")]
-    partial class Create_Database
+    partial class CannabisAccessoriesDBContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,90 +21,6 @@ namespace DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DAL.Entities.Audit.AuditLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ActionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ChangedColumns")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KeyValues")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NewValues")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OldValues")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("StaffId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TableName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StaffId");
-
-                    b.ToTable("AuditLog");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Audit.EntityChange", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AuditLogId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NewValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OldValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PropertyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuditLogId");
-
-                    b.ToTable("EntityChange");
-                });
 
             modelBuilder.Entity("DAL.Entities.Internal.Role", b =>
                 {
@@ -490,14 +403,14 @@ namespace DAL.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MovementType")
-                        .HasColumnType("int");
-
                     b.Property<string>("Note")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("QuantityChanged")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -510,7 +423,31 @@ namespace DAL.Migrations
 
                     b.HasIndex("InventoryId");
 
+                    b.HasIndex("TypeId");
+
                     b.ToTable("StockMovements", "Inventory");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Inventory.StockMovementType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StockMovementTypes", "Inventory");
                 });
 
             modelBuilder.Entity("DAL.Entities.Inventory.Warehouse", b =>
@@ -1272,6 +1209,10 @@ namespace DAL.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<decimal>("DiscountValue")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime?>("EndAt")
                         .HasColumnType("datetime2");
 
@@ -1289,6 +1230,9 @@ namespace DAL.Migrations
                     b.Property<DateTime?>("StartAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -1298,6 +1242,8 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("Promotions", "Promotions");
                 });
@@ -1346,14 +1292,49 @@ namespace DAL.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.HasKey("PromotionId", "ProductId");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("PromotionProducts", "Promotions");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Promotion.PromotionType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PromotionTypes", "Promotions");
                 });
 
             modelBuilder.Entity("DAL.Entities.Ship.Shipment", b =>
@@ -1631,9 +1612,6 @@ namespace DAL.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("Session_Id")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -1682,7 +1660,10 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("Quantity")
-                        .HasColumnType("int");
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -1693,7 +1674,7 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId")
-                        .HasDatabaseName("IX_CartDetails_CartId");
+                        .HasDatabaseName("IX_CartItems_CartId");
 
                     b.HasIndex("ProductVariantId")
                         .HasDatabaseName("IX_CartDetails_ProductVariantId");
@@ -1961,9 +1942,6 @@ namespace DAL.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<int?>("OrderStatusId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ShippingAddress")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -1987,8 +1965,6 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("OrderStatusId");
 
                     b.HasIndex("StaffId");
 
@@ -2062,6 +2038,11 @@ namespace DAL.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProductNameSnapshot")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<int>("ProductVariantId")
                         .HasColumnType("int");
 
@@ -2077,6 +2058,10 @@ namespace DAL.Migrations
 
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("int");
+
+                    b.Property<string>("VariantNameSnapshot")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -2365,24 +2350,6 @@ namespace DAL.Migrations
                     b.ToTable("Wishlists", "Shop");
                 });
 
-            modelBuilder.Entity("DAL.Entities.Audit.AuditLog", b =>
-                {
-                    b.HasOne("DAL.Entities.Internal.Staff", null)
-                        .WithMany("AuditLogs")
-                        .HasForeignKey("StaffId");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Audit.EntityChange", b =>
-                {
-                    b.HasOne("DAL.Entities.Audit.AuditLog", "AuditLog")
-                        .WithMany("EntityChanges")
-                        .HasForeignKey("AuditLogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AuditLog");
-                });
-
             modelBuilder.Entity("DAL.Entities.Internal.Staff", b =>
                 {
                     b.HasOne("DAL.Entities.Internal.Role", "Role")
@@ -2461,10 +2428,20 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Entities.Inventory.Inventory", "Inventory")
                         .WithMany("StockMovements")
                         .HasForeignKey("InventoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_StockMovements_Inventories_InventoryId");
+
+                    b.HasOne("DAL.Entities.Inventory.StockMovementType", "StockMovementType")
+                        .WithMany("StockMovements")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_StockMovements_StockMovementTypes_TypeId");
 
                     b.Navigation("Inventory");
+
+                    b.Navigation("StockMovementType");
                 });
 
             modelBuilder.Entity("DAL.Entities.Noti.CustomerNotificationLog", b =>
@@ -2561,11 +2538,15 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_PRODUCTIMAGE_PRODUCT_PRODUCTID");
 
-                    b.HasOne("DAL.Entities.Product.ProductVariant", null)
+                    b.HasOne("DAL.Entities.Product.ProductVariant", "ProductVariant")
                         .WithMany("ProductImages")
-                        .HasForeignKey("ProductVariantId");
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_ProductImages_ProductVariants_ProductVariantId");
 
                     b.Navigation("Product");
+
+                    b.Navigation("ProductVariant");
                 });
 
             modelBuilder.Entity("DAL.Entities.Product.ProductTag", b =>
@@ -2663,6 +2644,15 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Entities.Product.Product", null)
                         .WithMany("promotions")
                         .HasForeignKey("ProductId");
+
+                    b.HasOne("DAL.Entities.Promotion.PromotionType", "PromotionType")
+                        .WithMany("Promotions")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Promotions_PromotionTypes_TypeId");
+
+                    b.Navigation("PromotionType");
                 });
 
             modelBuilder.Entity("DAL.Entities.Promotion.PromotionCategory", b =>
@@ -2836,10 +2826,6 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Orders_Customers_CustomerId");
 
-                    b.HasOne("DAL.Entities.Shop.OrderStatus", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("OrderStatusId");
-
                     b.HasOne("DAL.Entities.Internal.Staff", "Staff")
                         .WithMany("OrdersAsStaff")
                         .HasForeignKey("StaffId")
@@ -2847,7 +2833,7 @@ namespace DAL.Migrations
                         .HasConstraintName("FK_Orders_Staffs_StaffId");
 
                     b.HasOne("DAL.Entities.Shop.OrderStatus", "OrderStatus")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -2892,7 +2878,8 @@ namespace DAL.Migrations
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductVariantId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_OrderItems_ProductVariants_ProductVariantId");
 
                     b.Navigation("Order");
 
@@ -2978,11 +2965,6 @@ namespace DAL.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("DAL.Entities.Audit.AuditLog", b =>
-                {
-                    b.Navigation("EntityChanges");
-                });
-
             modelBuilder.Entity("DAL.Entities.Internal.Role", b =>
                 {
                     b.Navigation("Staffs");
@@ -2990,8 +2972,6 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Internal.Staff", b =>
                 {
-                    b.Navigation("AuditLogs");
-
                     b.Navigation("NotificationLogs");
 
                     b.Navigation("OrdersAsStaff");
@@ -3012,6 +2992,11 @@ namespace DAL.Migrations
                 });
 
             modelBuilder.Entity("DAL.Entities.Inventory.Inventory", b =>
+                {
+                    b.Navigation("StockMovements");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Inventory.StockMovementType", b =>
                 {
                     b.Navigation("StockMovements");
                 });
@@ -3097,6 +3082,11 @@ namespace DAL.Migrations
                     b.Navigation("Coupons");
 
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Promotion.PromotionType", b =>
+                {
+                    b.Navigation("Promotions");
                 });
 
             modelBuilder.Entity("DAL.Entities.Ship.Shipment", b =>
